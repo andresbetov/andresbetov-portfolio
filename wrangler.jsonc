@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "portfolio-development",
+  "compatibility_date": "2026-11-23",
+  "preview_urls": false,
+  "assets": { "directory": "./dist" },
+  "env": {
+    "production": {
+      "name": "portfolio-production",
+    },
+  },
+}

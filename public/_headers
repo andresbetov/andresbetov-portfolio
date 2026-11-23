@@ -1,0 +1,4 @@
+# Development is an integration environment: keep it out of search results.
+# Production shares this file but does not match this exact hostname.
+https://portfolio-development.andresbetov.workers.dev/*
+  X-Robots-Tag: noindex
