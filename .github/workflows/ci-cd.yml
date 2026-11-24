@@ -39,6 +39,15 @@ jobs:
         run: npm run check
       - name: Build
         run: npm run build
+      # The deploy jobs consume this artifact so they ship the exact bytes CI verified.
+      - name: Upload build artifact
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7
+          if-no-files-found: error
 
   deploy-development:
     name: deploy-development
@@ -62,8 +71,11 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Build
-        run: npm run build
+      - name: Download build artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist
       - name: Deploy Worker (development)
         uses: cloudflare/wrangler-action@v4
         with:
@@ -95,8 +107,11 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Build
-        run: npm run build
+      - name: Download build artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist
       - name: Deploy Worker (production)
         uses: cloudflare/wrangler-action@v4
         with:
