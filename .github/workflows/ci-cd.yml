@@ -69,6 +69,8 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # Multiple environments are defined in wrangler.jsonc; `--env=""` explicitly
+          # targets the top-level development Worker, as Wrangler recommends.
           command: deploy --env=""
 
   deploy-production:
