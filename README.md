@@ -4,6 +4,9 @@ Static single-page portfolio built with Astro, with a static quality toolchain a
 configured for Cloudflare Workers. The visual implementation and content are deliberately
 out of scope at this stage.
 
+Production promotion is intentionally deferred until the Figma-derived content is
+implemented; `portfolio-production` currently runs the Cloudflare placeholder.
+
 ## Requirements
 
 - Node.js within `^22.23.4 || ^24.16.0 || >=26.3.0` (the intersection of Astro's floor and
@@ -76,8 +79,8 @@ exist.
   TypeScript types and leaves the lint rules unchanged.
 - `@eslint/js` is a support-only development dependency for the ESLint configuration; it
   adds no runtime code to the static artifact.
-- `npm audit` reports a moderate advisory in the development-only chain
-  `eslint-plugin-astro -> eslint-plugin-jsx-a11y-x -> minimatch`. `npm audit --omit=dev`
+- `npm audit` reports a moderate advisory affecting three packages in the development-only
+  chain `eslint-plugin-astro -> eslint-plugin-jsx-a11y-x -> minimatch`. `npm audit --omit=dev`
   reports zero vulnerabilities; the available fix is a breaking tooling downgrade, so it is
   recorded rather than applied.
 
@@ -87,12 +90,20 @@ The repository follows GitFlow with two long-lived branches:
 
 - `develop` — integration branch. Feature work arrives through `feature/*` pull requests and
   deploys to the development Worker on every successful push.
-- `main` — production branch. Only `develop` is promoted into it, via a squash merge; the
-  resulting push deploys to production.
+- `main` — production branch. Only `develop` is promoted into it, via a squash merge. The
+  production deployment is intentionally deferred until the portfolio content is finished;
+  `portfolio-production` currently runs the Cloudflare placeholder. Once promotion starts,
+  the push to `main` deploys the production Worker.
 
 Once bootstrapped, direct pushes to either branch are blocked by their rulesets and squash is
-the only allowed merge method. Urgent fixes use `hotfix/*` branches that merge into `develop` first and then
-follow the same promotion path, so they still pass through the development deployment gate.
+the only allowed merge method. Urgent fixes use `hotfix/*` branches that merge into `develop`
+first and then follow the same promotion path, so they still pass through the development
+deployment gate.
+
+Because promotions are squash merges and both branches require up-to-date status checks, sync
+`main` back into `develop` after each promotion (open a `main` → `develop` pull request or use
+the promotion pull request's "Update branch" action). Otherwise the next promotion pull
+request is out of date and cannot merge.
 
 ## Deployment
 
@@ -102,9 +113,10 @@ follow the same promotion path, so they still pass through the development deplo
 | `main`    | `production`       | https://portfolio-production.andresbetov.workers.dev  |
 
 Wrangler is configured in `wrangler.jsonc`: the base Worker is `portfolio-development`, and
-`--env production` targets `portfolio-production`. Both serve `dist/` as static assets on
-`workers.dev`. `public/_headers` is copied into `dist/` on build and applies a `noindex`
-rule to the development hostname only, so the production URL remains indexable.
+`--env production` targets `portfolio-production`. The development Worker serves `dist/` as
+static assets on `workers.dev`; the production Worker will do the same once the first
+promotion is deployed. `public/_headers` is copied into `dist/` on build and applies a
+`noindex` rule to the development hostname only, so the production URL remains indexable.
 
 | Command                                                 | Purpose                                                          |
 | :------------------------------------------------------ | :--------------------------------------------------------------- |
@@ -116,24 +128,32 @@ Local deploys need Cloudflare credentials: run `npx wrangler login` or set
 `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` in your environment. CI reads them from the
 matching GitHub Environment secrets.
 
-GitHub Actions (`.github/workflows/ci-cd.yml`) runs the `verify` check on pull
-requests and pushes to `develop`/`main`. On a successful push it then deploys to the matching
-Cloudflare Worker. The active `Production protection (main)` ruleset uses GitHub's
-"Require deployments to succeed" for the `development` environment: the `deploy-development`
-job must have produced a successful deployment of the PR head SHA before `develop` can be
-merged into `main`. This is a deployment gate, not a required status check.
+GitHub Actions (`.github/workflows/ci-cd.yml`) runs the `verify` check on pull requests and
+pushes to `develop`/`main`. A successful push to `develop` deploys the development Worker. A
+successful push to `main` deploys the production Worker, except for the initial push that
+creates `main`; the workflow intentionally skips that branch-creation push. Production
+promotion is currently deferred, so no production deployment has run yet.
+
+The active `Production protection (main)` ruleset uses GitHub's "Require deployments to
+succeed" for the `development` environment: the `deploy-development` job must have produced a
+successful deployment of the PR head SHA before `develop` can be merged into `main`. This is a
+deployment gate, not a required status check.
 
 ### Recovery
 
 If a promotion is blocked by a missing or failed deployment, re-run the failed
 `deploy-development` job for the current head SHA; do not push to `develop` while the PR is
-open. Rollback is manual through Cloudflare Deployments or
+open. If the promotion is blocked by the production ruleset, confirm that "Restrict updates"
+is not enabled and that the required `verify` check and `development` deployment are green.
+After a promotion, sync `main` back into `develop` before the next promotion.
+
+Rollback is manual through Cloudflare Deployments or
 `npx wrangler rollback <version-id> --env production` (omit `--env` for development).
 
 ## Deferred
 
-Figma-derived design values and sections, the favicon asset, the validated content model,
-manual accessibility evaluation, Lighthouse CI, and CSP/security headers beyond the
-development `noindex` rule are intentionally deferred. CSP will be added
-through Astro's `security.csp` (hashes) once client-side JavaScript or analytics exist;
-HSTS belongs in the Cloudflare dashboard once a custom domain is connected.
+Production promotion, Figma-derived design values and sections, the favicon asset, the
+validated content model, manual accessibility evaluation, Lighthouse CI, and CSP/security
+headers beyond the development `noindex` rule are intentionally deferred. CSP will be added
+through Astro's `security.csp` (hashes) once client-side JavaScript or analytics exist; HSTS
+belongs in the Cloudflare dashboard once a custom domain is connected.
