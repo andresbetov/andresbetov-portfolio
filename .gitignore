@@ -20,5 +20,5 @@ npm-debug.log*
 .env.*
 !.env.example
 
-# Local agent configuration
+# Local agent configuration (personal; shared instructions live in AGENTS.md)
 .opencode/

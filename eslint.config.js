@@ -4,7 +4,13 @@ import tseslint from "typescript-eslint";
 
 export default [
   {
-    ignores: [".astro/**", "dist/**", ".wrangler/**", "node_modules/**"],
+    ignores: [
+      ".astro/**",
+      "dist/**",
+      ".wrangler/**",
+      "node_modules/**",
+      ".opencode/**",
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

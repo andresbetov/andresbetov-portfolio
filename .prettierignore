@@ -2,4 +2,6 @@ dist/
 .astro/
 .wrangler/
 package-lock.json
-opencode.json
+
+# Local agent configuration
+.opencode/
