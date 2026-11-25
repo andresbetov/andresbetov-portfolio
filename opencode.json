@@ -1,0 +1,45 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "policies": [
+    { "action": "mcp.use", "resource": "*", "effect": "deny" },
+    { "action": "mcp.use", "resource": "browse", "effect": "allow" },
+    { "action": "mcp.use", "resource": "figma", "effect": "allow" }
+  ],
+  "mcp": {
+    "servers": {
+      "figma": {
+        "type": "remote",
+        "url": "https://mcp.figma.com/mcp"
+      }
+    }
+  },
+  "agents": {
+    "plan": {
+      "permissions": [
+        { "action": "subagent", "resource": "*", "effect": "deny" },
+        { "action": "subagent", "resource": "explore", "effect": "allow" },
+        { "action": "subagent", "resource": "reviewer", "effect": "allow" }
+      ]
+    },
+    "reviewer": {
+      "description": "Read-only reviewer for diffs against acceptance criteria. Use from build or plan for the two-axis code review.",
+      "mode": "subagent",
+      "permissions": [
+        { "action": "edit", "resource": "*", "effect": "deny" },
+        { "action": "question", "resource": "*", "effect": "deny" },
+        { "action": "subagent", "resource": "*", "effect": "deny" },
+        { "action": "shell", "resource": "*", "effect": "deny" },
+        { "action": "shell", "resource": "git diff *", "effect": "allow" },
+        { "action": "shell", "resource": "git log *", "effect": "allow" },
+        { "action": "shell", "resource": "git show *", "effect": "allow" }
+      ]
+    }
+  },
+  "commands": {
+    "code-review": {
+      "description": "Two-axis review with the read-only reviewer",
+      "agent": "plan",
+      "template": "Load the `code-review` skill and run its two-axis review against $ARGUMENTS. Pin the fixed point first. Use the `reviewer` subagent for both the Standards and Spec axes. Report findings only; do not edit files."
+    }
+  }
+}
