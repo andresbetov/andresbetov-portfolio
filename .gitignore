@@ -21,4 +21,4 @@ npm-debug.log*
 !.env.example
 
 # Local agent configuration
-opencode.json
+.opencode/
