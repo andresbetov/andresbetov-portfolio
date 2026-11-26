@@ -30,7 +30,10 @@ development toolbar is hidden in the final captures.
   are 17/39px at tablet and 17/35px at mobile, the solid request rail and dashed platform rail
   are separate, both the direct gateway→unit-of-measure path and the inventory→unit-of-measure
   validation path are present, and the data/secrets connectors use the Figma arrow offsets.
-  The legend line samples use the Figma SVG paths. See the two side-by-side comparison images.
+  The legend line samples use the Figma SVG paths. On mobile, arrowheads stop 1px before node
+  borders (and before the `unit-of-measure-service` focus ring) and 4px before data nodes;
+  data/secrets lines also start 4px after the service nodes. See the two side-by-side
+  comparison images.
 - `body.scrollWidth` and `documentElement.scrollWidth` equal the viewport at 1440, 768, 390,
   and 375. The visible diagram wrapper is 808×420 at 1440, 630×568 at 768, and 308×906 at 390
   (293×906 at 375), with `scrollWidth === clientWidth`; no diagram is horizontally clipped.
