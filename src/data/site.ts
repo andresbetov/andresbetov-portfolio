@@ -10,6 +10,8 @@ export const site = {
   title: "Andrés Bermúdez — Backend Software Engineer",
   description:
     "Portfolio of Andrés Bermúdez, a backend software engineer building systems and computational tools.",
+  // Keep aligned with --color-bg-base for the browser chrome.
+  themeColor: "#0a1128",
   email: "info.andresbetov@gmail.com",
   cv: "/cv/andres-bermudez-cv.pdf",
   socials: [

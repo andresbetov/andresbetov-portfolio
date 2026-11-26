@@ -69,18 +69,6 @@ body.menu-open {
 }
 
 /* Layout helpers */
-.visually-hidden {
-  position: absolute;
-  overflow: hidden;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  border: 0;
-  margin: -1px;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
 .shell-container {
   inline-size: min(
     calc(100% - var(--layout-gutter) * 2),

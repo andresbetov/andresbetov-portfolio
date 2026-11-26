@@ -1,9 +1,9 @@
 export type OrbitTier = "edge" | "services" | "data" | "security";
+export type OrbitNodeId =
+  "tested" | "documented" | "reproducible" | "versioned";
 export type OrbitNode = {
-  id: string;
+  id: OrbitNodeId;
   tier: OrbitTier;
-  icon: string;
-  title: string;
   detail: string;
 };
 
@@ -21,33 +21,13 @@ export const hero = {
 export const orbit = {
   labelLines: ["ENGINEERING", "DISCIPLINE"],
   nodes: [
-    {
-      id: "tested",
-      tier: "edge",
-      icon: "tested",
-      title: "tested",
-      detail: "pytest, locked holdout",
-    },
+    { id: "tested", tier: "edge", detail: "pytest, locked holdout" },
     {
       id: "documented",
       tier: "services",
-      icon: "documented",
-      title: "documented",
       detail: "API docs, written reports",
     },
-    {
-      id: "reproducible",
-      tier: "data",
-      icon: "reproducible",
-      title: "reproducible",
-      detail: "Docker Compose demo",
-    },
-    {
-      id: "versioned",
-      tier: "security",
-      icon: "versioned",
-      title: "versioned",
-      detail: "tagged releases",
-    },
+    { id: "reproducible", tier: "data", detail: "Docker Compose demo" },
+    { id: "versioned", tier: "security", detail: "tagged releases" },
   ] satisfies readonly OrbitNode[],
 } as const;

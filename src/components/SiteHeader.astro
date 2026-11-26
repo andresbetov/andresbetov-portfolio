@@ -60,7 +60,10 @@ import { navigation } from "../data/navigation";
 
     const isOpen = () => toggle.getAttribute("aria-expanded") === "true";
 
-    const setOpen = (open: boolean, restoreFocus: boolean) => {
+    const setOpen = (
+      open: boolean,
+      { restoreFocus = false }: { restoreFocus?: boolean } = {},
+    ) => {
       const scrollbarWidth = open
         ? window.innerWidth - document.documentElement.clientWidth
         : 0;
@@ -93,7 +96,7 @@ import { navigation } from "../data/navigation";
     };
 
     toggle.addEventListener("click", () => {
-      setOpen(!isOpen(), true);
+      setOpen(!isOpen(), { restoreFocus: true });
     });
 
     menu.addEventListener("click", (event) => {
@@ -121,7 +124,7 @@ import { navigation } from "../data/navigation";
         return;
       }
 
-      setOpen(false, true);
+      setOpen(false, { restoreFocus: true });
 
       const href = link.getAttribute("href");
       const target =
@@ -151,7 +154,7 @@ import { navigation } from "../data/navigation";
 
       if (event.key === "Escape") {
         event.preventDefault();
-        setOpen(false, true);
+        setOpen(false, { restoreFocus: true });
         return;
       }
 
@@ -185,7 +188,7 @@ import { navigation } from "../data/navigation";
 
     desktopQuery.addEventListener("change", (event) => {
       if (event.matches && isOpen()) {
-        setOpen(false, false);
+        setOpen(false);
         getMenuLinks()[0]?.focus({ preventScroll: true });
       }
     });

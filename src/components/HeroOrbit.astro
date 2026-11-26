@@ -47,14 +47,14 @@ import { orbit } from "../data/hero";
       >
         <span class="orbit-node-tile" aria-hidden="true">
           <img
-            src={`/icons/hero/node-${node.icon}.svg`}
+            src={`/icons/hero/node-${node.id}.svg`}
             width="16"
             height="16"
             alt=""
           />
         </span>
         <span class="orbit-node-copy">
-          <span class="orbit-node-title">{node.title}</span>
+          <span class="orbit-node-title">{node.id}</span>
           <span class="orbit-node-detail">{node.detail}</span>
         </span>
       </li>
@@ -107,7 +107,7 @@ import { orbit } from "../data/hero";
     left: 73.125rem;
     width: 12.5rem;
     margin: 0;
-    color: rgb(170 184 220 / 90%);
+    color: var(--color-orbit-label);
     font-family: var(--font-mono);
     font-size: 0.625rem;
     font-weight: var(--weight-medium);
