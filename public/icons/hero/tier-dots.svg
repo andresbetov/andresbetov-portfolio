@@ -1,0 +1,13 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="54" height="9" viewBox="0 0 54 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Tier dots" clip-path="url(#clip0_0_126)">
+<circle id="Dot" cx="4.5" cy="4.5" r="4.5" fill="#7B9BFF"/>
+<circle id="Dot_2" cx="19.5" cy="4.5" r="4.5" fill="#3FD6C0"/>
+<circle id="Dot_3" cx="34.5" cy="4.5" r="4.5" fill="#FFB84D"/>
+<circle id="Dot_4" cx="49.5" cy="4.5" r="4.5" fill="#B89BFF"/>
+</g>
+<defs>
+<clipPath id="clip0_0_126">
+<rect width="54" height="9" fill="white"/>
+</clipPath>
+</defs>
+</svg>

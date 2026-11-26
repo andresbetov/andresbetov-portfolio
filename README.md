@@ -1,8 +1,8 @@
 # andresbetov portfolio
 
 Static single-page portfolio built with Astro, with a static quality toolchain and CI/CD
-configured for Cloudflare Workers. The visual implementation and content are deliberately
-out of scope at this stage.
+configured for Cloudflare Workers. The shell and Hero are implemented; the remaining
+Figma sections and footer are in progress.
 
 Production promotion is intentionally deferred until the Figma-derived content is
 implemented; `portfolio-production` currently runs the Cloudflare placeholder.
@@ -45,20 +45,21 @@ npm run dev
 
 ```text
 src/
-  data/                 Placeholder site metadata; future validated configuration
+  components/           Shell, Hero, orbit, and action components
+  data/                 Site metadata, navigation, and Hero content
   layouts/              Page layouts
   pages/                Static routes
-  styles/               Global baseline CSS
+  styles/               Design tokens, self-hosted fonts, and global styles
 ```
 
-Empty placeholder directories are intentionally not committed. `public/` now contains the
-Workers `_headers` rule. `src/components/`, `src/content/` and `src/lib/` are created when
-the first real file needs them.
+Empty placeholder directories are intentionally not committed. `public/` contains the
+self-hosted fonts, Hero icons and particles, the CV, and the Workers `_headers` rule.
+`src/content/` and `src/lib/` are deferred until their first real files need them.
 
 ## Agent configuration
 
-`AGENTS.md` is the shared, committed instruction file. `docs/agents/` will hold the issue
-tracker, domain, and triage configuration once `setup-matt-pocock-skills` runs.
+`AGENTS.md` is the shared, committed instruction file. `docs/agents/` holds the issue
+tracker, domain, and triage configuration.
 
 `.opencode/` is local-only and gitignored. It is for personal commands, agents, and
 overrides; it is not reproducible from the repository. Global OpenCode configuration and MCP
@@ -92,8 +93,8 @@ subagents.
 ## Quality checks
 
 `npm run verify` runs Prettier check, ESLint, Stylelint, Astro Check and the static build.
-The current build verifies the placeholder route only; full acceptance of the content
-sections and their anchors is deferred until the content model exists.
+The current build verifies the shell and Hero at the 1440, 768, and 390 frames; full
+acceptance of the remaining sections and their anchors is deferred until they exist.
 
 There is intentionally **no automated test suite** at this stage. Tests will be added only
 for concrete processes or flows where they provide real value — for example, content
@@ -113,8 +114,8 @@ A code change is ready for review when:
    screenshots.
 5. A fresh reviewer has checked it against the brief, or the change is trivial.
 
-Link and anchor checks are deferred until the content sections exist; the placeholder route
-does not need them yet.
+Link and anchor checks are deferred until the remaining sections exist; the shell and Hero
+currently expose the final anchor targets without their destinations.
 
 ## Package compatibility notes
 

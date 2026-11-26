@@ -1,6 +1,6 @@
 # Agent instructions
 
-This is a static Astro portfolio. The visual/content implementation is the next phase; production promotion is deferred until the Figma-derived content is implemented.
+This is a static Astro portfolio. The shell and Hero are implemented; the remaining Figma sections and footer are next. Production promotion is deferred until the full Figma-derived content is implemented and reviewed.
 
 ## Commands
 

@@ -1,0 +1,255 @@
+---
+import SiteActions from "./SiteActions.astro";
+import HeroOrbit from "./HeroOrbit.astro";
+import { hero } from "../data/hero";
+---
+
+<section class="hero" aria-labelledby="hero-name">
+  <div class="hero-content shell-container">
+    <p class="hero-eyebrow type-code-caps-m">
+      <span class="hero-eyebrow-index">{hero.eyebrowIndex}</span>
+      <span class="hero-eyebrow-dash" aria-hidden="true"></span>
+      <span class="hero-eyebrow-label">{hero.eyebrowLabel}</span>
+    </p>
+
+    <h1 class="hero-name" id="hero-name" aria-label={hero.nameLabel}>
+      {hero.nameLines.map((line) => (
+        <span class="hero-name-line">{line} </span>
+      ))}
+    </h1>
+
+    <p class="hero-role">
+      <img
+        class="hero-role-dots"
+        src="/icons/hero/tier-dots.svg"
+        width="54"
+        height="9"
+        alt=""
+      />
+      <span class="hero-role-label">{hero.role}</span>
+    </p>
+
+    <p class="hero-statement">{hero.statement}</p>
+
+    <SiteActions />
+  </div>
+
+  <HeroOrbit />
+
+  <div class="hero-scroll shell-container">
+    <span class="hero-scroll-node" aria-hidden="true">
+      <img src="/icons/hero/scroll-node.svg" width="27" height="27" alt="" />
+    </span>
+    <span class="hero-scroll-rule" aria-hidden="true"></span>
+    <span class="hero-scroll-meta type-code-caps-m">{hero.scrollCue}</span>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: clip;
+    padding-block-end: 2.5rem;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-block-start: 2.5rem;
+    gap: 1.25rem;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    gap: var(--space-14);
+  }
+
+  .hero-eyebrow-index {
+    color: var(--color-tier-data);
+  }
+
+  .hero-eyebrow-dash {
+    inline-size: 2.75rem;
+    block-size: 1px;
+    background-color: var(--color-line-amber);
+  }
+
+  .hero-eyebrow-label {
+    color: var(--color-text-secondary);
+  }
+
+  .hero-name {
+    color: var(--color-text-primary);
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 18.4615vw, 4.5rem);
+
+    /* Fontsource v5.3 renders wider than the Figma font at this size.
+       wdth 90 restores the 899px desktop name block from node 394:419. */
+    font-variation-settings:
+      "opsz" 14,
+      "wdth" 90;
+    font-weight: var(--weight-semibold);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .hero-name-line {
+    display: block;
+  }
+
+  @supports (background-clip: text) or (-webkit-background-clip: text) {
+    .hero-name {
+      background-image: linear-gradient(
+        90deg,
+        var(--color-ink-50) 0%,
+        var(--color-ink-50) 60%,
+        var(--color-name-end) 100%
+      );
+      background-clip: text;
+      /* stylelint-disable-next-line property-no-vendor-prefix */
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+  }
+
+  .hero-role {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    font-weight: var(--weight-semibold);
+    letter-spacing: -0.01em;
+    line-height: 2.5rem;
+    white-space: nowrap;
+    gap: var(--space-16);
+  }
+
+  .hero-role-dots {
+    flex-shrink: 0;
+  }
+
+  .hero-role-label {
+    min-inline-size: 0;
+  }
+
+  .hero-statement {
+    inline-size: 100%;
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: var(--weight-regular);
+    line-height: 1.75rem;
+  }
+
+  .hero-scroll {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    margin-block-start: 2.5rem;
+    gap: var(--space-16);
+  }
+
+  .hero-scroll-node {
+    position: relative;
+    display: inline-flex;
+    inline-size: 0.4375rem;
+    block-size: 0.4375rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-scroll-node img {
+    max-inline-size: none;
+  }
+
+  .hero-scroll-rule {
+    flex: 1;
+    block-size: 1px;
+    background-image: linear-gradient(
+      90deg,
+      var(--color-line-amber) 0%,
+      var(--color-line-ink-mid) 35%,
+      var(--color-line-ink-end) 100%
+    );
+  }
+
+  .hero-scroll-meta {
+    color: var(--color-text-secondary);
+    white-space: pre;
+  }
+
+  @media (width < 352px) {
+    .hero-role {
+      white-space: normal;
+    }
+  }
+
+  @media (width <= 767.98px) {
+    /* Match the 353px mobile name block in node 515:402. */
+    .hero-name {
+      font-variation-settings:
+        "opsz" 14,
+        "wdth" 93;
+    }
+  }
+
+  @media (width >= 768px) {
+    .hero-content {
+      padding-block-start: 3.5rem;
+      gap: var(--space-24);
+    }
+
+    .hero-name {
+      font-size: 8.75rem;
+    }
+
+    .hero-role {
+      font-size: 1.75rem;
+    }
+
+    .hero-statement {
+      font-size: 1.125rem;
+    }
+
+    .hero-scroll {
+      margin-block-start: 3.5rem;
+    }
+  }
+
+  @media (width >= 1200px) {
+    .hero {
+      padding-block-end: 2.8125rem;
+    }
+
+    .hero-content {
+      padding-block-start: 2.75rem;
+    }
+
+    .hero-name {
+      font-size: 11.9375rem;
+    }
+
+    .hero-role {
+      font-size: 2rem;
+    }
+
+    .hero-statement {
+      max-inline-size: 40rem;
+    }
+
+    .hero-scroll {
+      margin-block-start: 2.75rem;
+    }
+  }
+</style>
