@@ -93,8 +93,9 @@ subagents.
 ## Quality checks
 
 `npm run verify` runs Prettier check, ESLint, Stylelint, Astro Check and the static build.
-The current build verifies the shell and Hero at the 1440, 768, and 390 frames; full
-acceptance of the remaining sections and their anchors is deferred until they exist.
+The build only compiles the site; layout and responsive behavior are checked in a browser,
+and screenshots for implemented slices live in `docs/evidence/`. Full acceptance of the
+remaining sections and their anchors is deferred until they exist.
 
 There is intentionally **no automated test suite** at this stage. Tests will be added only
 for concrete processes or flows where they provide real value — for example, content
