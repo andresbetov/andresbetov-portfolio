@@ -133,7 +133,7 @@ body.menu-open {
   mask-image: radial-gradient(
     ellipse var(--grid-mask-width) var(--grid-mask-height) at var(--grid-mask-x)
       var(--grid-mask-y),
-    #000 0%,
+    var(--color-mask) 0%,
     transparent 100%
   );
   pointer-events: none;

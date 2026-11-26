@@ -50,6 +50,7 @@
   --color-line-ink-mid: rgb(170 184 220 / 22%);
   --color-line-ink-end: rgb(170 184 220 / 14%);
   --color-orbit-label: rgb(170 184 220 / 90%);
+  --color-mask: #000;
 
   /* Tier (layer) colors */
   --color-tier-edge: var(--color-blue-400);
