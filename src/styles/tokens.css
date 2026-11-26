@@ -21,6 +21,7 @@
   --color-amber-400: #ffb84d;
   --color-violet-400: #b89bff;
   --color-rose-400: #ff7b8e;
+  --color-periwinkle-300: #9eb0f2;
 
   /* Surfaces */
   --color-bg-base: var(--color-navy-950);
@@ -38,6 +39,7 @@
   --color-text-tertiary: var(--color-ink-400);
   --color-text-on-light: var(--color-navy-950);
   --color-action-inverse: var(--color-ink-50);
+  --color-name-end: var(--color-periwinkle-300);
 
   /* Tier (layer) colors */
   --color-tier-edge: var(--color-blue-400);

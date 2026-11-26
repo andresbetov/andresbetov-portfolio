@@ -14,7 +14,7 @@ html {
 }
 
 body {
-  min-block-size: 100svh;
+  position: relative;
   margin: 0;
   overflow-x: clip;
   background-color: var(--color-bg-base);
@@ -92,7 +92,6 @@ body.menu-open {
 .page-main {
   position: relative;
   z-index: 1;
-  min-block-size: calc(100svh - var(--header-offset));
 }
 
 [data-nav-focus-target]:focus {

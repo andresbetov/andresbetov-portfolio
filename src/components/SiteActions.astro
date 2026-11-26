@@ -1,0 +1,172 @@
+---
+import { site } from "../data/site";
+
+interface Props {
+  variant?: "hero" | "menu";
+}
+
+const { variant = "hero" } = Astro.props;
+---
+
+<div class:list={["site-actions", `site-actions-${variant}`]}>
+  <a class="action-button action-button-primary" href={site.cv} download>
+    <img
+      class="action-button-icon"
+      src="/icons/hero/download.svg"
+      width="16"
+      height="16"
+      alt=""
+    />
+    <span class="action-button-label">Download CV</span>
+    <img
+      class="action-button-arrow"
+      src="/icons/hero/arrow-primary.svg"
+      width="14"
+      height="14"
+      alt=""
+    />
+  </a>
+
+  <a
+    class="action-button action-button-secondary"
+    href={`mailto:${site.email}`}
+  >
+    <img
+      class="action-button-icon"
+      src="/icons/hero/mail.svg"
+      width="16"
+      height="16"
+      alt=""
+    />
+    <span class="action-button-label">Contact</span>
+    <img
+      class="action-button-arrow"
+      src="/icons/hero/arrow-secondary.svg"
+      width="14"
+      height="14"
+      alt=""
+    />
+  </a>
+
+  <span class="action-divider" aria-hidden="true"></span>
+
+  <ul class="action-socials" aria-label="Social links">
+    {site.socials.map((social) => (
+      <li>
+        <a
+          class="social-button"
+          href={social.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={social.label}
+        >
+          <img
+            src={`/icons/hero/${social.id}.svg`}
+            width="20"
+            height="20"
+            alt=""
+          />
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .site-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-12);
+    padding-block-start: var(--space-16);
+  }
+
+  .action-button {
+    display: flex;
+    inline-size: 13.75rem;
+    block-size: 3rem;
+    align-items: center;
+    padding-inline: var(--space-16) var(--space-14);
+    border-radius: var(--radius-full);
+    gap: var(--space-10);
+    font-family: var(--font-body);
+    font-size: var(--type-label-m-size);
+    font-weight: var(--weight-medium);
+    line-height: var(--type-label-m-line-height);
+  }
+
+  .action-button-primary {
+    background-color: var(--color-action-inverse);
+    color: var(--color-text-on-light);
+  }
+
+  .action-button-secondary {
+    border: 1px solid var(--color-border-strong);
+    color: var(--color-text-primary);
+  }
+
+  .action-button-label {
+    flex: 1;
+    text-align: start;
+  }
+
+  .action-button-icon,
+  .action-button-arrow {
+    flex-shrink: 0;
+  }
+
+  .action-divider {
+    inline-size: 1px;
+    block-size: 1.75rem;
+    background-color: var(--color-border-strong);
+  }
+
+  .action-socials {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    gap: var(--space-8);
+    list-style: none;
+  }
+
+  .social-button {
+    display: flex;
+    inline-size: 3rem;
+    block-size: 3rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-full);
+  }
+
+  .site-actions-menu {
+    flex-direction: column;
+    align-items: stretch;
+    inline-size: 100%;
+  }
+
+  .site-actions-menu .action-button {
+    inline-size: 100%;
+  }
+
+  .site-actions-menu .action-divider {
+    display: none;
+  }
+
+  @media (width <= 767.98px) {
+    .site-actions {
+      flex-direction: column;
+      align-items: stretch;
+      inline-size: 100%;
+    }
+
+    .action-button {
+      inline-size: 100%;
+    }
+
+    .action-divider {
+      display: none;
+    }
+  }
+</style>

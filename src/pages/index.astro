@@ -1,11 +1,10 @@
 ---
+import Hero from "../components/Hero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { site } from "../data/site";
 ---
 
 <BaseLayout>
   <main id="main" class="page-main" tabindex="-1">
-    <h1 class="visually-hidden">{site.name} portfolio</h1>
-    <!-- Hero content arrives in the next ticket. -->
+    <Hero />
   </main>
 </BaseLayout>

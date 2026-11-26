@@ -1,4 +1,5 @@
 ---
+import SiteActions from "./SiteActions.astro";
 import { navigation } from "../data/navigation";
 ---
 
@@ -19,6 +20,10 @@ import { navigation } from "../data/navigation";
           </li>
         ))}
       </ul>
+
+      <div class="menu-actions">
+        <SiteActions variant="menu" />
+      </div>
     </nav>
 
     <button
@@ -92,6 +97,10 @@ import { navigation } from "../data/navigation";
     });
 
     menu.addEventListener("click", (event) => {
+      if (!isOpen()) {
+        return;
+      }
+
       if (!(event.target instanceof Element)) {
         return;
       }
@@ -177,6 +186,7 @@ import { navigation } from "../data/navigation";
     desktopQuery.addEventListener("change", (event) => {
       if (event.matches && isOpen()) {
         setOpen(false, false);
+        getMenuLinks()[0]?.focus({ preventScroll: true });
       }
     });
   }
@@ -211,6 +221,10 @@ import { navigation } from "../data/navigation";
 
   .site-menu {
     margin-inline-start: auto;
+  }
+
+  .menu-actions {
+    display: none;
   }
 
   .nav-list {
@@ -304,6 +318,11 @@ import { navigation } from "../data/navigation";
       gap: 0;
     }
 
+    .menu-actions {
+      display: block;
+      margin-block-start: auto;
+    }
+
     .site-link {
       display: flex;
       min-block-size: 4.1875rem;
@@ -334,6 +353,7 @@ import { navigation } from "../data/navigation";
       z-index: var(--z-menu);
       inset: 0;
       display: none;
+      flex-direction: column;
       overflow-y: auto;
       padding-block: var(--header-offset) var(--space-32);
       padding-inline: var(--layout-gutter)
@@ -343,7 +363,7 @@ import { navigation } from "../data/navigation";
     }
 
     :global(.js) .site-menu.is-open {
-      display: block;
+      display: flex;
     }
 
     :global(.js) .site-menu .nav-list {
