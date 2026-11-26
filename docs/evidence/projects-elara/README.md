@@ -3,27 +3,34 @@
 Screenshots captured from `npm run dev` during the Elara Featured project slice. The Astro
 development toolbar is hidden in the final captures.
 
-| File                          | Viewport | State                                     |
-| ----------------------------- | -------- | ----------------------------------------- |
-| `before-1440.webp`            | 1440×900 | Hero-only baseline                        |
-| `before-768.webp`             | 768×900  | Hero-only baseline                        |
-| `before-390.webp`             | 390×844  | Hero-only baseline                        |
-| `before-375.webp`             | 375×844  | Hero-only baseline                        |
-| `after-1440.webp`             | 1440×900 | Hero + Featured projects, full page       |
-| `after-768.webp`              | 768×900  | Hero + Featured projects, full page       |
-| `after-390.webp`              | 390×844  | Hero + Featured projects, full page       |
-| `after-375.webp`              | 375×844  | Hero + Featured projects, full page       |
-| `hero-after-1440.webp`        | 1440×900 | Hero crop for the before/after comparison |
-| `nav-projects-390.webp`       | 390×844  | After the mobile menu Projects click      |
-| `focus-project-link-390.webp` | 390×844  | Keyboard focus on GitHub organization     |
-| `request-journey-1440.webp`   | 856×610  | Request journey diagram close-up          |
-| `request-journey-390.webp`    | 350×1222 | Request journey diagram close-up          |
+| File                                  | Viewport | State                                     |
+| ------------------------------------- | -------- | ----------------------------------------- |
+| `before-1440.webp`                    | 1440×900 | Hero-only baseline                        |
+| `before-768.webp`                     | 768×900  | Hero-only baseline                        |
+| `before-390.webp`                     | 390×844  | Hero-only baseline                        |
+| `before-375.webp`                     | 375×844  | Hero-only baseline                        |
+| `after-1440.webp`                     | 1440×900 | Hero + Featured projects, full page       |
+| `after-768.webp`                      | 768×900  | Hero + Featured projects, full page       |
+| `after-390.webp`                      | 390×844  | Hero + Featured projects, full page       |
+| `after-375.webp`                      | 375×844  | Hero + Featured projects, full page       |
+| `hero-after-1440.webp`                | 1440×900 | Hero crop for the before/after comparison |
+| `nav-projects-390.webp`               | 390×844  | After the mobile menu Projects click      |
+| `focus-project-link-390.webp`         | 390×844  | Keyboard focus on GitHub organization     |
+| `request-journey-1440.webp`           | 856×610  | Request journey diagram close-up          |
+| `request-journey-390.webp`            | 350×1222 | Request journey diagram close-up          |
+| `tablet-request-journey-compare.webp` | 1408×824 | Figma (left) vs implementation (right)    |
+| `mobile-request-journey-compare.webp` | 732×1222 | Figma (left) vs implementation (right)    |
 
 ## Checks
 
 - `npm run verify` passes: Prettier, ESLint, Stylelint, Astro Check, and the static build.
 - Section height is 1742px at 1440 (Figma frame 1742), 2618px at 768 (Figma 2616), and
   3657px at 390 (Figma 3656). The 1–2px differences are card border rounding.
+- The tablet/mobile request journey follows the Figma frame geometry: node and label insets
+  are 17/39px at tablet and 17/35px at mobile, the solid request rail and dashed platform rail
+  are separate, both the direct gateway→unit-of-measure path and the inventory→unit-of-measure
+  validation path are present, and the data/secrets connectors use the Figma arrow offsets.
+  The legend line samples use the Figma SVG paths. See the two side-by-side comparison images.
 - `body.scrollWidth` and `documentElement.scrollWidth` equal the viewport at 1440, 768, 390,
   and 375. The visible diagram wrapper is 808×420 at 1440, 630×568 at 768, and 308×906 at 390
   (293×906 at 375), with `scrollWidth === clientWidth`; no diagram is horizontally clipped.

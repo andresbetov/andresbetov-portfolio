@@ -20,13 +20,21 @@ const layouts = ["desktop", "tablet", "mobile"] as const;
     <ul class="journey-legend" aria-label="Diagram legend">
       {journey.legend.map((item) => (
         <li class="journey-legend-item">
-          <span
-            class:list={[
-              "journey-legend-line",
-              `journey-legend-line-${item.style}`,
-            ]}
+          <svg
+            class="journey-legend-line"
+            viewBox="0 0 28 8"
             aria-hidden="true"
-          ></span>
+            focusable="false"
+          >
+            <path
+              class="journey-legend-line-path"
+              d={
+                item.style === "solid"
+                  ? "M1 4H27"
+                  : "M1 4H3.16667M27 4H24.8333M7.5 4H11.8333M16.1667 4H20.5"
+              }
+            />
+          </svg>
           <span class="journey-legend-label">{item.label}</span>
         </li>
       ))}
@@ -274,27 +282,31 @@ const layouts = ["desktop", "tablet", "mobile"] as const;
             </defs>
             <path
               class="journey-connector journey-connector-request"
-              d="M123 85C150 85 160 101 189 101"
+              d="M123 85H189"
               marker-end="url(#arrow-request-tablet)"
             />
             <path
               class="journey-connector journey-connector-request"
-              d="M273 127V150H25V389H39"
+              d="M273 127V146Q273 150 269 150H25Q21 150 21 154V455Q21 459 25 459H39"
               marker-end="url(#arrow-request-tablet)"
             />
             <path
               class="journey-connector journey-connector-request"
-              d="M273 127V150H25V459H39"
+              d="M21 389H39"
               marker-end="url(#arrow-request-tablet)"
             />
             <path
               class="journey-connector journey-connector-platform"
-              d="M25 249H39"
+              d="M31 150V319"
+            />
+            <path
+              class="journey-connector journey-connector-platform"
+              d="M31 249H39"
               marker-end="url(#arrow-platform-tablet)"
             />
             <path
               class="journey-connector journey-connector-platform"
-              d="M25 319H39"
+              d="M31 319H39"
               marker-end="url(#arrow-platform-tablet)"
             />
             <path
@@ -309,17 +321,17 @@ const layouts = ["desktop", "tablet", "mobile"] as const;
             />
             <path
               class="journey-connector journey-connector-secrets"
-              d="M345 389C380 389 395 459 431 459"
+              d="M345 397C380 397 395 449 431 449"
               marker-end="url(#arrow-secrets-tablet)"
             />
             <path
               class="journey-connector journey-connector-secrets"
-              d="M345 459H431"
+              d="M345 467H431"
               marker-end="url(#arrow-secrets-tablet)"
             />
             <path
               class="journey-connector journey-connector-data"
-              d="M345 459C380 459 395 529 431 529"
+              d="M345 473C380 473 395 529 431 529"
               marker-end="url(#arrow-data-tablet)"
             />
           </svg>
@@ -412,47 +424,51 @@ const layouts = ["desktop", "tablet", "mobile"] as const;
             />
             <path
               class="journey-connector journey-connector-request"
-              d="M26 259V521H32"
+              d="M19 259V587Q19 591 23 591H35"
               marker-end="url(#arrow-request-mobile)"
             />
             <path
               class="journey-connector journey-connector-request"
-              d="M26 259V591H32"
+              d="M19 521H35"
               marker-end="url(#arrow-request-mobile)"
             />
             <path
               class="journey-connector journey-connector-platform"
-              d="M26 381H32"
+              d="M26 259V451"
+            />
+            <path
+              class="journey-connector journey-connector-platform"
+              d="M26 381H35"
               marker-end="url(#arrow-platform-mobile)"
             />
             <path
               class="journey-connector journey-connector-platform"
-              d="M26 451H32"
+              d="M26 451H35"
               marker-end="url(#arrow-platform-mobile)"
             />
             <path
               class="journey-connector journey-connector-validation"
-              d="M154 547V565"
+              d="M152 547V565"
               marker-end="url(#arrow-validation-mobile)"
             />
             <path
               class="journey-connector journey-connector-data"
-              d="M276 521H296V739H276"
+              d="M269 529H273Q277 529 277 533V735Q277 739 273 739H269"
               marker-end="url(#arrow-data-mobile)"
             />
             <path
               class="journey-connector journey-connector-secrets"
-              d="M276 521H288V803H276"
+              d="M269 513H287Q291 513 291 517V787Q291 791 287 791H269"
               marker-end="url(#arrow-secrets-mobile)"
             />
             <path
               class="journey-connector journey-connector-secrets"
-              d="M276 591H284V803H276"
+              d="M269 599H280Q284 599 284 603V803Q284 807 280 807H269"
               marker-end="url(#arrow-secrets-mobile)"
             />
             <path
               class="journey-connector journey-connector-data"
-              d="M276 591H292V867H276"
+              d="M269 583H294Q298 583 298 587V860Q298 864 294 864H269"
               marker-end="url(#arrow-data-mobile)"
             />
           </svg>
@@ -559,29 +575,17 @@ const layouts = ["desktop", "tablet", "mobile"] as const;
   }
 
   .journey-legend-line {
-    position: relative;
     inline-size: 1.75rem;
     block-size: 0.5rem;
     flex-shrink: 0;
+    overflow: visible;
   }
 
-  .journey-legend-line::before {
-    position: absolute;
-    top: 3px;
-    right: 1px;
-    left: 1px;
-    block-size: 2px;
-    border-radius: var(--radius-full);
-    background-color: var(--color-text-secondary);
-    content: "";
-  }
-
-  .journey-legend-line-dashed::before {
-    background-image: repeating-linear-gradient(
-      90deg,
-      var(--color-text-secondary) 0 2.4px,
-      transparent 2.4px 6px
-    );
+  .journey-legend-line-path {
+    fill: none;
+    stroke: var(--color-text-secondary);
+    stroke-linecap: round;
+    stroke-width: 2;
   }
 
   .journey-legend-label {
@@ -837,12 +841,13 @@ const layouts = ["desktop", "tablet", "mobile"] as const;
 
   .journey-canvas-tablet .journey-band-label {
     top: 0.8125rem;
-    left: 0.8125rem;
+    left: 1.0625rem;
   }
 
   .journey-canvas-tablet .journey-band-description {
     top: 2.0625rem;
-    inline-size: calc(100% - 1.625rem);
+    left: 1.0625rem;
+    inline-size: calc(100% - 1.875rem);
   }
 
   .journey-canvas-tablet .journey-band-services .journey-band-label,
@@ -933,24 +938,25 @@ const layouts = ["desktop", "tablet", "mobile"] as const;
 
   .journey-canvas-mobile .journey-band .journey-band-label {
     top: 0.8125rem;
-    left: 0.8125rem;
+    left: 1.0625rem;
   }
 
   .journey-canvas-mobile .journey-band-services .journey-band-label,
   .journey-canvas-mobile .journey-band-services .journey-band-description,
   .journey-canvas-mobile .journey-band-data .journey-band-label,
   .journey-canvas-mobile .journey-band-data .journey-band-description {
-    left: 2rem;
+    left: 2.1875rem;
   }
 
   .journey-canvas-mobile .journey-band .journey-band-description {
     top: 2.0625rem;
-    inline-size: calc(100% - 1.625rem);
+    left: 1.0625rem;
+    inline-size: calc(100% - 1.875rem);
   }
 
   .journey-canvas-mobile .journey-band-services .journey-band-description,
   .journey-canvas-mobile .journey-band-data .journey-band-description {
-    inline-size: calc(100% - 4rem);
+    inline-size: calc(100% - 3rem);
   }
 
   .journey-canvas-mobile .journey-band .journey-band-nodes {
@@ -961,8 +967,8 @@ const layouts = ["desktop", "tablet", "mobile"] as const;
 
   .journey-canvas-mobile .journey-band-services .journey-band-nodes,
   .journey-canvas-mobile .journey-band-data .journey-band-nodes {
-    left: 2rem;
-    inline-size: calc(100% - 4rem);
+    left: 2.1875rem;
+    inline-size: calc(100% - 4.625rem);
   }
 
   .journey-canvas-mobile .journey-band-client .journey-band-nodes,
@@ -975,7 +981,7 @@ const layouts = ["desktop", "tablet", "mobile"] as const;
   }
 
   .journey-canvas-mobile .journey-band-data .journey-band-nodes {
-    block-size: 12.25rem;
+    block-size: 11.25rem;
   }
 
   .journey-canvas-mobile .journey-node-client,
@@ -985,9 +991,12 @@ const layouts = ["desktop", "tablet", "mobile"] as const;
     top: 0;
   }
 
-  .journey-canvas-mobile .journey-node-discovery-service,
-  .journey-canvas-mobile .journey-node-vault {
+  .journey-canvas-mobile .journey-node-discovery-service {
     top: 4.375rem;
+  }
+
+  .journey-canvas-mobile .journey-node-vault {
+    top: 4rem;
   }
 
   .journey-canvas-mobile .journey-node-inventory-service {
