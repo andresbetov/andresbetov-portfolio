@@ -1,0 +1,73 @@
+---
+// Decorative atmosphere shared by the shell. Positions and blur come from the
+// Hero Glows frame (desktop 394:232, tablet 515:3, mobile 515:271): the 1440px
+// canvas stays centred and is clipped by the viewport at smaller widths.
+---
+
+<div class="page-atmosphere" aria-hidden="true">
+  <div class="page-atmosphere-canvas">
+    <span class="page-atmosphere-glow page-atmosphere-glow-hub"></span>
+    <span class="page-atmosphere-glow page-atmosphere-glow-name"></span>
+    <span class="page-atmosphere-glow page-atmosphere-glow-orbit"></span>
+    <span class="page-atmosphere-glow page-atmosphere-glow-bridge"></span>
+  </div>
+</div>
+
+<style>
+  .page-atmosphere {
+    position: absolute;
+    z-index: var(--z-atmosphere);
+    inset-block-start: 0;
+    inset-inline: 0;
+    block-size: 100svh;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .page-atmosphere-canvas {
+    position: absolute;
+    inset-block-start: 0;
+    left: 50%;
+    inline-size: 90rem;
+    block-size: 56.25rem;
+    transform: translateX(-50%);
+  }
+
+  .page-atmosphere-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(140px);
+  }
+
+  .page-atmosphere-glow-hub {
+    top: 11.875rem;
+    left: 54.375rem;
+    inline-size: 37.5rem;
+    block-size: 30rem;
+    background-color: rgb(184 155 255 / 5%);
+  }
+
+  .page-atmosphere-glow-name {
+    top: 12.5rem;
+    left: 2.5rem;
+    inline-size: 45rem;
+    block-size: 30rem;
+    background-color: rgb(123 155 255 / 20%);
+  }
+
+  .page-atmosphere-glow-orbit {
+    top: 20.625rem;
+    left: 60rem;
+    inline-size: 35rem;
+    block-size: 26.25rem;
+    background-color: rgb(184 155 255 / 20%);
+  }
+
+  .page-atmosphere-glow-bridge {
+    top: 37.5rem;
+    left: 32.5rem;
+    inline-size: 30rem;
+    block-size: 16.25rem;
+    background-color: rgb(63 214 192 / 20%);
+  }
+</style>

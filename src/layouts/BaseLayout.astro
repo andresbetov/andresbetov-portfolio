@@ -1,6 +1,8 @@
 ---
-import "../styles/global.css";
+import PageAtmosphere from "../components/PageAtmosphere.astro";
+import SiteHeader from "../components/SiteHeader.astro";
 import { site } from "../data/site";
+import "../styles/global.css";
 ---
 
 <!doctype html>
@@ -9,9 +11,25 @@ import { site } from "../data/site";
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={site.description} />
+    <meta name="theme-color" content="#0a1128" />
     <title>{site.title}</title>
+    <script is:inline>
+      document.documentElement.classList.add("js");
+    </script>
+    <link
+      rel="preload"
+      href="/fonts/bricolage-grotesque-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
   </head>
   <body>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <PageAtmosphere />
+    <SiteHeader />
     <slot />
   </body>
 </html>
