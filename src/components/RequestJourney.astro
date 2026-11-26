@@ -1,0 +1,1165 @@
+---
+import DiagramNode from "./DiagramNode.astro";
+import { elara } from "../data/elara";
+
+const journey = elara.requestJourney;
+const layouts = ["desktop", "tablet", "mobile"] as const;
+---
+
+<figure class="request-journey" aria-describedby="journey-connections">
+  <div class="request-journey-top">
+    <ul class="tech-stack" aria-label="Technology stack">
+      {journey.stack.map((item) => (
+        <li class:list={["tech-stack-cell", `tone-${item.tone}`]}>
+          <span class="tech-stack-dot" aria-hidden="true"></span>
+          <span class="tech-stack-label">{item.label}</span>
+        </li>
+      ))}
+    </ul>
+
+    <ul class="journey-legend" aria-label="Diagram legend">
+      {journey.legend.map((item) => (
+        <li class="journey-legend-item">
+          <span
+            class:list={[
+              "journey-legend-line",
+              `journey-legend-line-${item.style}`,
+            ]}
+            aria-hidden="true"
+          ></span>
+          <span class="journey-legend-label">{item.label}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="journey-diagrams">
+    {layouts.map((layout) => (
+      <div class:list={["journey-canvas", `journey-canvas-${layout}`]}>
+        {journey.bands.map((band) => (
+          <section
+            class:list={[
+              "journey-band",
+              `journey-band-${band.id}`,
+              `tone-${band.tone}`,
+            ]}
+          >
+            <p class="journey-band-label">{band.label}</p>
+            <p class="journey-band-description">{band.description}</p>
+            <ul class="journey-band-nodes" aria-label={`${band.label} nodes`}>
+              {band.nodes.map((node) => (
+                <li
+                  class:list={["journey-node-slot", `journey-node-${node.id}`]}
+                >
+                  <DiagramNode
+                    node={node}
+                    featured={node.id === journey.focusNodeId}
+                  />
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+
+        {layout === "desktop" && (
+          <svg
+            class="journey-connectors"
+            viewBox="0 0 808 420"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <defs>
+              <marker
+                id="arrow-request-desktop"
+                viewBox="0 0 6 8"
+                refX="5.5"
+                refY="4"
+                markerWidth="6"
+                markerHeight="8"
+                orient="auto"
+              >
+                <path
+                  class="journey-arrow journey-arrow-request"
+                  d="M0 0L6 4L0 8"
+                />
+              </marker>
+              <marker
+                id="arrow-platform-desktop"
+                viewBox="0 0 6 8"
+                refX="5.5"
+                refY="4"
+                markerWidth="6"
+                markerHeight="8"
+                orient="auto"
+              >
+                <path
+                  class="journey-arrow journey-arrow-platform"
+                  d="M0 0L6 4L0 8"
+                />
+              </marker>
+              <marker
+                id="arrow-validation-desktop"
+                viewBox="0 0 6 8"
+                refX="5.5"
+                refY="4"
+                markerWidth="6"
+                markerHeight="8"
+                orient="auto"
+              >
+                <path
+                  class="journey-arrow journey-arrow-validation"
+                  d="M0 0L6 4L0 8"
+                />
+              </marker>
+              <marker
+                id="arrow-data-desktop"
+                viewBox="0 0 6 8"
+                refX="5.5"
+                refY="4"
+                markerWidth="6"
+                markerHeight="8"
+                orient="auto"
+              >
+                <path
+                  class="journey-arrow journey-arrow-data"
+                  d="M0 0L6 4L0 8"
+                />
+              </marker>
+              <marker
+                id="arrow-secrets-desktop"
+                viewBox="0 0 6 8"
+                refX="5.5"
+                refY="4"
+                markerWidth="6"
+                markerHeight="8"
+                orient="auto"
+              >
+                <path
+                  class="journey-arrow journey-arrow-secrets"
+                  d="M0 0L6 4L0 8"
+                />
+              </marker>
+            </defs>
+            <path
+              class="journey-connector journey-connector-request"
+              d="M118 195H152"
+              marker-end="url(#arrow-request-desktop)"
+            />
+            <path
+              class="journey-connector journey-connector-platform"
+              d="M298 182C315 182 315 90 334 90"
+              marker-end="url(#arrow-platform-desktop)"
+            />
+            <path
+              class="journey-connector journey-connector-platform"
+              d="M298 195C315 195 315 160 334 160"
+              marker-end="url(#arrow-platform-desktop)"
+            />
+            <path
+              class="journey-connector journey-connector-request"
+              d="M298 202C315 202 315 230 334 230"
+              marker-end="url(#arrow-request-desktop)"
+            />
+            <path
+              class="journey-connector journey-connector-request"
+              d="M298 212C315 212 315 300 334 300"
+              marker-end="url(#arrow-request-desktop)"
+            />
+            <path
+              class="journey-connector journey-connector-validation"
+              d="M457 256V274"
+              marker-end="url(#arrow-validation-desktop)"
+            />
+            <path
+              class="journey-connector journey-connector-data"
+              d="M580 230H620"
+              marker-end="url(#arrow-data-desktop)"
+            />
+            <path
+              class="journey-connector journey-connector-secrets"
+              d="M580 230C600 230 600 300 620 300"
+              marker-end="url(#arrow-secrets-desktop)"
+            />
+            <path
+              class="journey-connector journey-connector-secrets"
+              d="M580 300H620"
+              marker-end="url(#arrow-secrets-desktop)"
+            />
+            <path
+              class="journey-connector journey-connector-data"
+              d="M580 300C600 300 600 370 620 370"
+              marker-end="url(#arrow-data-desktop)"
+            />
+          </svg>
+        )}
+
+        {layout === "tablet" && (
+          <svg
+            class="journey-connectors"
+            viewBox="0 0 630 568"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <defs>
+              <marker
+                id="arrow-request-tablet"
+                viewBox="0 0 6 8"
+                refX="5.5"
+                refY="4"
+                markerWidth="6"
+                markerHeight="8"
+                orient="auto"
+              >
+                <path
+                  class="journey-arrow journey-arrow-request"
+                  d="M0 0L6 4L0 8"
+                />
+              </marker>
+              <marker
+                id="arrow-platform-tablet"
+                viewBox="0 0 6 8"
+                refX="5.5"
+                refY="4"
+                markerWidth="6"
+                markerHeight="8"
+                orient="auto"
+              >
+                <path
+                  class="journey-arrow journey-arrow-platform"
+                  d="M0 0L6 4L0 8"
+                />
+              </marker>
+              <marker
+                id="arrow-validation-tablet"
+                viewBox="0 0 6 8"
+                refX="5.5"
+                refY="4"
+                markerWidth="6"
+                markerHeight="8"
+                orient="auto"
+              >
+                <path
+                  class="journey-arrow journey-arrow-validation"
+                  d="M0 0L6 4L0 8"
+                />
+              </marker>
+              <marker
+                id="arrow-data-tablet"
+                viewBox="0 0 6 8"
+                refX="5.5"
+                refY="4"
+                markerWidth="6"
+                markerHeight="8"
+                orient="auto"
+              >
+                <path
+                  class="journey-arrow journey-arrow-data"
+                  d="M0 0L6 4L0 8"
+                />
+              </marker>
+              <marker
+                id="arrow-secrets-tablet"
+                viewBox="0 0 6 8"
+                refX="5.5"
+                refY="4"
+                markerWidth="6"
+                markerHeight="8"
+                orient="auto"
+              >
+                <path
+                  class="journey-arrow journey-arrow-secrets"
+                  d="M0 0L6 4L0 8"
+                />
+              </marker>
+            </defs>
+            <path
+              class="journey-connector journey-connector-request"
+              d="M123 85C150 85 160 101 189 101"
+              marker-end="url(#arrow-request-tablet)"
+            />
+            <path
+              class="journey-connector journey-connector-request"
+              d="M273 127V150H25V389H39"
+              marker-end="url(#arrow-request-tablet)"
+            />
+            <path
+              class="journey-connector journey-connector-request"
+              d="M273 127V150H25V459H39"
+              marker-end="url(#arrow-request-tablet)"
+            />
+            <path
+              class="journey-connector journey-connector-platform"
+              d="M25 249H39"
+              marker-end="url(#arrow-platform-tablet)"
+            />
+            <path
+              class="journey-connector journey-connector-platform"
+              d="M25 319H39"
+              marker-end="url(#arrow-platform-tablet)"
+            />
+            <path
+              class="journey-connector journey-connector-validation"
+              d="M192 415V433"
+              marker-end="url(#arrow-validation-tablet)"
+            />
+            <path
+              class="journey-connector journey-connector-data"
+              d="M345 389H431"
+              marker-end="url(#arrow-data-tablet)"
+            />
+            <path
+              class="journey-connector journey-connector-secrets"
+              d="M345 389C380 389 395 459 431 459"
+              marker-end="url(#arrow-secrets-tablet)"
+            />
+            <path
+              class="journey-connector journey-connector-secrets"
+              d="M345 459H431"
+              marker-end="url(#arrow-secrets-tablet)"
+            />
+            <path
+              class="journey-connector journey-connector-data"
+              d="M345 459C380 459 395 529 431 529"
+              marker-end="url(#arrow-data-tablet)"
+            />
+          </svg>
+        )}
+
+        {layout === "mobile" && (
+          <svg
+            class="journey-connectors"
+            viewBox="0 0 308 906"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <defs>
+              <marker
+                id="arrow-request-mobile"
+                viewBox="0 0 6 8"
+                refX="5.5"
+                refY="4"
+                markerWidth="6"
+                markerHeight="8"
+                orient="auto"
+              >
+                <path
+                  class="journey-arrow journey-arrow-request"
+                  d="M0 0L6 4L0 8"
+                />
+              </marker>
+              <marker
+                id="arrow-platform-mobile"
+                viewBox="0 0 6 8"
+                refX="5.5"
+                refY="4"
+                markerWidth="6"
+                markerHeight="8"
+                orient="auto"
+              >
+                <path
+                  class="journey-arrow journey-arrow-platform"
+                  d="M0 0L6 4L0 8"
+                />
+              </marker>
+              <marker
+                id="arrow-validation-mobile"
+                viewBox="0 0 6 8"
+                refX="5.5"
+                refY="4"
+                markerWidth="6"
+                markerHeight="8"
+                orient="auto"
+              >
+                <path
+                  class="journey-arrow journey-arrow-validation"
+                  d="M0 0L6 4L0 8"
+                />
+              </marker>
+              <marker
+                id="arrow-data-mobile"
+                viewBox="0 0 6 8"
+                refX="5.5"
+                refY="4"
+                markerWidth="6"
+                markerHeight="8"
+                orient="auto"
+              >
+                <path
+                  class="journey-arrow journey-arrow-data"
+                  d="M0 0L6 4L0 8"
+                />
+              </marker>
+              <marker
+                id="arrow-secrets-mobile"
+                viewBox="0 0 6 8"
+                refX="5.5"
+                refY="4"
+                markerWidth="6"
+                markerHeight="8"
+                orient="auto"
+              >
+                <path
+                  class="journey-arrow journey-arrow-secrets"
+                  d="M0 0L6 4L0 8"
+                />
+              </marker>
+            </defs>
+            <path
+              class="journey-connector journey-connector-request"
+              d="M154 124V148"
+              marker-end="url(#arrow-request-mobile)"
+            />
+            <path
+              class="journey-connector journey-connector-request"
+              d="M26 259V521H32"
+              marker-end="url(#arrow-request-mobile)"
+            />
+            <path
+              class="journey-connector journey-connector-request"
+              d="M26 259V591H32"
+              marker-end="url(#arrow-request-mobile)"
+            />
+            <path
+              class="journey-connector journey-connector-platform"
+              d="M26 381H32"
+              marker-end="url(#arrow-platform-mobile)"
+            />
+            <path
+              class="journey-connector journey-connector-platform"
+              d="M26 451H32"
+              marker-end="url(#arrow-platform-mobile)"
+            />
+            <path
+              class="journey-connector journey-connector-validation"
+              d="M154 547V565"
+              marker-end="url(#arrow-validation-mobile)"
+            />
+            <path
+              class="journey-connector journey-connector-data"
+              d="M276 521H296V739H276"
+              marker-end="url(#arrow-data-mobile)"
+            />
+            <path
+              class="journey-connector journey-connector-secrets"
+              d="M276 521H288V803H276"
+              marker-end="url(#arrow-secrets-mobile)"
+            />
+            <path
+              class="journey-connector journey-connector-secrets"
+              d="M276 591H284V803H276"
+              marker-end="url(#arrow-secrets-mobile)"
+            />
+            <path
+              class="journey-connector journey-connector-data"
+              d="M276 591H292V867H276"
+              marker-end="url(#arrow-data-mobile)"
+            />
+          </svg>
+        )}
+      </div>
+    ))}
+  </div>
+
+  <figcaption class="journey-caption">
+    <p class="journey-caption-label">
+      <span class="journey-caption-dot" aria-hidden="true"></span>
+      {journey.captionLabel}
+    </p>
+    <p class="journey-caption-text">{journey.caption}</p>
+  </figcaption>
+
+  <p class="visually-hidden" id="journey-connections">
+    {journey.connectionSummary}
+  </p>
+</figure>
+
+<style>
+  .request-journey {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    gap: var(--space-20);
+  }
+
+  .request-journey-top {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.125rem;
+  }
+
+  .tech-stack {
+    display: flex;
+    max-inline-size: 100%;
+    align-items: stretch;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-full);
+    background-color: var(--color-surface-2);
+    list-style: none;
+  }
+
+  .tech-stack-cell {
+    display: flex;
+    min-block-size: 1.875rem;
+    align-items: center;
+    padding: var(--space-8) var(--space-14);
+    gap: var(--space-8);
+  }
+
+  .tech-stack-cell + .tech-stack-cell {
+    border-inline-start: 1px solid var(--color-border-strong);
+  }
+
+  .tech-stack-dot {
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+
+  .tone-edge .tech-stack-dot {
+    background-color: var(--color-tier-edge);
+  }
+
+  .tone-services .tech-stack-dot {
+    background-color: var(--color-tier-services);
+  }
+
+  .tone-data .tech-stack-dot {
+    background-color: var(--color-tier-data);
+  }
+
+  .tech-stack-label {
+    color: var(--color-text-primary);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: var(--weight-medium);
+    line-height: 0.875rem;
+    white-space: nowrap;
+  }
+
+  .journey-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    gap: var(--space-24);
+    list-style: none;
+  }
+
+  .journey-legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-10);
+  }
+
+  .journey-legend-line {
+    position: relative;
+    inline-size: 1.75rem;
+    block-size: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .journey-legend-line::before {
+    position: absolute;
+    top: 3px;
+    right: 1px;
+    left: 1px;
+    block-size: 2px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-text-secondary);
+    content: "";
+  }
+
+  .journey-legend-line-dashed::before {
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--color-text-secondary) 0 2.4px,
+      transparent 2.4px 6px
+    );
+  }
+
+  .journey-legend-label {
+    color: var(--color-text-secondary);
+    font-family: var(--font-body);
+    font-size: var(--type-label-s-size);
+    font-weight: var(--weight-medium);
+    line-height: var(--type-label-s-line-height);
+    white-space: nowrap;
+  }
+
+  .journey-diagrams {
+    position: relative;
+  }
+
+  .journey-canvas {
+    position: relative;
+    display: none;
+    margin-inline: auto;
+  }
+
+  .journey-canvas-desktop {
+    inline-size: 50.5rem;
+    block-size: 26.25rem;
+  }
+
+  .journey-canvas-tablet {
+    inline-size: 39.375rem;
+    block-size: 35.5rem;
+  }
+
+  .journey-canvas-mobile {
+    inline-size: 100%;
+    block-size: 56.625rem;
+  }
+
+  .journey-band {
+    position: absolute;
+  }
+
+  .journey-band::before {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    border: 1px solid;
+    border-radius: var(--radius-lg);
+    content: "";
+  }
+
+  .journey-band.tone-edge::before {
+    border-color: var(--color-border-edge-soft);
+    background-color: var(--color-tint-edge);
+  }
+
+  .journey-band.tone-services::before {
+    border-color: var(--color-border-services-soft);
+    background-color: var(--color-tint-services);
+  }
+
+  .journey-band.tone-data::before {
+    border-color: var(--color-border-data-soft);
+    background-color: var(--color-tint-data);
+  }
+
+  .journey-band-label,
+  .journey-band-description,
+  .journey-band-nodes {
+    position: absolute;
+    z-index: 2;
+  }
+
+  .journey-band-label {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--type-label-s-size);
+    font-weight: var(--weight-medium);
+    gap: var(--space-8);
+    line-height: var(--type-label-s-line-height);
+    white-space: nowrap;
+  }
+
+  .journey-band-label::before {
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: currentcolor;
+    content: "";
+  }
+
+  .tone-edge .journey-band-label {
+    color: var(--color-tier-edge);
+  }
+
+  .tone-edge .journey-band-label::before {
+    box-shadow: 0 0 0 3px var(--color-tint-edge);
+  }
+
+  .tone-services .journey-band-label {
+    color: var(--color-tier-services);
+  }
+
+  .tone-services .journey-band-label::before {
+    box-shadow: 0 0 0 3px var(--color-tint-services);
+  }
+
+  .tone-data .journey-band-label {
+    color: var(--color-tier-data);
+  }
+
+  .tone-data .journey-band-label::before {
+    box-shadow: 0 0 0 3px var(--color-tint-data);
+  }
+
+  .journey-band-description {
+    margin: 0;
+    color: var(--color-text-tertiary);
+    font-family: var(--font-body);
+    font-size: var(--type-label-s-size);
+    font-weight: var(--weight-regular);
+    line-height: var(--type-label-s-line-height);
+  }
+
+  .journey-band-nodes {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .journey-node-slot {
+    position: absolute;
+    inset-inline: 0;
+    block-size: 3.25rem;
+  }
+
+  .journey-canvas-desktop .journey-band-client {
+    top: 0;
+    left: 0;
+    inline-size: 8rem;
+    block-size: 26.25rem;
+  }
+
+  .journey-canvas-desktop .journey-band-edge {
+    top: 0;
+    left: 9rem;
+    inline-size: 10.125rem;
+    block-size: 26.25rem;
+  }
+
+  .journey-canvas-desktop .journey-band-services {
+    top: 0;
+    left: 20.125rem;
+    inline-size: 16.875rem;
+    block-size: 26.25rem;
+  }
+
+  .journey-canvas-desktop .journey-band-data {
+    top: 0;
+    left: 38rem;
+    inline-size: 12.5rem;
+    block-size: 26.25rem;
+  }
+
+  .journey-canvas-desktop .journey-band-label {
+    top: 0.6875rem;
+    left: 0.9375rem;
+  }
+
+  .journey-canvas-desktop .journey-band-description {
+    top: 2rem;
+    left: 0.9375rem;
+    inline-size: calc(100% - 1.875rem);
+  }
+
+  .journey-canvas-desktop .journey-band-client .journey-band-nodes {
+    top: 10.5625rem;
+    left: 0.625rem;
+    inline-size: 6.75rem;
+    block-size: 3.25rem;
+  }
+
+  .journey-canvas-desktop .journey-band-edge .journey-band-nodes {
+    top: 10.5625rem;
+    left: 0.5rem;
+    inline-size: 9.125rem;
+    block-size: 3.25rem;
+  }
+
+  .journey-canvas-desktop .journey-band-services .journey-band-nodes {
+    top: 4rem;
+    left: 0.75rem;
+    inline-size: 15.375rem;
+    block-size: 16.375rem;
+  }
+
+  .journey-canvas-desktop .journey-band-data .journey-band-nodes {
+    top: 12.75rem;
+    left: 0.75rem;
+    inline-size: 11rem;
+    block-size: 12rem;
+  }
+
+  .journey-canvas-desktop .journey-node-client,
+  .journey-canvas-desktop .journey-node-api-gateway,
+  .journey-canvas-desktop .journey-node-config-service,
+  .journey-canvas-desktop .journey-node-inventory-db {
+    top: 0;
+  }
+
+  .journey-canvas-desktop .journey-node-discovery-service,
+  .journey-canvas-desktop .journey-node-vault {
+    top: 4.375rem;
+  }
+
+  .journey-canvas-desktop .journey-node-inventory-service,
+  .journey-canvas-desktop .journey-node-unit-of-measure-db {
+    top: 8.75rem;
+  }
+
+  .journey-canvas-desktop .journey-node-unit-of-measure-service {
+    top: 13.125rem;
+  }
+
+  .journey-canvas-tablet .journey-band-client {
+    top: 0;
+    left: 0;
+    inline-size: 8.5rem;
+    block-size: 8.75rem;
+  }
+
+  .journey-canvas-tablet .journey-band-edge {
+    top: 0;
+    left: 11rem;
+    inline-size: 12.125rem;
+    block-size: 8.75rem;
+  }
+
+  .journey-canvas-tablet .journey-band-services {
+    top: 10.25rem;
+    left: 0;
+    inline-size: 23.125rem;
+    block-size: 25.25rem;
+  }
+
+  .journey-canvas-tablet .journey-band-data {
+    top: 0;
+    left: 26.125rem;
+    inline-size: 13.25rem;
+    block-size: 35.5rem;
+  }
+
+  .journey-canvas-tablet .journey-band-label {
+    top: 0.8125rem;
+    left: 0.8125rem;
+  }
+
+  .journey-canvas-tablet .journey-band-description {
+    top: 2.0625rem;
+    inline-size: calc(100% - 1.625rem);
+  }
+
+  .journey-canvas-tablet .journey-band-services .journey-band-label,
+  .journey-canvas-tablet .journey-band-services .journey-band-description {
+    left: 2.4375rem;
+  }
+
+  .journey-canvas-tablet .journey-band-services .journey-band-description {
+    inline-size: calc(100% - 3.25rem);
+  }
+
+  .journey-canvas-tablet .journey-band-client .journey-band-nodes {
+    top: 3.6875rem;
+    left: 0.8125rem;
+    inline-size: 6.875rem;
+    block-size: 3.25rem;
+  }
+
+  .journey-canvas-tablet .journey-band-edge .journey-band-nodes {
+    top: 4.6875rem;
+    left: 0.8125rem;
+    inline-size: 10.5rem;
+    block-size: 3.25rem;
+  }
+
+  .journey-canvas-tablet .journey-band-services .journey-band-nodes {
+    top: 3.6875rem;
+    left: 2.4375rem;
+    inline-size: 19.125rem;
+    block-size: 16.375rem;
+  }
+
+  .journey-canvas-tablet .journey-band-data .journey-band-nodes {
+    top: 22.6875rem;
+    left: 0.8125rem;
+    inline-size: 11.625rem;
+    block-size: 12.25rem;
+  }
+
+  .journey-canvas-tablet .journey-node-client,
+  .journey-canvas-tablet .journey-node-api-gateway,
+  .journey-canvas-tablet .journey-node-config-service,
+  .journey-canvas-tablet .journey-node-inventory-db {
+    top: 0;
+  }
+
+  .journey-canvas-tablet .journey-node-discovery-service,
+  .journey-canvas-tablet .journey-node-vault {
+    top: 4.375rem;
+  }
+
+  .journey-canvas-tablet .journey-node-inventory-service,
+  .journey-canvas-tablet .journey-node-unit-of-measure-db {
+    top: 8.75rem;
+  }
+
+  .journey-canvas-tablet .journey-node-unit-of-measure-service {
+    top: 13.125rem;
+  }
+
+  .journey-canvas-mobile .journey-band-client {
+    top: 0;
+    left: 0;
+    inline-size: 100%;
+    block-size: 7.75rem;
+  }
+
+  .journey-canvas-mobile .journey-band-edge {
+    top: 9.25rem;
+    left: 0;
+    inline-size: 100%;
+    block-size: 7.75rem;
+  }
+
+  .journey-canvas-mobile .journey-band-services {
+    top: 18.5rem;
+    left: 0;
+    inline-size: 100%;
+    block-size: 20.875rem;
+  }
+
+  .journey-canvas-mobile .journey-band-data {
+    top: 40.875rem;
+    left: 0;
+    inline-size: 100%;
+    block-size: 15.75rem;
+  }
+
+  .journey-canvas-mobile .journey-band .journey-band-label {
+    top: 0.8125rem;
+    left: 0.8125rem;
+  }
+
+  .journey-canvas-mobile .journey-band-services .journey-band-label,
+  .journey-canvas-mobile .journey-band-services .journey-band-description,
+  .journey-canvas-mobile .journey-band-data .journey-band-label,
+  .journey-canvas-mobile .journey-band-data .journey-band-description {
+    left: 2rem;
+  }
+
+  .journey-canvas-mobile .journey-band .journey-band-description {
+    top: 2.0625rem;
+    inline-size: calc(100% - 1.625rem);
+  }
+
+  .journey-canvas-mobile .journey-band-services .journey-band-description,
+  .journey-canvas-mobile .journey-band-data .journey-band-description {
+    inline-size: calc(100% - 4rem);
+  }
+
+  .journey-canvas-mobile .journey-band .journey-band-nodes {
+    top: 3.6875rem;
+    left: 0.8125rem;
+    inline-size: calc(100% - 1.625rem);
+  }
+
+  .journey-canvas-mobile .journey-band-services .journey-band-nodes,
+  .journey-canvas-mobile .journey-band-data .journey-band-nodes {
+    left: 2rem;
+    inline-size: calc(100% - 4rem);
+  }
+
+  .journey-canvas-mobile .journey-band-client .journey-band-nodes,
+  .journey-canvas-mobile .journey-band-edge .journey-band-nodes {
+    block-size: 3.25rem;
+  }
+
+  .journey-canvas-mobile .journey-band-services .journey-band-nodes {
+    block-size: 16.375rem;
+  }
+
+  .journey-canvas-mobile .journey-band-data .journey-band-nodes {
+    block-size: 12.25rem;
+  }
+
+  .journey-canvas-mobile .journey-node-client,
+  .journey-canvas-mobile .journey-node-api-gateway,
+  .journey-canvas-mobile .journey-node-config-service,
+  .journey-canvas-mobile .journey-node-inventory-db {
+    top: 0;
+  }
+
+  .journey-canvas-mobile .journey-node-discovery-service,
+  .journey-canvas-mobile .journey-node-vault {
+    top: 4.375rem;
+  }
+
+  .journey-canvas-mobile .journey-node-inventory-service {
+    top: 8.75rem;
+  }
+
+  .journey-canvas-mobile .journey-node-unit-of-measure-db {
+    top: 8rem;
+  }
+
+  .journey-canvas-mobile .journey-node-unit-of-measure-service {
+    top: 13.125rem;
+  }
+
+  .journey-connectors {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .journey-connector {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.3;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .journey-connector-request {
+    stroke: var(--color-connector-request);
+  }
+
+  .journey-connector-platform {
+    stroke: var(--color-connector-platform);
+    stroke-dasharray: 4 4;
+  }
+
+  .journey-connector-validation {
+    stroke: var(--color-connector-validation);
+  }
+
+  .journey-connector-data {
+    stroke: var(--color-connector-data);
+  }
+
+  .journey-connector-secrets {
+    stroke: var(--color-connector-secrets);
+    stroke-dasharray: 4 4;
+  }
+
+  .journey-arrow {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.3;
+  }
+
+  .journey-arrow-request {
+    stroke: var(--color-connector-request);
+  }
+
+  .journey-arrow-platform {
+    stroke: var(--color-connector-platform);
+  }
+
+  .journey-arrow-validation {
+    stroke: var(--color-connector-validation);
+  }
+
+  .journey-arrow-data {
+    stroke: var(--color-connector-data);
+  }
+
+  .journey-arrow-secrets {
+    stroke: var(--color-connector-secrets);
+  }
+
+  .journey-caption {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .journey-caption-label {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    color: var(--color-tier-edge);
+    font-family: var(--font-body);
+    font-size: var(--type-label-s-size);
+    font-weight: var(--weight-medium);
+    gap: var(--space-8);
+    letter-spacing: 0.1em;
+    line-height: var(--type-label-s-line-height);
+    white-space: nowrap;
+  }
+
+  .journey-caption-dot {
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: var(--color-tier-edge);
+    box-shadow: 0 0 0 3px var(--color-tint-edge);
+  }
+
+  .journey-caption-text {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-family: var(--font-body);
+    font-size: var(--type-body-m-size);
+    font-weight: var(--weight-regular);
+    line-height: var(--type-body-m-line-height);
+  }
+
+  @media (width <= 767.98px) {
+    .tech-stack {
+      display: grid;
+      inline-size: 100%;
+      grid-template-columns: 1fr 1fr;
+      border-radius: var(--radius-lg);
+    }
+
+    .tech-stack-cell {
+      min-block-size: 2rem;
+    }
+
+    .tech-stack-cell + .tech-stack-cell {
+      border-inline-start: 0;
+    }
+
+    .tech-stack-cell:nth-child(even) {
+      border-inline-start: 1px solid var(--color-border-strong);
+    }
+
+    .tech-stack-cell:nth-child(n + 3) {
+      border-block-start: 1px solid var(--color-border-strong);
+    }
+  }
+
+  @media (width >= 768px) {
+    .request-journey-top {
+      gap: var(--space-20);
+    }
+  }
+
+  @media (width >= 1200px) {
+    .request-journey-top {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-24);
+    }
+
+    .journey-canvas-desktop {
+      display: block;
+    }
+  }
+
+  @media (width >= 768px) and (width < 1200px) {
+    .journey-canvas-tablet {
+      display: block;
+    }
+  }
+
+  @media (width <= 767.98px) {
+    .journey-canvas-mobile {
+      display: block;
+    }
+  }
+</style>

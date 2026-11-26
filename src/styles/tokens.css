@@ -52,6 +52,20 @@
   --color-orbit-label: rgb(170 184 220 / 90%);
   --color-mask: #000;
 
+  /* Section material */
+  --color-glow-section-edge: rgb(123 155 255 / 14%);
+  --color-glow-section-security: rgb(184 155 255 / 12%);
+  --color-glow-key-decisions: rgb(184 155 255 / 28%);
+  --color-glow-coral: rgb(255 123 142 / 18%);
+  --color-glow-system-teal: rgb(63 214 192 / 40%);
+  --color-glow-system-amber: rgb(255 184 77 / 35%);
+  --color-section-fade-strong: rgb(10 17 40 / 85%);
+  --color-section-fade-soft: rgb(10 17 40 / 35%);
+  --color-dot-grid-soft: rgb(237 242 255 / 4%);
+  --color-dot-grid-card: rgb(237 242 255 / 7%);
+  --color-system-ghost: rgb(255 184 77 / 24%);
+  --color-focus-glow: rgb(63 214 192 / 28%);
+
   /* Tier (layer) colors */
   --color-tier-edge: var(--color-blue-400);
   --color-tier-services: var(--color-teal-400);
@@ -59,12 +73,20 @@
   --color-tier-security: var(--color-violet-400);
   --color-tier-fault: var(--color-rose-400);
 
+  /* Diagram connectors */
+  --color-connector-request: var(--color-tier-edge);
+  --color-connector-platform: var(--color-tier-services);
+  --color-connector-validation: var(--color-tier-services);
+  --color-connector-data: var(--color-tier-data);
+  --color-connector-secrets: var(--color-tier-security);
+
   /* Tints */
   --color-tint-edge: rgb(123 155 255 / 7%);
   --color-tint-services: rgb(63 214 192 / 7%);
   --color-tint-data: rgb(255 184 77 / 7%);
   --color-tint-security-strong: rgb(184 155 255 / 16%);
   --color-tint-services-strong: rgb(63 214 192 / 11%);
+  --color-tint-fault: rgb(255 123 142 / 7%);
 
   /* Translucent borders */
   --color-border-edge-soft: rgb(123 155 255 / 30%);

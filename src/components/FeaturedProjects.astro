@@ -1,0 +1,116 @@
+---
+import Elara from "./Elara.astro";
+import SectionOpener from "./SectionOpener.astro";
+import { featuredProjectsSection } from "../data/projects";
+---
+
+<section class="featured-projects" aria-labelledby="projects">
+  <div class="section-grid" aria-hidden="true"></div>
+
+  <div class="featured-projects-glow" aria-hidden="true">
+    <span class="featured-projects-glow-security"></span>
+    <span class="featured-projects-glow-edge"></span>
+  </div>
+
+  <div class="featured-projects-seam" aria-hidden="true"></div>
+
+  <div class="featured-projects-inner shell-container">
+    <SectionOpener id="projects" content={featuredProjectsSection} />
+    <Elara />
+  </div>
+</section>
+
+<style>
+  .featured-projects {
+    --section-stack-gap: var(--space-32);
+
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    padding-block: var(--space-40);
+    background-color: var(--color-bg-base);
+  }
+
+  .featured-projects-glow {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 50%;
+    inline-size: 90rem;
+    block-size: 30rem;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .featured-projects-glow-security,
+  .featured-projects-glow-edge {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(5rem);
+  }
+
+  .featured-projects-glow-security {
+    top: -11.25rem;
+    left: 56.25rem;
+    inline-size: 38.75rem;
+    block-size: 28.75rem;
+    background-image: radial-gradient(
+      closest-side,
+      var(--color-glow-section-security),
+      transparent
+    );
+  }
+
+  .featured-projects-glow-edge {
+    top: -10rem;
+    left: -12.5rem;
+    inline-size: 35rem;
+    block-size: 26.25rem;
+    background-image: radial-gradient(
+      closest-side,
+      var(--color-glow-section-edge),
+      transparent
+    );
+  }
+
+  .featured-projects-seam {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    inline-size: 100%;
+    block-size: 26.25rem;
+    background-image: linear-gradient(
+      180deg,
+      var(--color-bg-base) 0%,
+      var(--color-section-fade-strong) 35%,
+      var(--color-section-fade-soft) 70%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+
+  .featured-projects-inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: var(--section-stack-gap);
+  }
+
+  @media (width >= 768px) {
+    .featured-projects {
+      --section-stack-gap: var(--space-40);
+
+      padding-block-start: var(--space-56);
+    }
+  }
+
+  @media (width >= 1440px) {
+    .featured-projects {
+      --section-stack-gap: 3.5rem;
+
+      padding-block-start: 5rem;
+    }
+  }
+</style>

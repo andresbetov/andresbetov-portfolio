@@ -1,0 +1,669 @@
+---
+import Button from "./Button.astro";
+import Card from "./Card.astro";
+import Chip from "./Chip.astro";
+import CodeBlock from "./CodeBlock.astro";
+import FeatureRow from "./FeatureRow.astro";
+import RequestJourney from "./RequestJourney.astro";
+import SystemDesignVisual from "./SystemDesignVisual.astro";
+import { elara } from "../data/elara";
+---
+
+<div class="elara">
+  <header class="project-header">
+    <div class="project-meta-row">
+      <div class="project-index">
+        <span class="project-index-label type-label-caps">
+          {elara.meta.label}
+        </span>
+        <span class="project-index-name type-label-caps">
+          {elara.meta.name}
+        </span>
+        <span class="project-index-bars" aria-hidden="true">
+          {Array.from({ length: elara.meta.total }, (_, index) => (
+            <span
+              class:list={[
+                "project-index-bar",
+                index < elara.meta.index && "is-active",
+              ]}
+            />
+          ))}
+        </span>
+        <span class="visually-hidden">
+          Project {elara.meta.index} of {elara.meta.total}
+        </span>
+      </div>
+
+      <ul class="project-tags" aria-label="Project tags">
+        {elara.tags.map((tag) => (
+          <li>
+            <Chip label={tag} />
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <h3 class="project-title type-display-m">
+      {elara.titleLines.map((line, index) => (
+        <>
+          {index > 0 && <br class="project-title-break" />}
+          {index > 0 && " "}
+          <span class="project-title-line">{line}</span>
+        </>
+      ))}
+    </h3>
+
+    <p class="project-subtitle">{elara.subtitle}</p>
+  </header>
+
+  <div class="project-cards">
+    <div class="project-row project-row-primary">
+      <div class="project-slot project-slot-journey">
+        <Card class="request-journey">
+          <RequestJourney />
+        </Card>
+      </div>
+
+      <div class="project-slot project-slot-decisions">
+        <Card class="key-decisions">
+          <div class="key-decisions-body">
+            <div class="key-decisions-visual-column">
+              <span class="system-tag type-label-m">
+                <img
+                  src={`/icons/sections/${elara.keyDecisions.tag.icon}.svg`}
+                  width="16"
+                  height="16"
+                  alt=""
+                />
+                {elara.keyDecisions.tag.label}
+              </span>
+              <SystemDesignVisual />
+            </div>
+
+            <div class="key-decisions-copy">
+              <div class="key-decisions-caption">
+                <h4 class="key-decisions-title type-heading-m">
+                  {elara.keyDecisions.title}
+                </h4>
+                <p class="key-decisions-description">
+                  {elara.keyDecisions.description}
+                </p>
+              </div>
+
+              <span class="key-decisions-divider" aria-hidden="true"></span>
+
+              <ul class="key-decisions-list">
+                {elara.keyDecisions.decisions.map((decision) => (
+                  <FeatureRow decision={decision} />
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+
+    <div class="project-row project-row-secondary">
+      <div class="project-slot project-slot-service">
+        <Card class="inside-service">
+          <div class="service-card-body">
+            <h4 class="card-label type-label-caps">
+              <span class="card-label-dot" aria-hidden="true"></span>
+              {elara.serviceStructure.label}
+            </h4>
+
+            <ol class="service-flow">
+              {elara.serviceStructure.primary.map((station, index) => (
+                <li
+                  class:list={[
+                    "service-station",
+                    "service-station-primary",
+                    `tone-${station.tone}`,
+                    index > 0 && "has-link",
+                  ]}
+                >
+                  <p class="service-station-title">
+                    <span class="service-station-dot" aria-hidden="true" />
+                    {station.label}
+                  </p>
+                  <p class="service-station-detail">{station.detail}</p>
+                </li>
+              ))}
+
+              <li class="service-paths">
+                <ul class="service-paths-list">
+                  {elara.serviceStructure.paths.map((station) => (
+                    <li
+                      class:list={[
+                        "service-station",
+                        "service-station-path",
+                        `tone-${station.tone}`,
+                      ]}
+                    >
+                      <p class="service-station-title">
+                        <span class="service-station-dot" aria-hidden="true" />
+                        {station.label}
+                      </p>
+                      <p class="service-station-detail">{station.detail}</p>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            </ol>
+
+            <p class="visually-hidden">{elara.serviceStructure.flowSummary}</p>
+          </div>
+        </Card>
+      </div>
+
+      <div class="project-slot project-slot-demo">
+        <Card class="demo-card">
+          <div class="demo-card-body">
+            <div class="demo-intro">
+              <h4 class="card-label type-label-caps">
+                <span class="card-label-dot" aria-hidden="true"></span>
+                {elara.demo.label}
+              </h4>
+              <p class="demo-description">{elara.demo.description}</p>
+            </div>
+
+            <CodeBlock
+              language={elara.demo.language}
+              commands={elara.demo.commands}
+              copyLabel={elara.demo.copyLabel}
+              copiedLabel={elara.demo.copiedLabel}
+            />
+
+            <div class="demo-resources">
+              <h4 class="card-label type-label-caps">
+                <span class="card-label-dot" aria-hidden="true"></span>
+                {elara.demo.resourcesLabel}
+              </h4>
+              <div class="demo-links">
+                {elara.demo.links.map((link) => (
+                  <Button link={link} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .elara {
+    display: flex;
+    flex-direction: column;
+    gap: var(--section-stack-gap);
+  }
+
+  .project-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .project-meta-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-14);
+  }
+
+  .project-index {
+    display: flex;
+    align-items: center;
+    gap: var(--space-14);
+  }
+
+  .project-index-label {
+    color: var(--color-text-secondary);
+  }
+
+  .project-index-name {
+    color: var(--color-tier-edge);
+  }
+
+  .project-index-bars {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .project-index-bar {
+    inline-size: 1.75rem;
+    block-size: 4px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-border-strong);
+  }
+
+  .project-index-bar.is-active {
+    background-color: var(--color-tier-edge);
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+    gap: var(--space-8);
+    list-style: none;
+  }
+
+  .project-title {
+    margin: 0;
+    color: var(--color-text-primary);
+    text-wrap: pretty;
+  }
+
+  .project-title-break {
+    display: none;
+  }
+
+  .project-title-line {
+    display: inline;
+  }
+
+  .project-subtitle {
+    max-inline-size: 43.75rem;
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-family: var(--font-body);
+    font-size: var(--type-body-m-size);
+    font-weight: var(--weight-regular);
+    line-height: var(--type-body-m-line-height);
+  }
+
+  .project-cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .project-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .project-slot {
+    min-inline-size: 0;
+  }
+
+  .key-decisions-body {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-20);
+  }
+
+  .key-decisions-visual-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-20);
+  }
+
+  .system-tag {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    padding: var(--space-6) var(--space-14) var(--space-6) var(--space-10);
+    border: 1px solid var(--color-border-security);
+    border-radius: var(--radius-full);
+    background-color: var(--color-tint-security-strong);
+    color: var(--color-tier-security);
+    gap: var(--space-8);
+    white-space: nowrap;
+  }
+
+  .key-decisions-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-20);
+  }
+
+  .key-decisions-caption {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .key-decisions-title {
+    margin: 0;
+    color: var(--color-text-primary);
+  }
+
+  .key-decisions-description {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-family: var(--font-body);
+    font-size: var(--type-body-m-size);
+    font-weight: var(--weight-regular);
+    line-height: var(--type-body-m-line-height);
+  }
+
+  .key-decisions-divider {
+    block-size: 1px;
+    background-color: var(--color-border-subtle);
+  }
+
+  .key-decisions-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    gap: var(--space-12);
+    list-style: none;
+  }
+
+  .service-card-body,
+  .demo-card-body {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .service-card-body {
+    gap: var(--space-20);
+  }
+
+  .demo-card-body {
+    gap: var(--space-20);
+  }
+
+  .card-label {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    color: var(--color-tier-edge);
+    gap: var(--space-8);
+  }
+
+  .card-label-dot {
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: var(--color-tier-edge);
+    box-shadow: 0 0 0 3px var(--color-tint-edge);
+  }
+
+  .service-flow {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .service-station {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-12) var(--space-14);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-2);
+    gap: var(--space-4);
+  }
+
+  .service-station-title {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: var(--type-label-m-size);
+    font-weight: var(--weight-medium);
+    gap: var(--space-8);
+    line-height: var(--type-label-m-line-height);
+    white-space: nowrap;
+  }
+
+  .service-station-dot {
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+
+  .tone-edge .service-station-dot {
+    background-color: var(--color-tier-edge);
+    box-shadow: 0 0 0 3px var(--color-tint-edge);
+  }
+
+  .tone-services .service-station-dot {
+    background-color: var(--color-tier-services);
+    box-shadow: 0 0 0 3px var(--color-tint-services);
+  }
+
+  .tone-data .service-station-dot {
+    background-color: var(--color-tier-data);
+    box-shadow: 0 0 0 3px var(--color-tint-data);
+  }
+
+  .tone-fault .service-station-dot {
+    background-color: var(--color-tier-fault);
+    box-shadow: 0 0 0 3px var(--color-tint-fault);
+  }
+
+  .service-station-detail {
+    margin: 0;
+    color: var(--color-text-tertiary);
+    font-family: var(--font-body);
+    font-size: var(--type-label-s-size);
+    font-weight: var(--weight-regular);
+    line-height: var(--type-label-s-line-height);
+  }
+
+  .service-station.has-link,
+  .service-paths {
+    margin-block-start: 1.125rem;
+  }
+
+  .service-station.has-link::before {
+    position: absolute;
+    top: -1.125rem;
+    left: 0.8125rem;
+    block-size: 1.125rem;
+    border-inline-start: 1px solid var(--color-tier-edge);
+    content: "";
+  }
+
+  .service-station.has-link::after {
+    position: absolute;
+    top: -0.3125rem;
+    left: 0.625rem;
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    border-inline-end: 1px solid var(--color-tier-edge);
+    border-block-end: 1px solid var(--color-tier-edge);
+    content: "";
+    transform: rotate(45deg);
+  }
+
+  .service-paths::before,
+  .service-paths::after {
+    position: absolute;
+    top: -1.125rem;
+    block-size: 1.125rem;
+    content: "";
+  }
+
+  .service-paths {
+    position: relative;
+  }
+
+  .service-paths::before {
+    left: 0.8125rem;
+    border-inline-start: 1px solid var(--color-tier-edge);
+  }
+
+  .service-paths::after {
+    left: 12.875rem;
+    border-inline-start: 1px dashed var(--color-tier-fault);
+  }
+
+  .service-paths-list {
+    display: flex;
+    align-items: stretch;
+    padding: 0;
+    margin: 0;
+    gap: var(--space-10);
+    list-style: none;
+  }
+
+  .service-station-path {
+    flex: 1;
+    min-inline-size: 0;
+  }
+
+  .demo-intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .demo-description {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-family: var(--font-body);
+    font-size: var(--type-body-m-size);
+    font-weight: var(--weight-regular);
+    line-height: var(--type-body-m-line-height);
+  }
+
+  .demo-resources {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .demo-links {
+    display: flex;
+    gap: var(--space-12);
+  }
+
+  @media (width >= 768px) {
+    .project-title {
+      font-size: var(--type-display-l-size);
+      letter-spacing: var(--type-display-l-tracking);
+      line-height: var(--type-display-l-line-height);
+    }
+
+    .project-subtitle {
+      font-size: var(--type-body-l-size);
+      line-height: var(--type-body-l-line-height);
+    }
+
+    .key-decisions-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.916fr);
+      gap: 2.25rem;
+    }
+
+    .service-card-body {
+      gap: var(--space-24);
+    }
+
+    .service-station-primary {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-16);
+    }
+
+    .service-station-primary .service-station-detail {
+      text-align: end;
+    }
+
+    .service-paths::after {
+      left: 20.875rem;
+    }
+  }
+
+  @media (width >= 1200px) {
+    .project-meta-row {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-16);
+    }
+
+    .project-title-break {
+      display: inline;
+    }
+  }
+
+  @media (width >= 1440px) {
+    .project-title {
+      font-size: var(--type-display-xl-size);
+      letter-spacing: var(--type-display-xl-tracking);
+      line-height: var(--type-display-xl-line-height);
+    }
+
+    .project-row-primary,
+    .project-row-secondary {
+      flex-direction: row;
+      align-items: stretch;
+    }
+
+    .project-slot-journey,
+    .project-slot-demo {
+      flex: 1 1 auto;
+    }
+
+    .project-slot-decisions {
+      flex: 0 0 20rem;
+    }
+
+    .project-slot-service {
+      flex: 0 0 26.5rem;
+    }
+
+    .key-decisions-body {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-20);
+    }
+
+    .service-card-body {
+      gap: 3.25rem;
+    }
+
+    .service-station-primary {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-4);
+    }
+
+    .service-station-primary .service-station-detail {
+      text-align: start;
+    }
+
+    .service-paths::after {
+      left: 12.875rem;
+    }
+
+    .service-paths-list {
+      gap: var(--space-10);
+    }
+
+    .service-station-path {
+      min-block-size: 5rem;
+    }
+  }
+
+  @media (width <= 767.98px) {
+    .demo-links {
+      flex-direction: column;
+    }
+
+    .service-paths::after {
+      left: 10.75rem;
+    }
+  }
+</style>

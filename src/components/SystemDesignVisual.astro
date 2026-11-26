@@ -1,0 +1,206 @@
+---
+---
+
+<div class="system-visual" aria-hidden="true">
+  <span class="system-visual-dots"></span>
+  <span class="system-visual-tick system-visual-tick-tl"></span>
+  <span class="system-visual-tick system-visual-tick-tr"></span>
+  <span class="system-visual-tick system-visual-tick-bl"></span>
+  <span class="system-visual-tick system-visual-tick-br"></span>
+  <span class="system-visual-glow system-visual-glow-teal"></span>
+  <span class="system-visual-glow system-visual-glow-amber"></span>
+  <span class="system-visual-boundary"></span>
+  <span class="system-visual-layer-ghost"></span>
+  <span class="system-visual-layer"></span>
+  <span class="system-visual-handle system-visual-handle-tl"></span>
+  <span class="system-visual-handle system-visual-handle-tr"></span>
+  <span class="system-visual-handle system-visual-handle-bl"></span>
+  <span class="system-visual-handle system-visual-handle-br"></span>
+</div>
+
+<style>
+  .system-visual {
+    position: relative;
+    inline-size: 100%;
+    block-size: 11.3125rem;
+  }
+
+  .system-visual-dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+      var(--color-dot-grid-soft) 1px,
+      transparent 1px
+    );
+    background-size: 1rem 1rem;
+    mask-image: radial-gradient(
+      ellipse at center,
+      var(--color-mask) 0%,
+      transparent 78%
+    );
+  }
+
+  .system-visual-tick {
+    position: absolute;
+    inline-size: 0.625rem;
+    block-size: 0.625rem;
+  }
+
+  .system-visual-tick::before,
+  .system-visual-tick::after {
+    position: absolute;
+    background-color: var(--color-border-data-soft);
+    content: "";
+  }
+
+  .system-visual-tick::before {
+    top: 0.2813rem;
+    left: 0;
+    inline-size: 0.625rem;
+    block-size: 1px;
+  }
+
+  .system-visual-tick::after {
+    top: 0;
+    left: 0.2813rem;
+    inline-size: 1px;
+    block-size: 0.625rem;
+  }
+
+  .system-visual-tick-tl {
+    top: 8%;
+    left: 8%;
+  }
+
+  .system-visual-tick-tr {
+    top: 8%;
+    right: 8%;
+  }
+
+  .system-visual-tick-bl {
+    bottom: 8%;
+    left: 8%;
+  }
+
+  .system-visual-tick-br {
+    right: 8%;
+    bottom: 8%;
+  }
+
+  .system-visual-glow {
+    position: absolute;
+    inline-size: 55%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    filter: blur(1.25rem);
+  }
+
+  .system-visual-glow-teal {
+    top: 38%;
+    left: 20%;
+    background-image: radial-gradient(
+      circle,
+      var(--color-glow-system-teal),
+      transparent 70%
+    );
+  }
+
+  .system-visual-glow-amber {
+    top: 15%;
+    left: 40%;
+    background-image: radial-gradient(
+      circle,
+      var(--color-glow-system-amber),
+      transparent 70%
+    );
+  }
+
+  .system-visual-boundary {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    inline-size: 8.75rem;
+    block-size: 8.75rem;
+    border: 1px dashed var(--color-border-data-soft);
+    border-radius: 0.5rem;
+    transform: translate(-50%, -50%);
+  }
+
+  .system-visual-layer,
+  .system-visual-layer-ghost {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    inline-size: 4.0625rem;
+    block-size: 4.0625rem;
+    border-radius: 0.625rem;
+    transform: translate(-60%, -60%);
+  }
+
+  .system-visual-layer {
+    z-index: 2;
+    background-image: linear-gradient(
+      135deg,
+      var(--color-tier-services),
+      var(--color-tier-data)
+    );
+    box-shadow: 0 0 1.5rem var(--color-glow-system-teal);
+    opacity: 0.85;
+  }
+
+  .system-visual-layer-ghost {
+    z-index: 1;
+    border: 1px dashed var(--color-system-ghost);
+    background-color: var(--color-tint-data);
+    transform: translate(-30%, -30%);
+  }
+
+  .system-visual-handle {
+    position: absolute;
+    z-index: 3;
+    inline-size: 0.625rem;
+    block-size: 0.625rem;
+    border: 1px solid var(--color-tier-data);
+    background-color: var(--color-bg-base);
+  }
+
+  .system-visual-handle-tl {
+    top: calc(50% - 4.6875rem);
+    left: calc(50% - 4.6875rem);
+  }
+
+  .system-visual-handle-tr {
+    top: calc(50% - 4.6875rem);
+    right: calc(50% - 4.6875rem);
+  }
+
+  .system-visual-handle-bl {
+    bottom: calc(50% - 4.6875rem);
+    left: calc(50% - 4.6875rem);
+  }
+
+  .system-visual-handle-br {
+    right: calc(50% - 4.6875rem);
+    bottom: calc(50% - 4.6875rem);
+  }
+
+  @media (width >= 768px) {
+    .system-visual {
+      block-size: 15.6875rem;
+    }
+  }
+
+  @media (width >= 1440px) {
+    .system-visual {
+      block-size: 11.3125rem;
+    }
+  }
+
+  @media (width <= 767.98px) {
+    .system-visual-layer,
+    .system-visual-layer-ghost {
+      inline-size: 3.25rem;
+      block-size: 3.25rem;
+    }
+  }
+</style>

@@ -1,0 +1,112 @@
+---
+import type { DiagramNodeContent } from "../data/elara";
+
+interface Props {
+  node: DiagramNodeContent;
+  featured?: boolean;
+}
+
+const { node, featured = false } = Astro.props;
+---
+
+<div
+  class:list={[
+    "diagram-node",
+    `diagram-node-${node.tone}`,
+    featured && "is-featured",
+  ]}
+>
+  <span class="diagram-node-icon" aria-hidden="true">
+    <img
+      src={`/icons/sections/${node.icon}.svg`}
+      width="16"
+      height="16"
+      alt=""
+    />
+  </span>
+  <span class="diagram-node-copy">
+    <span class="diagram-node-title">{node.title}</span>
+    <span class="diagram-node-detail">{node.detail}</span>
+  </span>
+</div>
+
+<style>
+  .diagram-node {
+    position: relative;
+    display: flex;
+    block-size: 100%;
+    min-block-size: 3.25rem;
+    align-items: center;
+    padding: var(--space-10);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-2);
+    gap: var(--space-8);
+  }
+
+  .diagram-node.is-featured {
+    background-color: var(--color-tint-services-strong);
+    box-shadow:
+      0 0 0 6px var(--color-tint-services-strong),
+      0 0 0 7.5px var(--color-border-services-focus),
+      0 0 24px var(--color-focus-glow);
+  }
+
+  .diagram-node-icon {
+    display: flex;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+  }
+
+  .diagram-node-edge .diagram-node-icon {
+    background-color: var(--color-tier-edge);
+  }
+
+  .diagram-node-services .diagram-node-icon {
+    background-color: var(--color-tier-services);
+  }
+
+  .diagram-node-data .diagram-node-icon {
+    background-color: var(--color-tier-data);
+  }
+
+  .diagram-node-security .diagram-node-icon {
+    background-color: var(--color-tier-security);
+  }
+
+  .diagram-node-copy {
+    display: flex;
+    min-inline-size: 0;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .diagram-node-title {
+    color: var(--color-text-primary);
+    font-family: var(--font-mono);
+    font-size: var(--type-code-m-size);
+    font-weight: var(--weight-medium);
+    line-height: var(--type-code-m-line-height);
+    white-space: nowrap;
+  }
+
+  .diagram-node-detail {
+    color: var(--color-text-tertiary);
+    font-family: var(--font-body);
+    font-size: var(--type-label-s-size);
+    font-weight: var(--weight-medium);
+    line-height: var(--type-label-s-line-height);
+    white-space: nowrap;
+  }
+
+  @media (width <= 767.98px) {
+    .diagram-node-title {
+      font-size: var(--type-label-s-size);
+      line-height: var(--type-label-s-line-height);
+    }
+  }
+</style>

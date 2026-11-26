@@ -1,8 +1,8 @@
 # andresbetov portfolio
 
 Static single-page portfolio built with Astro, with a static quality toolchain and CI/CD
-configured for Cloudflare Workers. The shell and Hero are implemented; the remaining
-Figma sections and footer are in progress.
+configured for Cloudflare Workers. The shell, Hero, and the Elara Featured project are
+implemented; the remaining Figma sections and footer are in progress.
 
 Production promotion is intentionally deferred until the Figma-derived content is
 implemented; `portfolio-production` currently runs the Cloudflare placeholder.
@@ -45,16 +45,16 @@ npm run dev
 
 ```text
 src/
-  components/           Shell, Hero, orbit, and action components
-  data/                 Site metadata, navigation, and Hero content
+  components/           Shell, Hero, section primitives, and the Elara project
+  data/                 Site metadata, navigation, and section content
   layouts/              Page layouts
   pages/                Static routes
   styles/               Design tokens, self-hosted fonts, and global styles
 ```
 
 Empty placeholder directories are intentionally not committed. `public/` contains the
-self-hosted fonts, Hero icons and particles, the CV, and the Workers `_headers` rule.
-`src/content/` and `src/lib/` are deferred until their first real files need them.
+self-hosted fonts, Hero and section icons, particles, the CV, and the Workers `_headers`
+rule. `src/content/` and `src/lib/` are deferred until their first real files need them.
 
 ## Agent configuration
 
@@ -115,8 +115,9 @@ A code change is ready for review when:
    screenshots.
 5. A fresh reviewer has checked it against the brief, or the change is trivial.
 
-Link and anchor checks are deferred until the remaining sections exist; the shell and Hero
-currently expose the final anchor targets without their destinations.
+Link and anchor checks for the remaining destinations are deferred; `#projects` resolves,
+and the shell still exposes `#experience`, `#education`, and `#contact` without their
+destinations.
 
 ## Package compatibility notes
 
@@ -206,5 +207,5 @@ Rollback is manual through Cloudflare Deployments or
 Production promotion, Figma-derived design values and sections, the favicon asset, the
 validated content model, manual accessibility evaluation, Lighthouse CI, and CSP/security
 headers beyond the development `noindex` rule are intentionally deferred. CSP will be added
-through Astro's `security.csp` (hashes) once client-side JavaScript or analytics exist; HSTS
-belongs in the Cloudflare dashboard once a custom domain is connected.
+through Astro's `security.csp` (hashes) when the client-side surface grows beyond the demo
+copy handler; HSTS belongs in the Cloudflare dashboard once a custom domain is connected.

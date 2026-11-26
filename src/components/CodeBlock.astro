@@ -1,0 +1,212 @@
+---
+import type { CommandSegment } from "../data/elara";
+
+interface Props {
+  language: string;
+  commands: readonly (readonly CommandSegment[])[];
+  copyLabel: string;
+  copiedLabel: string;
+}
+
+const { language, commands, copyLabel, copiedLabel } = Astro.props;
+---
+
+<div class="code-block" data-code-block>
+  <div class="code-block-bar">
+    <span class="code-block-language">{language}</span>
+    <button
+      class="code-copy"
+      type="button"
+      data-code-copy
+      data-copied-label={copiedLabel}
+    >
+      <img src="/icons/sections/copy.svg" width="14" height="14" alt="" />
+      <span data-code-copy-label>{copyLabel}</span>
+    </button>
+  </div>
+
+  <div class="code-block-divider" aria-hidden="true"></div>
+
+  <div class="code-block-body">
+    <code>
+      {commands.map((command) => (
+        <span class="code-line">
+          <span class="code-prompt" aria-hidden="true">
+            $
+          </span>
+          <span class="code-command">
+            {command.map((segment) => (
+              <>
+                {segment.breakBefore && <br class="code-mobile-break" />}
+                <span
+                  class:list={[
+                    "code-segment",
+                    segment.tone && `code-segment-${segment.tone}`,
+                  ]}
+                >
+                  {segment.text}
+                </span>
+              </>
+            ))}
+          </span>
+        </span>
+      ))}
+    </code>
+  </div>
+
+  <p class="visually-hidden" role="status" data-code-status></p>
+</div>
+
+<script>
+  const blocks = document.querySelectorAll<HTMLElement>("[data-code-block]");
+
+  for (const block of blocks) {
+    const button = block.querySelector<HTMLButtonElement>("[data-code-copy]");
+    const label = block.querySelector<HTMLElement>("[data-code-copy-label]");
+    const status = block.querySelector<HTMLElement>("[data-code-status]");
+
+    if (!button || !label || !status) {
+      continue;
+    }
+
+    const originalLabel = label.textContent ?? "Copy";
+    const copiedLabel = button.dataset.copiedLabel ?? "Copied";
+    let resetTimer: number | undefined;
+
+    button.addEventListener("click", async () => {
+      const commands = Array.from(
+        block.querySelectorAll<HTMLElement>(".code-command"),
+      ).map((command) => command.textContent?.trimEnd() ?? "");
+
+      try {
+        await navigator.clipboard.writeText(commands.join("\n"));
+      } catch {
+        status.textContent = "Could not copy the commands.";
+        return;
+      }
+
+      label.textContent = copiedLabel;
+      status.textContent = "Commands copied to the clipboard.";
+      window.clearTimeout(resetTimer);
+      resetTimer = window.setTimeout(() => {
+        label.textContent = originalLabel;
+        status.textContent = "";
+      }, 2000);
+    });
+  }
+</script>
+
+<style>
+  .code-block {
+    overflow: clip;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg-base);
+  }
+
+  .code-block-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-10) var(--space-16) var(--space-10) var(--space-20);
+  }
+
+  .code-block-language {
+    color: var(--color-text-tertiary);
+    font-family: var(--font-body);
+    font-size: var(--type-body-s-size);
+    font-weight: var(--weight-regular);
+    line-height: var(--type-body-s-line-height);
+  }
+
+  .code-copy {
+    display: none;
+    align-items: center;
+    cursor: pointer;
+    gap: var(--space-6);
+    color: var(--color-text-tertiary);
+    font-family: var(--font-body);
+    font-size: var(--type-body-s-size);
+    font-weight: var(--weight-regular);
+    line-height: var(--type-body-s-line-height);
+  }
+
+  .code-copy:hover {
+    color: var(--color-text-secondary);
+  }
+
+  :global(.js) .code-copy {
+    display: inline-flex;
+  }
+
+  .code-block-divider {
+    block-size: 1px;
+    background-color: var(--color-border-subtle);
+  }
+
+  .code-block-body {
+    padding: var(--space-16) var(--space-20);
+    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+    font-size: var(--type-code-block-size);
+    font-weight: var(--weight-regular);
+    line-height: var(--type-code-block-line-height);
+  }
+
+  .code-block-body code {
+    display: flex;
+    flex-direction: column;
+    font-family: inherit;
+    gap: 0;
+  }
+
+  .code-line {
+    display: flex;
+    min-inline-size: 0;
+    align-items: baseline;
+    gap: var(--space-12);
+  }
+
+  .code-prompt {
+    flex-shrink: 0;
+    color: var(--color-text-tertiary);
+  }
+
+  .code-command {
+    min-inline-size: 0;
+    color: var(--color-text-secondary);
+    white-space: pre;
+  }
+
+  .code-mobile-break {
+    display: none;
+  }
+
+  .code-segment-primary {
+    color: var(--color-text-primary);
+  }
+
+  .code-segment-edge {
+    color: var(--color-tier-edge);
+  }
+
+  .code-segment-services {
+    color: var(--color-tier-services);
+  }
+
+  @media (width <= 767.98px) {
+    .code-block-body code {
+      gap: var(--space-10);
+    }
+
+    .code-mobile-break {
+      display: inline;
+    }
+
+    .code-command {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      word-break: break-all;
+    }
+  }
+</style>

@@ -1,0 +1,95 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<article class:list={["project-card", className]}>
+  <slot />
+</article>
+
+<style>
+  .project-card {
+    position: relative;
+    inline-size: 100%;
+    block-size: 100%;
+    overflow: clip;
+    padding: var(--space-20);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface-1);
+  }
+
+  .project-card.request-journey::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    inline-size: 20.375rem;
+    block-size: 3px;
+    background-color: var(--color-tier-edge);
+    content: "";
+  }
+
+  .project-card.key-decisions::before {
+    position: absolute;
+    top: -3.8125rem;
+    left: 3.6875rem;
+    inline-size: 16.25rem;
+    block-size: 13.75rem;
+    background-image: radial-gradient(
+      closest-side,
+      var(--color-glow-key-decisions),
+      transparent
+    );
+    filter: blur(1.875rem);
+    pointer-events: none;
+    content: "";
+  }
+
+  .project-card.inside-service::before {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+      var(--color-dot-grid-card) 1px,
+      transparent 1px
+    );
+    background-size: 1rem 1rem;
+    mask-image: linear-gradient(
+      to bottom,
+      var(--color-mask) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+    content: "";
+  }
+
+  .project-card.inside-service::after {
+    position: absolute;
+    right: -3.5rem;
+    bottom: -3.5rem;
+    inline-size: 21.875rem;
+    block-size: 16.25rem;
+    background-image: radial-gradient(
+      closest-side,
+      var(--color-glow-coral),
+      transparent
+    );
+    filter: blur(1.875rem);
+    pointer-events: none;
+    content: "";
+  }
+
+  @media (width >= 768px) {
+    .project-card {
+      padding: 1.75rem;
+    }
+  }
+
+  @media (width >= 1440px) {
+    .project-card {
+      padding: var(--space-24);
+    }
+  }
+</style>
