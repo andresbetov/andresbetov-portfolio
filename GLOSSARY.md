@@ -12,6 +12,18 @@ _Avoid_: block, panel
 The opening section that introduces Andrés and presents the primary actions.
 _Avoid_: landing, banner
 
+**Eyebrow**:
+The small indexed label above a heading that locates the section.
+_Avoid_: kicker, overline
+
+**Atmosphere**:
+The decorative glow and particle layer behind the shell.
+_Avoid_: background effect, stars
+
+**Tier color**:
+One of the five layer colors (edge, services, data, security, fault) that encodes the layer in diagrams.
+_Avoid_: badge color, palette
+
 **Featured project**:
 A long-form section for one selected project, combining narrative, evidence, and diagrams.
 _Avoid_: case study, project card
