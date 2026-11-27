@@ -8,6 +8,8 @@ import { projectsSection } from "../data/projects";
   <span class="projects-glow projects-glow-security" aria-hidden="true"></span>
   <span class="projects-glow projects-glow-edge" aria-hidden="true"></span>
   <div class="section-grid" aria-hidden="true"></div>
+  <span class="projects-seam" aria-hidden="true"></span>
+  <span class="projects-particles" aria-hidden="true"></span>
 
   <div class="projects-content shell-container">
     <SectionOpener id="projects-title" {...projectsSection} />
@@ -46,9 +48,53 @@ import { projectsSection } from "../data/projects";
     background-color: var(--color-glow-name);
   }
 
+  /*
+   * The Featured area continues the Hero's atmosphere. The seam fade is the
+   * Figma 237:217 gradient; the continuation particles are the Figma 683:495,
+   * 684:3531 and 684:3547 layers so the Hero field does not stop at the seam.
+   */
+  .projects-seam {
+    position: absolute;
+    z-index: 1;
+    inset-block-start: 0;
+    inset-inline: 0;
+    block-size: 26.25rem;
+    background-image: linear-gradient(
+      180deg,
+      var(--color-bg-base) 0%,
+      var(--color-seam-fade-strong) 35%,
+      var(--color-seam-fade-mid) 70%,
+      var(--color-seam-fade-clear) 100%
+    );
+    pointer-events: none;
+  }
+
+  .projects-particles {
+    position: absolute;
+    z-index: 2;
+    inset-block-start: 0;
+    inset-inline-start: 50%;
+    inline-size: 90rem;
+    block-size: 18.75rem;
+    background-image: url("/images/projects-particles-1440.svg");
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: 90rem 18.75rem;
+    pointer-events: none;
+    transform: translateX(-50%);
+  }
+
   .projects-content {
     position: relative;
-    z-index: 1;
+    z-index: 3;
+  }
+
+  @media (width >= 768px) and (width < 1200px) {
+    .projects-particles {
+      inline-size: 48rem;
+      background-image: url("/images/projects-particles-768.svg");
+      background-size: 48rem 18.75rem;
+    }
   }
 
   @media (width >= 768px) and (width < 1280px) {
@@ -76,6 +122,12 @@ import { projectsSection } from "../data/projects";
       inline-size: 24rem;
       block-size: 18rem;
       filter: blur(100px);
+    }
+
+    .projects-particles {
+      inline-size: 24.375rem;
+      background-image: url("/images/projects-particles-390.svg");
+      background-size: 24.375rem 18.75rem;
     }
   }
 </style>

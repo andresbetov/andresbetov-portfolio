@@ -55,6 +55,9 @@
   --color-glow-coral: rgb(255 123 142 / 14%);
   --color-glow-services: rgb(63 214 192 / 28%);
   --color-glow-data: rgb(255 184 77 / 28%);
+  --color-seam-fade-strong: rgb(10 17 40 / 85%);
+  --color-seam-fade-mid: rgb(10 17 40 / 35%);
+  --color-seam-fade-clear: rgb(10 17 40 / 0%);
 
   /* Tier (layer) colors */
   --color-tier-edge: var(--color-blue-400);

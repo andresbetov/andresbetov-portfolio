@@ -19,8 +19,10 @@ primitives and the Elara Featured project.
 | `button-focus-1440.webp` | 1440     | GitHub organization link, keyboard focus |
 | `nav-focus-390.webp`     | 390×844  | After the mobile Projects nav click      |
 
-The full-page before and after pairs show that the Hero is unchanged. The section-only
-shots are the direct comparison against the Figma frames at 1440, 768, and 390.
+The Hero content is unchanged. The Hero atmosphere now fades at the Hero frame and the
+Featured area continues it with the Figma seam fade and continuation particles, so there is
+no horizontal seam between the two sections. The section-only shots are the direct
+comparison against the Figma frames at 1440, 768, and 390.
 
 ## Browser checks
 

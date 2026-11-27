@@ -37,6 +37,38 @@
     inline-size: 90rem;
     block-size: 56.25rem;
     transform: translateX(-50%);
+
+    /* End the Hero atmosphere at the Hero frame instead of letting the glow
+       and particles run under the Featured area. The Projects seam picks up
+       the continuation particles. */
+    mask-image: linear-gradient(
+      180deg,
+      var(--color-mask) 0%,
+      var(--color-mask) 48.75rem,
+      transparent 56.25rem
+    );
+  }
+
+  @media (width >= 768px) and (width < 1200px) {
+    .page-atmosphere-canvas {
+      mask-image: linear-gradient(
+        180deg,
+        var(--color-mask) 0%,
+        var(--color-mask) 43.75rem,
+        transparent 50.8125rem
+      );
+    }
+  }
+
+  @media (width <= 767.98px) {
+    .page-atmosphere-canvas {
+      mask-image: linear-gradient(
+        180deg,
+        var(--color-mask) 0%,
+        var(--color-mask) 43.125rem,
+        transparent 50.3125rem
+      );
+    }
   }
 
   .page-atmosphere-glow {
