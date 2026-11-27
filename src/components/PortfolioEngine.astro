@@ -1,0 +1,533 @@
+---
+import AllocationPanel from "./AllocationPanel.astro";
+import Button from "./Button.astro";
+import Card from "./Card.astro";
+import Chip from "./Chip.astro";
+import CorrelationPanel from "./CorrelationPanel.astro";
+import EvidenceCard from "./EvidenceCard.astro";
+import EvidencePanel from "./EvidencePanel.astro";
+import SharpePanel from "./SharpePanel.astro";
+import { portfolioEngine } from "../data/portfolio-engine";
+
+const { footnote, links, meta, stack, subtitle, titleLines } = portfolioEngine;
+const [relationships, allocationCard, evaluationCard] = portfolioEngine.cards;
+---
+
+<article
+  class="portfolio-engine"
+  aria-labelledby="portfolio-engine-meta-name portfolio-engine-title"
+>
+  <span class="portfolio-engine-glow" aria-hidden="true"></span>
+  <div class="section-grid portfolio-engine-grid" aria-hidden="true"></div>
+  <span class="portfolio-engine-seam" aria-hidden="true"></span>
+
+  <div class="portfolio-engine-content shell-container">
+    <header class="portfolio-engine-header">
+      <div class="portfolio-engine-meta">
+        <div class="portfolio-engine-index type-label-caps">
+          <span class="portfolio-engine-index-label">{meta.featured}</span>
+          <span
+            class="portfolio-engine-index-name"
+            id="portfolio-engine-meta-name"
+          >
+            {meta.name}
+          </span>
+          <span
+            class="portfolio-engine-bars"
+            role="img"
+            aria-label={`Project ${meta.projectIndex} of ${meta.projectCount}`}
+          >
+            {Array.from({ length: meta.projectCount }, (_, index) => (
+              <span
+                class:list={[
+                  "portfolio-engine-bar",
+                  index + 1 === meta.projectIndex &&
+                    "portfolio-engine-bar-current",
+                ]}
+                aria-hidden="true"
+              />
+            ))}
+          </span>
+        </div>
+
+        <ul class="portfolio-engine-tags" aria-label="Project tags">
+          {meta.chips.map((chip) => (
+            <li>
+              <Chip label={chip} />
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <h3
+        class="portfolio-engine-title type-display-xl"
+        id="portfolio-engine-title"
+      >
+        {titleLines[0]} <br class="portfolio-engine-title-break" />
+        {titleLines[1]}
+      </h3>
+      <p class="portfolio-engine-subtitle type-body-l">{subtitle}</p>
+    </header>
+
+    <div class="portfolio-engine-cards">
+      <div class="portfolio-engine-bento">
+        <div class="portfolio-engine-bento-cell portfolio-engine-bento-primary">
+          <EvidenceCard card={relationships}>
+            <EvidencePanel variant="correlation">
+              <CorrelationPanel />
+            </EvidencePanel>
+          </EvidenceCard>
+        </div>
+
+        <div class="portfolio-engine-bento-cell portfolio-engine-bento-secondary">
+          <EvidenceCard card={allocationCard}>
+            <EvidencePanel variant="allocation">
+              <AllocationPanel />
+            </EvidencePanel>
+          </EvidenceCard>
+        </div>
+
+        <div class="portfolio-engine-bento-cell portfolio-engine-bento-feature">
+          <EvidenceCard card={evaluationCard}>
+            <EvidencePanel variant="sharpe">
+              <SharpePanel />
+            </EvidencePanel>
+          </EvidenceCard>
+        </div>
+      </div>
+
+      <div class="portfolio-engine-explore">
+        <Card labelledby="portfolio-engine-explore-title">
+          <h4 class="visually-hidden" id="portfolio-engine-explore-title">
+            Explore the project
+          </h4>
+
+          <div class="portfolio-engine-explore-inner">
+            <ul
+              class="portfolio-engine-stack type-code-xs"
+              aria-label="Technology stack"
+            >
+              {stack.map((item) => (
+                <li class="portfolio-engine-stack-cell">
+                  <span
+                    class:list={[
+                      "portfolio-engine-stack-dot",
+                      `portfolio-engine-stack-dot-${item.tier}`,
+                    ]}
+                    aria-hidden="true"
+                  />
+                  <span class="portfolio-engine-stack-label">{item.label}</span>
+                </li>
+              ))}
+            </ul>
+
+            <ul class="portfolio-engine-links" aria-label="Project links">
+              {links.map((link) => (
+                <li class="portfolio-engine-link">
+                  <Button
+                    href={link.href}
+                    label={link.label}
+                    iconSrc={`/icons/elara/${link.icon}.svg`}
+                    variant={link.variant}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Card>
+      </div>
+
+      <p class="portfolio-engine-footnote type-body-s">{footnote}</p>
+    </div>
+  </div>
+</article>
+
+<style>
+  .portfolio-engine {
+    position: relative;
+    z-index: 3;
+    overflow: clip;
+    padding-block: 5rem 2.5rem;
+    background-color: var(--color-bg-base);
+  }
+
+  .portfolio-engine-grid {
+    --grid-mask-x: 16.25rem;
+    --grid-mask-y: 32.5rem;
+    --grid-mask-width: 34.375rem;
+    --grid-mask-height: 25.625rem;
+  }
+
+  .portfolio-engine-glow {
+    position: absolute;
+    z-index: 0;
+    inset-block-start: 18.28rem;
+    inset-inline-start: -3.75rem;
+    inline-size: 40rem;
+    block-size: 28.75rem;
+    border-radius: 50%;
+    background-color: var(--color-glow-ambient);
+    filter: blur(6rem);
+    pointer-events: none;
+  }
+
+  .portfolio-engine-seam {
+    position: absolute;
+    z-index: 1;
+    inset-block-start: 0;
+    inset-inline: 0;
+    block-size: 26.25rem;
+    background-image: linear-gradient(
+      180deg,
+      var(--color-bg-base) 0%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+
+  .portfolio-engine-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .portfolio-engine-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .portfolio-engine-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-14);
+  }
+
+  .portfolio-engine-index {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    color: var(--color-text-secondary);
+    gap: var(--space-14);
+  }
+
+  .portfolio-engine-index-name {
+    color: var(--color-tier-edge);
+  }
+
+  .portfolio-engine-bars {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .portfolio-engine-bar {
+    inline-size: 1.75rem;
+    block-size: 0.25rem;
+    border-radius: var(--radius-full);
+    background-color: var(--color-border-strong);
+  }
+
+  .portfolio-engine-bar-current {
+    background-color: var(--color-tier-edge);
+  }
+
+  .portfolio-engine-tags {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+    gap: var(--space-8);
+    list-style: none;
+  }
+
+  .portfolio-engine-title {
+    font-variation-settings:
+      "opsz" 14,
+      "wdth" 95;
+    color: var(--color-text-primary);
+  }
+
+  .portfolio-engine-title-break {
+    display: none;
+  }
+
+  .portfolio-engine-subtitle {
+    max-inline-size: 47.5rem;
+    color: var(--color-text-secondary);
+  }
+
+  .portfolio-engine-cards {
+    display: flex;
+    flex-direction: column;
+    margin-block-start: 3.5rem;
+    gap: var(--space-24);
+  }
+
+  .portfolio-engine-bento {
+    display: grid;
+    grid-template-columns: minmax(0, 776fr) minmax(0, 400fr);
+    grid-template-rows: auto auto;
+    gap: var(--space-24);
+  }
+
+  .portfolio-engine-bento-cell {
+    min-inline-size: 0;
+  }
+
+  .portfolio-engine-bento-primary {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .portfolio-engine-bento-secondary {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .portfolio-engine-bento-feature {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .portfolio-engine-explore-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-24);
+  }
+
+  .portfolio-engine-stack {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-full);
+    background-color: var(--color-surface-2);
+    list-style: none;
+  }
+
+  .portfolio-engine-stack-cell {
+    display: flex;
+    align-items: center;
+    padding: var(--space-8) var(--space-14);
+    gap: 7px;
+    white-space: nowrap;
+  }
+
+  .portfolio-engine-stack-cell + .portfolio-engine-stack-cell {
+    border-inline-start: 1px solid var(--color-border-strong);
+  }
+
+  .portfolio-engine-stack-dot {
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+
+  .portfolio-engine-stack-dot-edge {
+    background-color: var(--color-tier-edge);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-edge);
+  }
+
+  .portfolio-engine-stack-dot-services {
+    background-color: var(--color-tier-services);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-services);
+  }
+
+  .portfolio-engine-stack-dot-data {
+    background-color: var(--color-tier-data);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-data);
+  }
+
+  .portfolio-engine-stack-label {
+    color: var(--color-text-primary);
+  }
+
+  .portfolio-engine-links {
+    display: flex;
+    inline-size: 28.25rem;
+    flex-shrink: 0;
+    padding: 0;
+    margin: 0;
+    gap: var(--space-12);
+    list-style: none;
+  }
+
+  .portfolio-engine-link {
+    min-inline-size: 0;
+    flex: 1;
+  }
+
+  .portfolio-engine-footnote {
+    color: var(--color-text-tertiary);
+  }
+
+  @media (width >= 1280px) {
+    .portfolio-engine-title-break {
+      display: initial;
+    }
+  }
+
+  @media (width >= 768px) and (width < 1280px) {
+    .portfolio-engine {
+      padding-block-start: 3.5rem;
+    }
+
+    .portfolio-engine-grid {
+      --grid-mask-x: 10rem;
+      --grid-mask-y: 37.5rem;
+      --grid-mask-width: 28.125rem;
+      --grid-mask-height: 22.5rem;
+    }
+
+    .portfolio-engine-glow {
+      inset-block-start: 25rem;
+      inset-inline-start: -7.5rem;
+      inline-size: 35rem;
+      block-size: 25rem;
+    }
+
+    .portfolio-engine-meta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .portfolio-engine-title {
+      font-size: var(--type-display-l-size);
+      letter-spacing: var(--type-display-l-tracking);
+      line-height: var(--type-display-l-line-height);
+    }
+
+    .portfolio-engine-cards {
+      margin-block-start: 2.5rem;
+    }
+
+    .portfolio-engine-bento {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto;
+    }
+
+    .portfolio-engine-bento-cell {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .portfolio-engine-explore-inner {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .portfolio-engine-stack {
+      inline-size: 100%;
+    }
+
+    .portfolio-engine-links {
+      inline-size: 100%;
+    }
+  }
+
+  @media (width <= 767.98px) {
+    .portfolio-engine {
+      padding-block-start: 2.5rem;
+    }
+
+    .portfolio-engine-grid {
+      --grid-mask-x: 2.5rem;
+      --grid-mask-y: 31.25rem;
+      --grid-mask-width: 18.75rem;
+      --grid-mask-height: 16.25rem;
+    }
+
+    .portfolio-engine-glow {
+      inset-block-start: 21.25rem;
+      inset-inline-start: -10.625rem;
+      inline-size: 26.25rem;
+      block-size: 20rem;
+    }
+
+    .portfolio-engine-meta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .portfolio-engine-index {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-8);
+    }
+
+    .portfolio-engine-title {
+      font-size: var(--type-display-m-size);
+      font-variation-settings:
+        "opsz" 14,
+        "wdth" 100;
+      letter-spacing: var(--type-display-m-tracking);
+      line-height: var(--type-display-m-line-height);
+    }
+
+    .portfolio-engine-subtitle {
+      font-size: var(--type-body-m-size);
+      line-height: var(--type-body-m-line-height);
+    }
+
+    .portfolio-engine-cards {
+      margin-block-start: 2rem;
+    }
+
+    .portfolio-engine-bento {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto;
+    }
+
+    .portfolio-engine-bento-cell {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .portfolio-engine-explore-inner {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .portfolio-engine-stack {
+      display: grid;
+      inline-size: 100%;
+      grid-template-columns: 1fr 1fr;
+      padding: 1px;
+      border-radius: var(--radius-lg);
+    }
+
+    .portfolio-engine-stack-cell {
+      min-inline-size: 0;
+    }
+
+    .portfolio-engine-stack-cell + .portfolio-engine-stack-cell {
+      border-inline-start: 0;
+    }
+
+    .portfolio-engine-stack-cell:nth-child(2n) {
+      border-inline-start: 1px solid var(--color-border-strong);
+    }
+
+    .portfolio-engine-stack-cell:nth-child(n + 3) {
+      border-block-start: 1px solid var(--color-border-strong);
+    }
+
+    .portfolio-engine-stack-cell:nth-child(5) {
+      grid-column: 1 / -1;
+    }
+
+    .portfolio-engine-stack-label {
+      overflow-wrap: anywhere;
+    }
+
+    .portfolio-engine-links {
+      inline-size: 100%;
+      flex-direction: column;
+    }
+  }
+</style>

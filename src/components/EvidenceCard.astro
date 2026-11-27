@@ -1,0 +1,417 @@
+---
+import Card from "./Card.astro";
+import FeatureRow from "./FeatureRow.astro";
+import type { EvidenceCard as EvidenceCardData } from "../data/portfolio-engine";
+
+interface Props {
+  card: EvidenceCardData;
+  class?: string;
+}
+
+const { card, class: className } = Astro.props;
+const layout = card.panel === "sharpe" ? "feature" : "split";
+---
+
+<Card class={className} labelledby={`${card.id}-title`}>
+  {card.tone === "security" ? (
+    <span class="evidence-card-orbit" aria-hidden="true">
+      <span class="evidence-card-orbit-ring evidence-card-orbit-ring-1" />
+      <span class="evidence-card-orbit-ring evidence-card-orbit-ring-2" />
+      <span class="evidence-card-orbit-ring evidence-card-orbit-ring-3" />
+      <span class="evidence-card-orbit-satellite evidence-card-orbit-satellite-1" />
+      <span class="evidence-card-orbit-satellite evidence-card-orbit-satellite-2" />
+    </span>
+  ) : (
+    <span class="evidence-card-dots" aria-hidden="true"></span>
+  )}
+
+  <span
+    class:list={["evidence-card-glow", `evidence-card-glow-${card.tone}`]}
+    aria-hidden="true"
+  ></span>
+  <span
+    class:list={[
+      "evidence-card-glow",
+      `evidence-card-glow-${card.tone}-secondary`,
+    ]}
+    aria-hidden="true"
+  ></span>
+
+  <div class="evidence-card" data-card={card.id} data-layout={layout}>
+    <div class="evidence-card-copy">
+      <div class="evidence-card-top">
+        <p class="evidence-card-eyebrow type-label-caps">
+          <span
+            class:list={[
+              "evidence-card-number",
+              "type-code-caps-s",
+              `evidence-card-number-${card.tone}`,
+            ]}
+          >
+            {card.index}
+          </span>
+          <span class="evidence-card-eyebrow-label">{card.eyebrow}</span>
+        </p>
+
+        {card.facts.length > 0 && (
+          <ul class="evidence-card-facts">
+            {card.facts.map((fact) => (
+              <FeatureRow
+                variant="fact"
+                tone={fact.tone}
+                emphasis={fact.emphasis}
+                label={fact.text}
+              />
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <div class="evidence-card-heading">
+        <h4 class="type-heading-l" id={`${card.id}-title`}>
+          {card.title}
+        </h4>
+        <p class="type-body-compact">{card.description}</p>
+      </div>
+    </div>
+
+    <div class="evidence-card-panel">
+      <slot />
+    </div>
+  </div>
+</Card>
+
+<style>
+  .evidence-card {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    block-size: 100%;
+    grid-template-columns: minmax(0, 352fr) minmax(0, 334fr);
+    align-items: stretch;
+    gap: 2.5rem;
+  }
+
+  .evidence-card[data-layout="feature"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .evidence-card-copy {
+    display: flex;
+    min-inline-size: 0;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-24);
+  }
+
+  .evidence-card[data-layout="feature"] .evidence-card-copy {
+    justify-content: flex-start;
+    gap: var(--space-12);
+  }
+
+  .evidence-card-top {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-14);
+  }
+
+  .evidence-card[data-layout="feature"] .evidence-card-top {
+    gap: 0;
+  }
+
+  .evidence-card-eyebrow {
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    color: var(--color-tier-edge);
+    gap: var(--space-10);
+  }
+
+  .evidence-card-eyebrow-label {
+    padding-block-start: var(--space-4);
+  }
+
+  .evidence-card-number {
+    display: inline-flex;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid;
+    border-radius: 0.625rem;
+  }
+
+  .evidence-card-number-edge {
+    border-color: var(--color-border-edge-soft);
+    background-color: var(--color-tint-edge);
+    color: var(--color-tier-edge);
+  }
+
+  .evidence-card-number-services {
+    border-color: var(--color-border-services-soft);
+    background-color: var(--color-tint-services-strong);
+    color: var(--color-tier-services);
+  }
+
+  .evidence-card-number-security {
+    border-color: var(--color-border-security-soft);
+    background-color: var(--color-tint-security-strong);
+    color: var(--color-tier-security);
+  }
+
+  .evidence-card-facts {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    gap: var(--space-8);
+    list-style: none;
+  }
+
+  .evidence-card-heading {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .evidence-card-heading h4 {
+    margin: 0;
+    color: var(--color-text-primary);
+
+    /* Fontsource renders wider than the Figma text; wdth 95 restores the
+       one-line title on mobile and the intended wraps on tablet. */
+    font-variation-settings:
+      "opsz" 14,
+      "wdth" 95;
+  }
+
+  .evidence-card-heading p {
+    color: var(--color-text-secondary);
+  }
+
+  .evidence-card-panel {
+    display: flex;
+    min-inline-size: 0;
+    align-items: stretch;
+    justify-content: center;
+  }
+
+  .evidence-card[data-layout="feature"] .evidence-card-panel {
+    min-block-size: 0;
+    flex: 1;
+  }
+
+  .evidence-card-dots {
+    position: absolute;
+    z-index: 0;
+    inset: 0.75rem;
+    background-image: radial-gradient(
+      var(--color-grid-dot) 1.25px,
+      transparent 1.25px
+    );
+    background-size: 1rem 1rem;
+    mask-image: linear-gradient(180deg, var(--color-mask) 0%, transparent 78%);
+    opacity: 0.65;
+    pointer-events: none;
+  }
+
+  .evidence-card-glow {
+    position: absolute;
+    z-index: 0;
+    border-radius: 50%;
+    filter: blur(2rem);
+    pointer-events: none;
+  }
+
+  .evidence-card-glow-edge {
+    inset-block-start: 6.875rem;
+    inset-inline-end: -5rem;
+    inline-size: 26.25rem;
+    block-size: 17.5rem;
+    background-image: radial-gradient(
+      circle,
+      var(--color-glow-ambient) 0%,
+      transparent 70%
+    );
+  }
+
+  .evidence-card-glow-edge-secondary {
+    inset-block-start: 10.625rem;
+    inset-inline-end: -9rem;
+    inline-size: 18.75rem;
+    block-size: 12.5rem;
+    background-image: radial-gradient(
+      circle,
+      var(--color-glow-orbit) 0%,
+      transparent 70%
+    );
+  }
+
+  .evidence-card-glow-services {
+    inset-block-start: 6.875rem;
+    inset-inline-end: -5rem;
+    inline-size: 26.25rem;
+    block-size: 17.5rem;
+    background-image: radial-gradient(
+      circle,
+      var(--color-glow-services) 0%,
+      transparent 70%
+    );
+  }
+
+  .evidence-card-glow-services-secondary {
+    inset-block-start: 10.625rem;
+    inset-inline-end: -9rem;
+    inline-size: 18.75rem;
+    block-size: 12.5rem;
+    background-image: radial-gradient(
+      circle,
+      var(--color-glow-ambient) 0%,
+      transparent 70%
+    );
+  }
+
+  .evidence-card-glow-security {
+    inset-block-start: -5rem;
+    inset-inline-end: -4rem;
+    inline-size: 20rem;
+    block-size: 15rem;
+    background-image: radial-gradient(
+      circle,
+      var(--color-glow-orbit) 0%,
+      transparent 70%
+    );
+  }
+
+  .evidence-card-glow-security-secondary {
+    inset-block-end: -6rem;
+    inset-inline-end: 1.25rem;
+    inline-size: 20rem;
+    block-size: 18.75rem;
+    background-image: radial-gradient(
+      circle,
+      var(--color-glow-bridge) 0%,
+      transparent 70%
+    );
+  }
+
+  .evidence-card-orbit {
+    position: absolute;
+    z-index: 0;
+    inset-block-start: -6.5rem;
+    inset-inline-end: -5.5rem;
+    inline-size: 13rem;
+    block-size: 13rem;
+    pointer-events: none;
+  }
+
+  .evidence-card-orbit-ring {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    border: 1px solid
+      color-mix(in srgb, var(--color-tier-security) 30%, transparent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .evidence-card-orbit-ring-1 {
+    inline-size: 5rem;
+    block-size: 5rem;
+  }
+
+  .evidence-card-orbit-ring-2 {
+    inline-size: 9rem;
+    block-size: 9rem;
+  }
+
+  .evidence-card-orbit-ring-3 {
+    inline-size: 13rem;
+    block-size: 13rem;
+  }
+
+  .evidence-card-orbit-satellite {
+    position: absolute;
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-radius: 50%;
+  }
+
+  .evidence-card-orbit-satellite-1 {
+    inset-block-start: 8.75rem;
+    inset-inline-start: 3.75rem;
+    background-color: var(--color-tier-edge);
+    box-shadow: 0 0 0.5rem var(--color-glow-name);
+  }
+
+  .evidence-card-orbit-satellite-2 {
+    inset-block-start: 0.5rem;
+    inset-inline-start: 7.75rem;
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    background-color: var(--color-tier-services);
+    box-shadow: 0 0 0.375rem var(--color-glow-services);
+  }
+
+  @media (width >= 1280px) {
+    .evidence-card[data-layout="split"] .evidence-card-copy {
+      min-block-size: 15.625rem;
+    }
+  }
+
+  @media (width >= 768px) and (width < 1280px) {
+    .evidence-card {
+      grid-template-columns: minmax(0, 264fr) minmax(0, 334fr);
+      align-items: center;
+      gap: 2.125rem;
+    }
+
+    .evidence-card[data-layout="feature"] {
+      display: grid;
+      grid-template-columns: minmax(0, 248fr) minmax(0, 350fr);
+      align-items: center;
+    }
+
+    .evidence-card-copy {
+      justify-content: flex-start;
+      gap: var(--space-24);
+    }
+
+    .evidence-card[data-layout="feature"] .evidence-card-copy {
+      gap: var(--space-12);
+    }
+  }
+
+  @media (width <= 767.98px) {
+    .evidence-card,
+    .evidence-card[data-layout="feature"] {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+    }
+
+    .evidence-card[data-layout="split"] {
+      gap: var(--space-40);
+    }
+
+    .evidence-card-copy {
+      justify-content: flex-start;
+      gap: var(--space-24);
+    }
+
+    .evidence-card[data-layout="feature"] .evidence-card-copy {
+      gap: var(--space-12);
+    }
+
+    .evidence-card[data-card="portfolio-allocation"] .evidence-card-heading h4 {
+      max-inline-size: 17.5rem;
+    }
+
+    .evidence-card-panel {
+      inline-size: 100%;
+    }
+  }
+</style>

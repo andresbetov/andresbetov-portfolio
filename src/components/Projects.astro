@@ -1,5 +1,6 @@
 ---
 import Elara from "./Elara.astro";
+import PortfolioEngine from "./PortfolioEngine.astro";
 import SectionOpener from "./SectionOpener.astro";
 import { projectsSection } from "../data/projects";
 ---
@@ -13,6 +14,8 @@ import { projectsSection } from "../data/projects";
     <SectionOpener id="projects-title" {...projectsSection} />
     <Elara />
   </div>
+
+  <PortfolioEngine />
 </section>
 
 <style>

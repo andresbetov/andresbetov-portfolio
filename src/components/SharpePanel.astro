@@ -1,0 +1,187 @@
+---
+import { portfolioEngine } from "../data/portfolio-engine";
+
+const { evaluation } = portfolioEngine;
+const maxValue = Math.max(
+  ...evaluation.strategies.map((strategy) => strategy.value),
+);
+const barRatio = (value: number) => ((value / maxValue) * 0.92).toFixed(4);
+
+const summary = `${evaluation.label}: ${evaluation.strategies
+  .map((strategy) => `${strategy.name} ${strategy.value.toFixed(3)}`)
+  .join(", ")}. ${evaluation.note}.`;
+---
+
+<figure class="sharpe-panel">
+  <p class="visually-hidden">{summary}</p>
+
+  <div class="sharpe-layout" aria-hidden="true">
+    <p class="sharpe-label type-code-2xs">{evaluation.label}</p>
+
+    <div class="sharpe-bars">
+      {evaluation.strategies.map((strategy) => (
+        <div class="sharpe-column">
+          <span
+            class:list={[
+              "sharpe-value",
+              "type-code-s",
+              `sharpe-value-${strategy.tone}`,
+            ]}
+          >
+            {strategy.value.toFixed(3)}
+          </span>
+          <span
+            class:list={["sharpe-bar", `sharpe-bar-${strategy.tone}`]}
+            style={`--bar-ratio: ${barRatio(strategy.value)}`}
+          />
+        </div>
+      ))}
+    </div>
+
+    <div class="sharpe-names">
+      {evaluation.strategies.map((strategy) => (
+        <span class="sharpe-name type-label-s">{strategy.name}</span>
+      ))}
+    </div>
+
+    <p class="sharpe-note type-body-fact">{evaluation.note}</p>
+  </div>
+</figure>
+
+<style>
+  .sharpe-panel {
+    block-size: 100%;
+    padding: 0.75rem 0.9375rem;
+    margin: 0;
+  }
+
+  .sharpe-layout {
+    display: flex;
+    block-size: 100%;
+    flex-direction: column;
+  }
+
+  .sharpe-label {
+    margin: 0;
+    color: var(--color-text-tertiary);
+    letter-spacing: 0.08em;
+  }
+
+  .sharpe-bars {
+    display: grid;
+    flex: 1;
+    min-block-size: 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: end;
+    margin-block-start: var(--space-16);
+    gap: var(--space-16);
+  }
+
+  .sharpe-column {
+    display: flex;
+    block-size: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .sharpe-value {
+    margin-block-end: var(--space-4);
+  }
+
+  .sharpe-value-edge {
+    color: var(--color-tier-edge);
+  }
+
+  .sharpe-value-services {
+    color: var(--color-tier-services);
+  }
+
+  .sharpe-value-muted {
+    color: var(--color-text-tertiary);
+  }
+
+  .sharpe-bar {
+    inline-size: 3.25rem;
+    block-size: calc(var(--bar-ratio) * (100% - 1.25rem));
+    border-radius: var(--radius-md);
+  }
+
+  .sharpe-bar-edge {
+    background-image: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-tier-edge) 90%, transparent),
+      color-mix(in srgb, var(--color-tier-edge) 45%, transparent)
+    );
+  }
+
+  .sharpe-bar-services {
+    background-image: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-tier-services) 90%, transparent),
+      color-mix(in srgb, var(--color-tier-services) 45%, transparent)
+    );
+  }
+
+  .sharpe-bar-muted {
+    background-image: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-text-tertiary) 90%, transparent),
+      color-mix(in srgb, var(--color-text-tertiary) 45%, transparent)
+    );
+  }
+
+  .sharpe-names {
+    display: grid;
+    grid-template-columns: 1.1fr 0.85fr 1.05fr;
+    margin-block-start: var(--space-4);
+    gap: var(--space-4);
+  }
+
+  .sharpe-name {
+    color: var(--color-text-primary);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .sharpe-note {
+    margin-block-start: auto;
+    color: var(--color-tier-data);
+    font-size: 0.6875rem;
+    line-height: 0.875rem;
+  }
+
+  @media (width >= 1280px) {
+    .sharpe-bars {
+      max-block-size: 18.8125rem;
+    }
+
+    .sharpe-names {
+      margin-block-start: var(--space-12);
+    }
+  }
+
+  @media (width >= 768px) and (width < 1280px) {
+    .sharpe-bars {
+      max-block-size: 9.0625rem;
+    }
+
+    .sharpe-bar {
+      inline-size: 3.75rem;
+    }
+  }
+
+  @media (width <= 767.98px) {
+    .sharpe-bars {
+      max-block-size: 16.875rem;
+    }
+
+    .sharpe-bar {
+      inline-size: 2.875rem;
+    }
+
+    .sharpe-name {
+      font-size: 0.6875rem;
+    }
+  }
+</style>

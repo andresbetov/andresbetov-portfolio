@@ -1,8 +1,8 @@
 # andresbetov portfolio
 
 Static single-page portfolio built with Astro, with a static quality toolchain and CI/CD
-configured for Cloudflare Workers. The shell, Hero, and Elara Featured project are
-implemented; the remaining Figma sections and footer are in progress.
+configured for Cloudflare Workers. The shell, Hero, Elara, and Portfolio Construction Engine
+Featured projects are implemented; the remaining Figma sections and footer are in progress.
 
 Production promotion is intentionally deferred until the Figma-derived content is
 implemented; `portfolio-production` currently runs the Cloudflare placeholder.

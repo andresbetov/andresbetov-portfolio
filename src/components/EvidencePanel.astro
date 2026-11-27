@@ -1,0 +1,41 @@
+---
+interface Props {
+  variant: "correlation" | "allocation" | "sharpe";
+}
+
+const { variant } = Astro.props;
+---
+
+<div class:list={["evidence-panel", `evidence-panel-${variant}`]}>
+  <slot />
+</div>
+
+<style>
+  .evidence-panel {
+    position: relative;
+    overflow: clip;
+    inline-size: 100%;
+    margin-inline: auto;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg-base);
+  }
+
+  .evidence-panel-correlation,
+  .evidence-panel-allocation {
+    max-inline-size: 20.875rem;
+    aspect-ratio: 334 / 250;
+  }
+
+  .evidence-panel-sharpe {
+    max-inline-size: 21.875rem;
+    aspect-ratio: 350 / 422;
+  }
+
+  @media (width >= 768px) and (width < 1280px) {
+    .evidence-panel-sharpe {
+      block-size: 15.625rem;
+      aspect-ratio: auto;
+    }
+  }
+</style>

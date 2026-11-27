@@ -1,17 +1,47 @@
 ---
+import type { Tier } from "../data/tiers";
+
 interface Props {
-  iconSrc: string;
+  iconSrc?: string;
   label: string;
+  emphasis?: string;
+  variant?: "default" | "fact";
+  tone?: Tier;
 }
 
-const { iconSrc, label } = Astro.props;
+const {
+  iconSrc,
+  label,
+  emphasis,
+  variant = "default",
+  tone = "edge",
+} = Astro.props;
+const isFact = variant === "fact";
 ---
 
-<li class="feature-row">
-  <span class="feature-row-tile" aria-hidden="true">
-    <img src={iconSrc} width="16" height="16" alt="" />
+<li class:list={["feature-row", isFact && "feature-row-fact"]}>
+  {isFact ? (
+    <span
+      class:list={["feature-row-dot", `feature-row-dot-${tone}`]}
+      aria-hidden="true"
+    />
+  ) : (
+    iconSrc && (
+      <span class="feature-row-tile" aria-hidden="true">
+        <img src={iconSrc} width="16" height="16" alt="" />
+      </span>
+    )
+  )}
+  <span
+    class:list={[
+      "feature-row-label",
+      isFact ? "type-body-fact" : "type-body-m",
+      isFact && "feature-row-label-fact",
+    ]}
+  >
+    {emphasis && <strong class="feature-row-emphasis">{emphasis}</strong>}
+    {emphasis ? ` ${label}` : label}
   </span>
-  <span class="feature-row-label type-body-m">{label}</span>
 </li>
 
 <style>
@@ -36,5 +66,51 @@ const { iconSrc, label } = Astro.props;
 
   .feature-row-label {
     color: var(--color-text-secondary);
+  }
+
+  .feature-row-fact {
+    min-block-size: auto;
+    gap: var(--space-10);
+  }
+
+  .feature-row-dot {
+    inline-size: 0.3125rem;
+    block-size: 0.3125rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+
+  .feature-row-dot-edge {
+    background-color: var(--color-tier-edge);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-edge);
+  }
+
+  .feature-row-dot-services {
+    background-color: var(--color-tier-services);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-services);
+  }
+
+  .feature-row-dot-data {
+    background-color: var(--color-tier-data);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-data);
+  }
+
+  .feature-row-dot-security {
+    background-color: var(--color-tier-security);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-orbit);
+  }
+
+  .feature-row-dot-fault {
+    background-color: var(--color-tier-fault);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-coral);
+  }
+
+  .feature-row-label-fact {
+    color: var(--color-text-secondary);
+  }
+
+  .feature-row-emphasis {
+    color: var(--color-text-primary);
+    font-weight: var(--weight-medium);
   }
 </style>

@@ -110,6 +110,18 @@ body.menu-open {
   transform: translateY(0);
 }
 
+.visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /*
  * Reusable section grid. Hero frames have no grid; from Elara onward each
  * section fills a masked 96px (desktop/tablet) or 80px (mobile) grid.
@@ -144,6 +156,7 @@ body.menu-open {
 .type-display-xl,
 .type-display-l,
 .type-display-m,
+.type-heading-l,
 .type-heading-m {
   font-family: var(--font-display);
   font-weight: var(--weight-semibold);
@@ -176,6 +189,12 @@ body.menu-open {
   line-height: var(--type-display-m-line-height);
 }
 
+.type-heading-l {
+  font-size: var(--type-heading-l-size);
+  letter-spacing: var(--type-heading-l-tracking);
+  line-height: var(--type-heading-l-line-height);
+}
+
 .type-heading-m {
   font-size: var(--type-heading-m-size);
   letter-spacing: var(--type-heading-m-tracking);
@@ -184,6 +203,8 @@ body.menu-open {
 
 .type-body-l,
 .type-body-m,
+.type-body-compact,
+.type-body-fact,
 .type-body-s {
   font-family: var(--font-body);
   font-weight: var(--weight-regular);
@@ -197,6 +218,16 @@ body.menu-open {
 .type-body-m {
   font-size: var(--type-body-m-size);
   line-height: var(--type-body-m-line-height);
+}
+
+.type-body-compact {
+  font-size: var(--type-body-compact-size);
+  line-height: var(--type-body-compact-line-height);
+}
+
+.type-body-fact {
+  font-size: var(--type-body-fact-size);
+  line-height: var(--type-body-fact-line-height);
 }
 
 .type-body-s {
@@ -229,6 +260,8 @@ body.menu-open {
 
 .type-code-m,
 .type-code-xs,
+.type-code-2xs,
+.type-code-s,
 .type-code-caps-m,
 .type-code-caps-s,
 .type-code-block {
@@ -244,6 +277,16 @@ body.menu-open {
 .type-code-xs {
   font-size: var(--type-code-xs-size);
   line-height: var(--type-code-xs-line-height);
+}
+
+.type-code-2xs {
+  font-size: var(--type-code-2xs-size);
+  line-height: var(--type-code-2xs-line-height);
+}
+
+.type-code-s {
+  font-size: var(--type-code-s-size);
+  line-height: var(--type-code-s-line-height);
 }
 
 .type-code-caps-m {
