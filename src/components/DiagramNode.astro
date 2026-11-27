@@ -1,0 +1,151 @@
+---
+import type { Tier } from "../data/tiers";
+
+interface DiagramNodeData {
+  tier: Tier;
+  title: string;
+  subtitle: string;
+  mobileSubtitle?: string;
+  focus?: boolean;
+}
+
+interface Props {
+  node: DiagramNodeData;
+  iconSrc: string;
+  dashed?: boolean;
+}
+
+const { node, iconSrc, dashed = false } = Astro.props;
+---
+
+<div
+  class:list={[
+    "diagram-node",
+    `diagram-node-${node.tier}`,
+    { "is-focused": node.focus, "is-dashed": dashed },
+  ]}
+>
+  <span class="diagram-node-tile" aria-hidden="true">
+    <img src={iconSrc} width="16" height="16" alt="" />
+  </span>
+  <span class="diagram-node-copy">
+    <span class="diagram-node-title type-code-m">{node.title}</span>
+    <span class="diagram-node-subtitle type-label-s">
+      <span
+        class:list={{ "diagram-node-subtitle-default": node.mobileSubtitle }}
+      >
+        {node.subtitle}
+      </span>
+      {node.mobileSubtitle && (
+        <span class="diagram-node-subtitle-mobile">{node.mobileSubtitle}</span>
+      )}
+    </span>
+  </span>
+</div>
+
+<style>
+  .diagram-node {
+    display: flex;
+    block-size: 3.25rem;
+    min-inline-size: 0;
+    align-items: center;
+    padding: 0 var(--space-10);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-2);
+    gap: var(--space-8);
+  }
+
+  .diagram-node-tile {
+    display: flex;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+  }
+
+  .diagram-node-edge .diagram-node-tile {
+    background-color: var(--color-tier-edge);
+  }
+
+  .diagram-node-services .diagram-node-tile {
+    background-color: var(--color-tier-services);
+  }
+
+  .diagram-node-data .diagram-node-tile {
+    background-color: var(--color-tier-data);
+  }
+
+  .diagram-node-security .diagram-node-tile {
+    background-color: var(--color-tier-security);
+  }
+
+  .diagram-node-copy {
+    display: flex;
+    min-inline-size: 0;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .diagram-node-title {
+    color: var(--color-text-primary);
+    overflow-wrap: break-word;
+  }
+
+  .diagram-node-subtitle {
+    color: var(--color-text-tertiary);
+    overflow-wrap: break-word;
+  }
+
+  .diagram-node-subtitle-mobile {
+    display: none;
+  }
+
+  .diagram-node.is-focused {
+    border: 1.5px solid var(--color-border-services-focus);
+    background-color: var(--color-surface-2);
+    box-shadow: 0 0 0.75rem var(--color-glow-services);
+  }
+
+  .diagram-node.is-dashed {
+    block-size: auto;
+    min-block-size: 3.4375rem;
+    padding-block: 0.5625rem;
+    border-style: dashed;
+  }
+
+  .diagram-node.is-dashed.diagram-node-services {
+    border-color: var(--color-tier-services);
+  }
+
+  .diagram-node.is-dashed.diagram-node-security {
+    border-color: var(--color-tier-security);
+  }
+
+  @media (width >= 768px) and (width < 1200px), (width >= 1440px) {
+    .diagram-node-title,
+    .diagram-node-subtitle {
+      white-space: nowrap;
+    }
+  }
+
+  @media (width >= 768px) {
+    .diagram-node.is-focused {
+      border-width: 1px;
+      border-color: var(--color-border-strong);
+      box-shadow: none;
+    }
+  }
+
+  @media (width <= 767.98px) {
+    .diagram-node-subtitle-default {
+      display: none;
+    }
+
+    .diagram-node-subtitle-mobile {
+      display: inline;
+    }
+  }
+</style>

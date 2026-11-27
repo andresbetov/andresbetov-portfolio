@@ -1,0 +1,150 @@
+---
+interface Props {
+  id: string;
+  index: string;
+  label: string;
+  title: string;
+  meta: string;
+}
+
+const { id, index, label, title, meta } = Astro.props;
+const titleParts = title.trim().split(/\s+/);
+const titleEnd = titleParts.pop() ?? title;
+const titleStart = titleParts.join(" ");
+---
+
+<div class="section-opener">
+  <p class="section-opener-eyebrow type-code-caps-m">
+    <span class="section-opener-index">{index}</span>
+    <span class="section-opener-dash" aria-hidden="true"></span>
+    <span class="section-opener-label">{label}</span>
+  </p>
+
+  <h2 class="section-opener-title type-section" id={id}>
+    {titleStart ? `${titleStart} ` : ""}
+    <span class="section-opener-title-end">{titleEnd}</span>
+  </h2>
+
+  <div class="section-opener-rule">
+    <span class="section-opener-node" aria-hidden="true">
+      <img src="/icons/hero/scroll-node.svg" width="27" height="27" alt="" />
+    </span>
+    <span class="section-opener-line" aria-hidden="true"></span>
+    <p class="section-opener-meta type-code-caps-m">{meta}</p>
+  </div>
+</div>
+
+<style>
+  .section-opener {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.375rem;
+  }
+
+  .section-opener-eyebrow {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    gap: var(--space-14);
+  }
+
+  .section-opener-index {
+    color: var(--color-tier-data);
+  }
+
+  .section-opener-dash {
+    inline-size: 2.75rem;
+    block-size: 1px;
+    background-color: var(--color-line-amber);
+  }
+
+  .section-opener-label {
+    color: var(--color-text-secondary);
+  }
+
+  .section-opener-title {
+    /* Fontsource renders wider than the Figma text at this size; wdth 88
+       keeps the 1440px title on one line and the tablet title on one line. */
+    font-variation-settings:
+      "opsz" 14,
+      "wdth" 88;
+    background-image: linear-gradient(
+      90deg,
+      var(--color-text-primary) 0%,
+      var(--color-text-primary) 60%,
+      var(--color-name-end) 100%
+    );
+    background-clip: text;
+    color: transparent;
+    /* stylelint-disable-next-line property-no-vendor-prefix */
+    -webkit-background-clip: text;
+  }
+
+  @media (width >= 1200px) {
+    .section-opener-title {
+      /* The 1440px frame is 10.1em wide; keep the title on one line as the
+         viewport narrows before the 1200px desktop layout. */
+      font-size: min(var(--type-section-size), calc((100vw - 15rem) / 10.1));
+      line-height: 1;
+    }
+  }
+
+  .section-opener-rule {
+    display: flex;
+    align-items: center;
+    inline-size: 100%;
+    gap: var(--space-16);
+  }
+
+  .section-opener-node {
+    position: relative;
+    display: inline-flex;
+    inline-size: 0.4375rem;
+    block-size: 0.4375rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .section-opener-node img {
+    max-inline-size: none;
+  }
+
+  .section-opener-line {
+    flex: 1;
+    block-size: 1px;
+    background-image: linear-gradient(
+      90deg,
+      var(--color-line-amber) 0%,
+      var(--color-line-ink-mid) 35%,
+      var(--color-line-ink-end) 100%
+    );
+  }
+
+  .section-opener-meta {
+    color: var(--color-text-secondary);
+    opacity: 0.85;
+    white-space: nowrap;
+  }
+
+  @media (width <= 767.98px) {
+    .section-opener-title {
+      background-image: none;
+      color: var(--color-text-primary);
+    }
+
+    .section-opener-title-end {
+      background-image: linear-gradient(
+        90deg,
+        var(--color-text-primary) 0%,
+        var(--color-text-primary) 50%,
+        var(--color-name-end) 100%
+      );
+      background-clip: text;
+      color: transparent;
+      /* stylelint-disable-next-line property-no-vendor-prefix */
+      -webkit-background-clip: text;
+    }
+  }
+</style>

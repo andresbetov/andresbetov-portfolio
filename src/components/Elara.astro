@@ -1,0 +1,1000 @@
+---
+import Button from "./Button.astro";
+import Card from "./Card.astro";
+import Chip from "./Chip.astro";
+import FeatureRow from "./FeatureRow.astro";
+import FlowArrow from "./FlowArrow.astro";
+import JourneyDiagram from "./JourneyDiagram.astro";
+import { elara } from "../data/elara";
+
+const { decisions, demo, meta, service, subtitle, titleLines } = elara;
+const [controller, serviceStation] = service.main;
+const copyCommands = demo.commands
+  .map((command) => command.parts.map((part) => part.text ?? "").join(""))
+  .join("\n");
+---
+
+<section class="elara" aria-labelledby="elara-meta-name elara-title">
+  <header class="elara-header">
+    <div class="elara-meta">
+      <div class="elara-index type-label-caps">
+        <span class="elara-index-label">{meta.featured}</span>
+        <span class="elara-index-name" id="elara-meta-name">
+          {meta.name}
+        </span>
+        <span
+          class="elara-bars"
+          role="img"
+          aria-label={`Project ${meta.projectIndex} of ${meta.projectCount}`}
+        >
+          {Array.from({ length: meta.projectCount }, (_, index) => (
+            <span
+              class:list={[
+                "elara-bar",
+                index + 1 === meta.projectIndex && "elara-bar-current",
+              ]}
+              aria-hidden="true"
+            />
+          ))}
+        </span>
+      </div>
+
+      <ul class="elara-tags" aria-label="Project tags">
+        {meta.chips.map((chip) => (
+          <li>
+            <Chip label={chip} />
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <h3 class="elara-title type-display-xl" id="elara-title">
+      {titleLines[0]} <br class="elara-title-break" />
+      {titleLines[1]}
+    </h3>
+    <p class="elara-subtitle type-body-l">{subtitle}</p>
+  </header>
+
+  <div class="elara-cards">
+    <div class="elara-row elara-row-primary">
+      <div class="elara-card">
+        <Card labelledby="journey-title">
+          <span class="journey-progress" aria-hidden="true"></span>
+          <JourneyDiagram />
+        </Card>
+      </div>
+
+      <div class="elara-card">
+        <Card labelledby="decisions-title">
+          <span class="decisions-glow" aria-hidden="true"></span>
+          <div class="decisions-layout">
+            <div class="decisions-visual-column">
+              <span class="decisions-tag type-label-m">
+                <img
+                  src={`/icons/elara/${decisions.tag.icon}.svg`}
+                  width="16"
+                  height="16"
+                  alt=""
+                />
+                {decisions.tag.label}
+              </span>
+              <div class="decisions-visual">
+                <img
+                  src="/icons/elara/system-design.svg"
+                  width="272"
+                  height="234"
+                  alt=""
+                />
+              </div>
+            </div>
+
+            <div class="decisions-copy">
+              <div class="decisions-caption">
+                <h4 class="type-heading-m" id="decisions-title">
+                  {decisions.title}
+                </h4>
+                <p class="type-body-m">{decisions.description}</p>
+              </div>
+
+              <span class="decisions-divider" aria-hidden="true"></span>
+
+              <ul class="decisions-list">
+                {decisions.items.map((item) => (
+                  <FeatureRow
+                    iconSrc={`/icons/elara/${item.icon}.svg`}
+                    label={item.label}
+                  />
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+
+    <div class="elara-row elara-row-secondary">
+      <div class="elara-card">
+        <Card labelledby="service-title">
+          <span class="service-dotgrid" aria-hidden="true"></span>
+          <span class="service-glow" aria-hidden="true"></span>
+
+          <div class="service-content">
+            <h4 class="card-label type-label-caps" id="service-title">
+              <span
+                class="card-label-dot card-label-dot-edge"
+                aria-hidden="true"
+              ></span>
+              {service.label}
+            </h4>
+
+            <div class="service-journey">
+              <div class="service-station service-station-main">
+                <div class="service-station-head">
+                  <span
+                    class:list={[
+                      "station-dot",
+                      `station-dot-${controller.tier}`,
+                    ]}
+                    aria-hidden="true"
+                  ></span>
+                  <span class="service-station-title type-label-m">
+                    {controller.title}
+                  </span>
+                </div>
+                <p class="service-station-detail type-body-s">
+                  {controller.description}
+                </p>
+              </div>
+
+              <div class="service-link">
+                <FlowArrow tone="edge" />
+              </div>
+
+              <div class="service-station service-station-main">
+                <div class="service-station-head">
+                  <span
+                    class:list={[
+                      "station-dot",
+                      `station-dot-${serviceStation.tier}`,
+                    ]}
+                    aria-hidden="true"
+                  ></span>
+                  <span class="service-station-title type-label-m">
+                    {serviceStation.title}
+                  </span>
+                </div>
+                <p class="service-station-detail type-body-s">
+                  {serviceStation.description}
+                </p>
+              </div>
+
+              <div class="service-link service-link-split">
+                <span class="service-link-arrow">
+                  <FlowArrow tone="services" />
+                </span>
+                <span class="service-link-arrow">
+                  <FlowArrow tone="fault" />
+                </span>
+              </div>
+
+              <div class="service-paths">
+                {service.paths.map((station) => (
+                  <div class="service-station">
+                    <div class="service-station-head">
+                      <span
+                        class:list={[
+                          "station-dot",
+                          `station-dot-${station.tier}`,
+                        ]}
+                        aria-hidden="true"
+                      />
+                      <span class="service-station-title type-label-m">
+                        {station.title}
+                      </span>
+                    </div>
+                    <p class="service-station-detail type-body-s">
+                      {station.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      <div class="elara-card">
+        <Card labelledby="demo-title">
+          <div class="demo-intro">
+            <h4 class="card-label type-label-caps" id="demo-title">
+              <span
+                class="card-label-dot card-label-dot-edge"
+                aria-hidden="true"
+              ></span>
+              {demo.label}
+            </h4>
+            <p class="demo-description type-body-m">{demo.description}</p>
+          </div>
+
+          <div class="code-block">
+            <div class="code-bar">
+              <span class="code-language type-label-s">{demo.language}</span>
+              <button
+                class="code-copy type-label-s"
+                type="button"
+                data-copy-command
+                data-copy-text={copyCommands}
+              >
+                <img
+                  class="code-copy-icon code-copy-icon-copy"
+                  src="/icons/elara/copy.svg"
+                  width="14"
+                  height="14"
+                  alt=""
+                />
+                <img
+                  class="code-copy-icon code-copy-icon-check"
+                  src="/icons/elara/copy-check.svg"
+                  width="14"
+                  height="14"
+                  alt=""
+                />
+                <span data-copy-label>{demo.copyLabel}</span>
+              </button>
+              <span
+                class="copy-status"
+                role="status"
+                aria-live="polite"
+                data-copy-status
+              ></span>
+            </div>
+
+            <span class="code-divider" aria-hidden="true"></span>
+
+            <div class="code-commands">
+              {demo.commands.map((command) => (
+                <p class="code-command">
+                  <span class="code-prompt" aria-hidden="true">
+                    $
+                  </span>
+                  <code>
+                    {command.parts.map((part) =>
+                      part.wbr ? (
+                        <wbr />
+                      ) : (
+                        <span
+                          class:list={[
+                            "code-part",
+                            part.tone && `code-part-${part.tone}`,
+                          ]}
+                        >
+                          {part.text}
+                        </span>
+                      ),
+                    )}
+                  </code>
+                </p>
+              ))}
+            </div>
+          </div>
+
+          <div class="demo-resources">
+            <h5 class="card-label type-label-caps">
+              <span
+                class="card-label-dot card-label-dot-edge"
+                aria-hidden="true"
+              ></span>
+              {demo.resourcesLabel}
+            </h5>
+
+            <ul class="demo-links">
+              {demo.links.map((link) => (
+                <li class="demo-link">
+                  <Button
+                    href={link.href}
+                    label={link.label}
+                    iconSrc={`/icons/elara/${link.icon}.svg`}
+                    variant={link.variant}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Card>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .elara {
+    margin-block-start: 3.5rem;
+  }
+
+  .elara-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .elara-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-14);
+  }
+
+  .elara-index {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    color: var(--color-text-secondary);
+    gap: var(--space-14);
+  }
+
+  .elara-index-name {
+    color: var(--color-tier-edge);
+  }
+
+  .elara-bars {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .elara-bar {
+    inline-size: 1.75rem;
+    block-size: 0.25rem;
+    border-radius: var(--radius-full);
+    background-color: var(--color-border-strong);
+  }
+
+  .elara-bar-current {
+    background-color: var(--color-tier-edge);
+  }
+
+  .elara-tags {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+    gap: var(--space-8);
+    list-style: none;
+  }
+
+  .elara-title {
+    /* Fontsource renders wider than the Figma text; wdth 95 restores the
+       1440px line breaks and line lengths. */
+    font-variation-settings:
+      "opsz" 14,
+      "wdth" 95;
+    color: var(--color-text-primary);
+  }
+
+  .elara-title-break {
+    display: none;
+  }
+
+  @media (width >= 1280px) {
+    .elara-title-break {
+      display: initial;
+    }
+  }
+
+  .elara-subtitle {
+    max-inline-size: 43.75rem;
+    color: var(--color-text-secondary);
+  }
+
+  .elara-cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    margin-block-start: 3.5rem;
+  }
+
+  .elara-row {
+    display: grid;
+    gap: var(--space-24);
+  }
+
+  .elara-row-primary {
+    grid-template-columns: minmax(0, 856fr) minmax(0, 320fr);
+  }
+
+  .elara-row-secondary {
+    grid-template-columns: minmax(0, 424fr) minmax(0, 752fr);
+  }
+
+  .elara-card {
+    min-inline-size: 0;
+  }
+
+  .journey-progress {
+    position: absolute;
+    z-index: 2;
+    inset-block-start: -1px;
+    inset-inline-start: -1px;
+    inline-size: 20.375rem;
+    block-size: 0.1875rem;
+    background-color: var(--color-tier-edge);
+  }
+
+  .decisions-glow {
+    position: absolute;
+    z-index: 0;
+    inset-block-start: -3.75rem;
+    inset-inline-start: 3.75rem;
+    inline-size: 16.25rem;
+    block-size: 13.75rem;
+    border-radius: 50%;
+    background-image: radial-gradient(
+      circle,
+      var(--color-glow-orbit) 0%,
+      transparent 70%
+    );
+    filter: blur(2rem);
+    pointer-events: none;
+  }
+
+  .decisions-layout {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-20);
+  }
+
+  .decisions-visual-column,
+  .decisions-copy {
+    display: contents;
+  }
+
+  .decisions-tag {
+    display: inline-flex;
+    block-size: 2.125rem;
+    inline-size: fit-content;
+    align-items: center;
+    padding: var(--space-6) var(--space-14) var(--space-6) var(--space-10);
+    border: 1px solid var(--color-border-security);
+    border-radius: var(--radius-full);
+    background-color: var(--color-tint-security-strong);
+    color: var(--color-tier-security);
+    gap: var(--space-8);
+  }
+
+  .decisions-visual {
+    position: relative;
+    inline-size: 100%;
+    aspect-ratio: 272 / 181;
+  }
+
+  .decisions-visual img {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 0;
+    inline-size: 100%;
+    block-size: auto;
+    transform: translateY(-50%);
+  }
+
+  .decisions-caption {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .decisions-caption h4 {
+    margin: 0;
+    color: var(--color-text-primary);
+  }
+
+  .decisions-caption p {
+    color: var(--color-text-secondary);
+  }
+
+  .decisions-divider {
+    block-size: 1px;
+    inline-size: 100%;
+    background-color: var(--color-border-subtle);
+  }
+
+  .decisions-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    gap: var(--space-12);
+    list-style: none;
+  }
+
+  .service-dotgrid {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    background-image: radial-gradient(
+      var(--color-grid-dot) 1px,
+      transparent 1px
+    );
+    background-size: 1rem 1rem;
+    mask-image: radial-gradient(
+      ellipse 120% 95% at 18% 8%,
+      var(--color-mask) 0%,
+      transparent 78%
+    );
+    pointer-events: none;
+  }
+
+  .service-glow {
+    position: absolute;
+    z-index: 0;
+    inset-inline-end: -4.375rem;
+    inset-block-end: -6.25rem;
+    inline-size: 21.875rem;
+    block-size: 16.25rem;
+    border-radius: 50%;
+    background-image: radial-gradient(
+      circle,
+      var(--color-glow-coral) 0%,
+      transparent 70%
+    );
+    filter: blur(2rem);
+    pointer-events: none;
+  }
+
+  .service-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-label {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    color: var(--color-tier-edge);
+    gap: var(--space-8);
+  }
+
+  .card-label-dot {
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+
+  .card-label-dot-edge {
+    background-color: var(--color-tier-edge);
+    box-shadow: 0 0 0.375rem var(--color-glow-name);
+  }
+
+  .service-journey {
+    display: flex;
+    flex-direction: column;
+    margin-block-start: 3.2188rem;
+  }
+
+  .service-station {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-12) var(--space-14);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-2);
+    gap: var(--space-4);
+  }
+
+  .service-station-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .service-station-title {
+    color: var(--color-text-primary);
+  }
+
+  .service-station-detail {
+    color: var(--color-text-tertiary);
+  }
+
+  .station-dot {
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+
+  .station-dot-edge {
+    background-color: var(--color-tier-edge);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-edge);
+  }
+
+  .station-dot-services {
+    background-color: var(--color-tier-services);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-services);
+  }
+
+  .station-dot-data {
+    background-color: var(--color-tier-data);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-data);
+  }
+
+  .station-dot-fault {
+    background-color: var(--color-tier-fault);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-fault);
+  }
+
+  .service-link {
+    display: flex;
+    block-size: 1.125rem;
+    align-items: center;
+    padding-inline-start: 0.8125rem;
+  }
+
+  .service-link-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0;
+    gap: var(--space-10);
+  }
+
+  .service-link-arrow {
+    display: flex;
+    align-items: center;
+    padding-inline-start: 0.8125rem;
+  }
+
+  .service-paths {
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-10);
+  }
+
+  .service-paths .service-station {
+    flex: 1;
+    min-inline-size: 0;
+  }
+
+  .demo-intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .demo-description {
+    color: var(--color-text-secondary);
+  }
+
+  .code-block {
+    overflow: clip;
+    margin-block-start: var(--space-20);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg-base);
+  }
+
+  .code-bar {
+    display: flex;
+    block-size: 2.25rem;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: var(--space-20) var(--space-16);
+  }
+
+  .code-language,
+  .code-copy {
+    color: var(--color-text-tertiary);
+  }
+
+  .code-copy {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    cursor: pointer;
+  }
+
+  .code-copy-icon {
+    flex-shrink: 0;
+  }
+
+  .code-copy-icon-check {
+    display: none;
+  }
+
+  .code-copy.is-copied .code-copy-icon-copy {
+    display: none;
+  }
+
+  .code-copy.is-copied .code-copy-icon-check {
+    display: block;
+  }
+
+  .copy-status {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .code-divider {
+    display: block;
+    block-size: 1px;
+    background-color: var(--color-border-subtle);
+  }
+
+  .code-commands {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-16) var(--space-20);
+    font-family: var(--font-mono);
+    font-size: var(--type-code-block-size);
+    font-weight: var(--weight-regular);
+    line-height: var(--type-code-block-line-height);
+  }
+
+  .code-command {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-12);
+  }
+
+  .code-prompt {
+    flex-shrink: 0;
+    color: var(--color-text-tertiary);
+  }
+
+  .code-command code {
+    flex: 1;
+    min-inline-size: 0;
+    color: var(--color-text-secondary);
+    font-family: inherit;
+    white-space: pre;
+  }
+
+  .code-part-primary {
+    color: var(--color-text-primary);
+  }
+
+  .code-part-edge {
+    color: var(--color-tier-edge);
+  }
+
+  .code-part-services {
+    color: var(--color-tier-services);
+  }
+
+  .demo-resources {
+    display: flex;
+    flex-direction: column;
+    margin-block-start: var(--space-20);
+    gap: var(--space-16);
+  }
+
+  .demo-links {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    gap: var(--space-12);
+    list-style: none;
+  }
+
+  .demo-link {
+    flex: 1;
+    min-inline-size: 0;
+  }
+
+  @media (width >= 768px) and (width < 1280px) {
+    .elara {
+      margin-block-start: 2.5rem;
+    }
+
+    .elara-meta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .elara-title {
+      font-size: var(--type-display-l-size);
+      letter-spacing: var(--type-display-l-tracking);
+      line-height: var(--type-display-l-line-height);
+    }
+
+    .elara-cards {
+      margin-block-start: 2.5rem;
+    }
+
+    .elara-row-primary,
+    .elara-row-secondary {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .decisions-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 310fr) minmax(0, 284fr);
+      gap: 2.25rem;
+    }
+
+    .decisions-visual-column {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-20);
+    }
+
+    .decisions-copy {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-20);
+    }
+
+    .decisions-visual {
+      aspect-ratio: 310 / 251;
+    }
+
+    .service-journey {
+      margin-block-start: var(--space-24);
+    }
+
+    .service-station-main {
+      min-block-size: 2.875rem;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding-block: var(--space-12);
+    }
+
+    .service-station-main .service-station-detail {
+      margin-inline-start: var(--space-16);
+      text-align: end;
+    }
+  }
+
+  @media (width >= 768px) and (width < 1440px) {
+    .demo-link:nth-child(1) {
+      flex: 1.08;
+    }
+
+    .demo-link:nth-child(2) {
+      flex: 1.04;
+    }
+
+    .demo-link:nth-child(3) {
+      flex: 0.88;
+    }
+  }
+
+  @media (width <= 767.98px) {
+    .elara {
+      margin-block-start: 2rem;
+    }
+
+    .elara-meta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .elara-title {
+      font-size: var(--type-display-m-size);
+      font-variation-settings:
+        "opsz" 14,
+        "wdth" 100;
+      letter-spacing: var(--type-display-m-tracking);
+      line-height: var(--type-display-m-line-height);
+    }
+
+    .elara-subtitle {
+      font-size: var(--type-body-m-size);
+      line-height: var(--type-body-m-line-height);
+    }
+
+    .elara-cards {
+      margin-block-start: 2rem;
+    }
+
+    .elara-row-primary,
+    .elara-row-secondary {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .journey-progress {
+      display: none;
+    }
+
+    .decisions-layout {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-20);
+    }
+
+    .decisions-visual-column,
+    .decisions-copy {
+      display: contents;
+    }
+
+    .decisions-visual {
+      aspect-ratio: 308 / 181;
+    }
+
+    .decisions-list {
+      margin-block-start: 0;
+    }
+
+    .service-journey {
+      margin-block-start: var(--space-20);
+    }
+
+    .service-paths {
+      gap: var(--space-10);
+    }
+
+    .demo-links {
+      flex-direction: column;
+    }
+
+    .code-commands {
+      gap: var(--space-10);
+    }
+
+    .code-command code {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+  }
+</style>
+
+<script>
+  const copyToClipboard = async (text: string) => {
+    if (!navigator.clipboard?.writeText) {
+      return false;
+    }
+
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-copy-command]")
+    .forEach((button) => {
+      const label = button.querySelector<HTMLElement>("[data-copy-label]");
+
+      if (!label) {
+        return;
+      }
+
+      const defaultLabel = label.textContent ?? "Copy";
+      let resetTimer: number | undefined;
+
+      const setFeedback = (success: boolean) => {
+        label.textContent = success ? "Copied" : "Copy failed";
+        button.classList.toggle("is-copied", success);
+
+        const status = button
+          .closest(".code-block")
+          ?.querySelector<HTMLElement>("[data-copy-status]");
+
+        if (status) {
+          status.textContent = "";
+          requestAnimationFrame(() => {
+            status.textContent = success ? "Commands copied." : "Copy failed.";
+          });
+        }
+
+        window.clearTimeout(resetTimer);
+        resetTimer = window.setTimeout(() => {
+          label.textContent = defaultLabel;
+          button.classList.remove("is-copied");
+        }, 3000);
+      };
+
+      button.addEventListener("click", async () => {
+        const copied = await copyToClipboard(button.dataset.copyText ?? "");
+        setFeedback(copied);
+      });
+    });
+</script>

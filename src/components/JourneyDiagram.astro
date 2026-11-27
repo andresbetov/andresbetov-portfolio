@@ -1,0 +1,1038 @@
+---
+import DiagramNode from "./DiagramNode.astro";
+import FlowArrow from "./FlowArrow.astro";
+import { elara } from "../data/elara";
+
+const { journey } = elara;
+const { client, edge, services, data } = journey.bands;
+
+const desktopConnectors = [
+  { id: "client-gateway", file: "client-to-gateway", width: 34.8, height: 8.6 },
+  { id: "gateway-config", file: "gateway-to-config", width: 36.8, height: 106 },
+  {
+    id: "gateway-discovery",
+    file: "gateway-to-discovery",
+    width: 36.8,
+    height: 44,
+  },
+  {
+    id: "gateway-inventory",
+    file: "gateway-to-inventory",
+    width: 36.8,
+    height: 28.1,
+  },
+  { id: "gateway-unit", file: "gateway-to-unit", width: 36.8, height: 90.1 },
+  {
+    id: "inventory-postgres",
+    file: "inventory-to-postgres",
+    width: 40.8,
+    height: 40.1,
+  },
+  {
+    id: "inventory-vault",
+    file: "inventory-to-vault",
+    width: 40.8,
+    height: 20,
+  },
+  { id: "unit-vault", file: "unit-to-vault", width: 40.8, height: 28 },
+  {
+    id: "unit-postgres",
+    file: "unit-to-postgres",
+    width: 40.8,
+    height: 32.1,
+  },
+  { id: "inventory-unit", file: "inventory-to-unit", width: 12, height: 18 },
+] as const;
+---
+
+<figure class="journey" aria-labelledby="journey-title">
+  <div class="journey-topbar">
+    <ul class="journey-stack" aria-label="Technology stack">
+      {elara.stack.map((item) => (
+        <li class="journey-stack-cell">
+          <span
+            class:list={["journey-dot", `journey-dot-${item.tier}`]}
+            aria-hidden="true"
+          />
+          <span class="journey-stack-label type-code-xs">{item.label}</span>
+        </li>
+      ))}
+    </ul>
+
+    <ul class="journey-legend" aria-label="Diagram legend">
+      {elara.legend.map((item) => (
+        <li class="journey-legend-item">
+          <span
+            class:list={[
+              "journey-legend-line",
+              `journey-legend-line-${item.variant}`,
+            ]}
+            aria-hidden="true"
+          >
+            <svg
+              class="journey-legend-line-mark"
+              width="28"
+              height="8"
+              viewBox="0 0 28 8"
+              fill="none"
+            >
+              {item.variant === "solid" ? (
+                <path
+                  d="M1 4H27"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              ) : (
+                <path
+                  d="M1 4H3.16667M27 4H24.8333M7.5 4H11.8333M16.1667 4H20.5"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              )}
+            </svg>
+          </span>
+          <span class="journey-legend-label type-label-s">{item.label}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="journey-map">
+    <div class="journey-band journey-band-client">
+      <div class="journey-band-head">
+        <p class="journey-band-label type-label-s">
+          <span
+            class:list={["journey-band-dot", `journey-band-dot-${client.tier}`]}
+            aria-hidden="true"
+          ></span>
+          {client.label}
+        </p>
+        <p class="journey-band-description type-body-s">{client.description}</p>
+      </div>
+      <div class="journey-node journey-node-client">
+        <DiagramNode
+          node={client.nodes[0]}
+          iconSrc={`/icons/elara/${client.nodes[0].icon}.svg`}
+        />
+      </div>
+    </div>
+
+    <div class="journey-link journey-link-client-edge" aria-hidden="true">
+      <FlowArrow tone="edge" />
+    </div>
+
+    <div class="journey-band journey-band-edge">
+      <div class="journey-band-head">
+        <p class="journey-band-label type-label-s">
+          <span
+            class:list={["journey-band-dot", `journey-band-dot-${edge.tier}`]}
+            aria-hidden="true"
+          ></span>
+          {edge.label}
+        </p>
+        <p class="journey-band-description type-body-s">{edge.description}</p>
+      </div>
+      <div class="journey-node journey-node-gateway">
+        <DiagramNode
+          node={edge.nodes[0]}
+          iconSrc={`/icons/elara/${edge.nodes[0].icon}.svg`}
+        />
+      </div>
+    </div>
+
+    <div class="journey-link journey-link-edge-services" aria-hidden="true">
+      <FlowArrow tone="edge" />
+    </div>
+
+    <div class="journey-band journey-band-services">
+      <div class="journey-band-head">
+        <p class="journey-band-label type-label-s">
+          <span
+            class:list={[
+              "journey-band-dot",
+              `journey-band-dot-${services.tier}`,
+            ]}
+            aria-hidden="true"
+          ></span>
+          {services.label}
+        </p>
+        <p class="journey-band-description type-body-s">
+          {services.description}
+        </p>
+      </div>
+
+      <div class="journey-group journey-group-platform">
+        {services.platform.map((node) => (
+          <div class:list={["journey-node", `journey-node-${node.id}`]}>
+            <DiagramNode
+              node={node}
+              iconSrc={`/icons/elara/${node.icon}.svg`}
+            />
+          </div>
+        ))}
+        <div class="journey-platform-summary">
+          <DiagramNode
+            node={{
+              tier: "services",
+              title: services.mobilePlatform.title,
+              subtitle: services.mobilePlatform.subtitle,
+            }}
+            iconSrc={`/icons/elara/${services.mobilePlatform.icon}.svg`}
+            dashed
+          />
+        </div>
+      </div>
+
+      <div class="journey-group journey-group-domain">
+        {services.domain.map((node) => (
+          <div class:list={["journey-node", `journey-node-${node.id}`]}>
+            <DiagramNode
+              node={node}
+              iconSrc={`/icons/elara/${node.icon}.svg`}
+            />
+          </div>
+        ))}
+        <span
+          class="journey-pair-arrow journey-pair-arrow-tablet"
+          aria-hidden="true"
+        >
+          <img
+            src="/icons/elara/connectors/inventory-to-unit-tablet.svg"
+            width="12"
+            height="11"
+            alt=""
+          />
+        </span>
+        <span
+          class="journey-pair-arrow journey-pair-arrow-mobile"
+          aria-hidden="true"
+        >
+          <FlowArrow tone="services" direction="right" />
+        </span>
+      </div>
+    </div>
+
+    <div class="journey-link journey-link-services-data" aria-hidden="true">
+      <span class="journey-link-arrow journey-link-arrow-left">
+        <FlowArrow tone="data" />
+      </span>
+      <span class="journey-link-arrow journey-link-arrow-right">
+        <FlowArrow tone="data" />
+      </span>
+    </div>
+
+    <div class="journey-band journey-band-data">
+      <div class="journey-band-head">
+        <p class="journey-band-label type-label-s">
+          <span
+            class:list={["journey-band-dot", `journey-band-dot-${data.tier}`]}
+            aria-hidden="true"
+          ></span>
+          {data.label}
+        </p>
+        <p class="journey-band-description type-body-s">{data.description}</p>
+      </div>
+      {data.nodes.map((node) => (
+        <div class:list={["journey-node", `journey-node-${node.id}`]}>
+          <DiagramNode node={node} iconSrc={`/icons/elara/${node.icon}.svg`} />
+        </div>
+      ))}
+    </div>
+
+    <div class="journey-connectors-desktop" aria-hidden="true">
+      {desktopConnectors.map((connector) => (
+        <img
+          class:list={[
+            "journey-connector",
+            `journey-connector-${connector.id}`,
+          ]}
+          src={`/icons/elara/connectors/${connector.file}.svg`}
+          width={connector.width}
+          height={connector.height}
+          alt=""
+        />
+      ))}
+    </div>
+
+    <img
+      class="journey-connector-client-edge-tablet"
+      src="/icons/elara/connectors/client-to-gateway-tablet.svg"
+      width="24"
+      height="10"
+      alt=""
+      aria-hidden="true"
+    />
+
+    <img
+      class="journey-connectors-tablet"
+      src="/icons/elara/connectors/tablet-connectors.svg"
+      width="630"
+      height="533"
+      alt=""
+      aria-hidden="true"
+    />
+  </div>
+
+  <figcaption class="journey-caption">
+    <h4 class="journey-caption-title type-label-s" id="journey-title">
+      <span
+        class="journey-caption-dot journey-band-dot-edge"
+        aria-hidden="true"
+      ></span>
+      {journey.label}
+    </h4>
+    <p class="journey-caption-text type-body-m">{journey.description}</p>
+  </figcaption>
+</figure>
+
+<style>
+  .journey {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    gap: var(--space-20);
+  }
+
+  .journey-topbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-12) var(--space-16);
+  }
+
+  .journey-stack,
+  .journey-legend {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .journey-stack {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-full);
+    background-color: var(--color-surface-2);
+  }
+
+  .journey-stack-cell {
+    display: flex;
+    align-items: center;
+    padding: var(--space-8) var(--space-14);
+    gap: var(--space-8);
+    white-space: nowrap;
+  }
+
+  .journey-stack-cell + .journey-stack-cell {
+    border-inline-start: 1px solid var(--color-border-strong);
+  }
+
+  .journey-stack-label {
+    color: var(--color-text-primary);
+  }
+
+  .journey-dot {
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+
+  .journey-dot-edge {
+    background-color: var(--color-tier-edge);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-edge);
+  }
+
+  .journey-dot-services {
+    background-color: var(--color-tier-services);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-services);
+  }
+
+  .journey-dot-data {
+    background-color: var(--color-tier-data);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-data);
+  }
+
+  .journey-legend {
+    display: flex;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-12) var(--space-24);
+  }
+
+  .journey-legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-10);
+  }
+
+  .journey-legend-line {
+    display: flex;
+    inline-size: 1.75rem;
+    block-size: 0.5rem;
+    flex-shrink: 0;
+    color: var(--color-text-secondary);
+  }
+
+  .journey-legend-line-mark {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .journey-legend-label {
+    color: var(--color-text-secondary);
+  }
+
+  .journey-map {
+    position: relative;
+    display: grid;
+    grid-template-columns: 128fr 162fr 270fr 200fr;
+    gap: var(--space-16);
+    block-size: 26.25rem;
+  }
+
+  .journey-band {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    block-size: 100%;
+    border: 1px solid;
+    border-radius: var(--radius-lg);
+  }
+
+  .journey-band-client,
+  .journey-band-edge {
+    border-color: var(--color-border-edge-soft);
+    background-color: var(--color-tint-edge);
+  }
+
+  .journey-band-services {
+    border-color: var(--color-border-services-soft);
+    background-color: var(--color-tint-services);
+  }
+
+  .journey-band-data {
+    border-color: var(--color-border-data-soft);
+    background-color: var(--color-tint-data);
+  }
+
+  .journey-band-head {
+    position: absolute;
+    z-index: 2;
+    inset-block-start: var(--space-20);
+    inset-inline: var(--space-16);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .journey-band-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .journey-band-dot {
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+
+  .journey-band-dot-edge {
+    background-color: var(--color-tier-edge);
+    box-shadow: 0 0 0.375rem var(--color-glow-name);
+  }
+
+  .journey-band-dot-services {
+    background-color: var(--color-tier-services);
+    box-shadow: 0 0 0.375rem var(--color-glow-services);
+  }
+
+  .journey-band-dot-data {
+    background-color: var(--color-tier-data);
+    box-shadow: 0 0 0.375rem var(--color-glow-data);
+  }
+
+  .journey-band-client .journey-band-label {
+    color: var(--color-tier-edge);
+  }
+
+  .journey-band-edge .journey-band-label {
+    color: var(--color-tier-edge);
+  }
+
+  .journey-band-services .journey-band-label {
+    color: var(--color-tier-services);
+  }
+
+  .journey-band-data .journey-band-label {
+    color: var(--color-tier-data);
+  }
+
+  .journey-band-description {
+    color: var(--color-text-tertiary);
+  }
+
+  .journey-node {
+    position: absolute;
+    z-index: 3;
+  }
+
+  .journey-band-client .journey-node-client {
+    inset-block-start: 13.25rem;
+    inset-inline-start: 0.625rem;
+    inline-size: calc(100% - 1.25rem);
+  }
+
+  .journey-band-edge .journey-node-gateway {
+    inset-block-start: 13.25rem;
+    inset-inline-start: 0.5rem;
+    inline-size: calc(100% - 1rem);
+  }
+
+  .journey-band-services .journey-node {
+    inset-inline-start: 0.75rem;
+    inline-size: calc(100% - 1.5rem);
+  }
+
+  .journey-node-config-service {
+    inset-block-start: 6.1875rem;
+  }
+
+  .journey-node-discovery-service {
+    inset-block-start: 10.5625rem;
+  }
+
+  .journey-node-inventory-service {
+    inset-block-start: 14.9375rem;
+  }
+
+  .journey-node-unit-of-measure-service {
+    inset-block-start: 19.3125rem;
+  }
+
+  .journey-band-data .journey-node {
+    inset-inline-start: 0.75rem;
+    inline-size: calc(100% - 1.5rem);
+  }
+
+  .journey-node-inventory-database {
+    inset-block-start: 12.75rem;
+  }
+
+  .journey-node-vault {
+    inset-block-start: 17.125rem;
+  }
+
+  .journey-node-unit-database {
+    inset-block-start: 21.5rem;
+  }
+
+  .journey-group-platform,
+  .journey-group-domain {
+    display: contents;
+  }
+
+  .journey-platform-summary,
+  .journey-pair-arrow,
+  .journey-link {
+    display: none;
+  }
+
+  .journey-connectors-tablet {
+    display: none;
+  }
+
+  .journey-connector-client-edge-tablet {
+    display: none;
+  }
+
+  .journey-connectors-desktop {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .journey-connector {
+    position: absolute;
+    object-fit: fill;
+  }
+
+  .journey-connector-client-gateway {
+    inset-block-start: 14.6563rem;
+    inset-inline-start: 14.6%;
+    inline-size: 4.31%;
+    block-size: 0.5375rem;
+  }
+
+  .journey-connector-gateway-config {
+    inset-block-start: 7.5938rem;
+    inset-inline-start: 36.88%;
+    inline-size: 4.55%;
+    block-size: 6.625rem;
+  }
+
+  .journey-connector-gateway-discovery {
+    inset-block-start: 11.9688rem;
+    inset-inline-start: 36.88%;
+    inline-size: 4.55%;
+    block-size: 2.75rem;
+  }
+
+  .journey-connector-gateway-inventory {
+    inset-block-start: 15.125rem;
+    inset-inline-start: 36.88%;
+    inline-size: 4.55%;
+    block-size: 1.7563rem;
+  }
+
+  .journey-connector-gateway-unit {
+    inset-block-start: 15.625rem;
+    inset-inline-start: 36.88%;
+    inline-size: 4.55%;
+    block-size: 5.6312rem;
+  }
+
+  .journey-connector-inventory-postgres {
+    inset-block-start: 14.1563rem;
+    inset-inline-start: 71.78%;
+    inline-size: 5.05%;
+    block-size: 2.5063rem;
+  }
+
+  .journey-connector-inventory-vault {
+    inset-block-start: 17.3125rem;
+    inset-inline-start: 71.78%;
+    inline-size: 5.05%;
+    block-size: 1.25rem;
+  }
+
+  .journey-connector-unit-vault {
+    inset-block-start: 19.0313rem;
+    inset-inline-start: 71.78%;
+    inline-size: 5.05%;
+    block-size: 1.75rem;
+  }
+
+  .journey-connector-unit-postgres {
+    inset-block-start: 21.4375rem;
+    inset-inline-start: 71.78%;
+    inline-size: 5.05%;
+    block-size: 2.0063rem;
+  }
+
+  .journey-connector-inventory-unit {
+    inset-block-start: 18.1875rem;
+    inset-inline-start: 55.82%;
+    inline-size: 1.48%;
+    block-size: 1.125rem;
+  }
+
+  .journey-caption {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-8);
+  }
+
+  .journey-caption-title {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    color: var(--color-tier-edge);
+    letter-spacing: 0.1em;
+    gap: var(--space-8);
+  }
+
+  .journey-caption-dot {
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+
+  .journey-caption-text {
+    color: var(--color-text-secondary);
+  }
+
+  @media (width >= 768px) and (width < 1200px) {
+    .journey-topbar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.125rem;
+    }
+
+    .journey-stack {
+      inline-size: 100%;
+    }
+
+    .journey-map {
+      grid-template-columns:
+        minmax(0, 136fr) 1.5rem minmax(0, 226fr) 2rem
+        minmax(0, 212fr);
+      grid-template-rows: 7.75rem 2.5rem 23.9688rem;
+      gap: 0;
+      block-size: 34.2188rem;
+    }
+
+    .journey-band {
+      padding: var(--space-12);
+    }
+
+    .journey-band-head {
+      position: static;
+      padding-inline-start: var(--space-4);
+      margin-block-end: var(--space-10);
+    }
+
+    .journey-band-client {
+      grid-area: 1 / 1;
+    }
+
+    .journey-band-edge {
+      grid-area: 1 / 3;
+    }
+
+    .journey-band-services {
+      grid-area: 3 / 1 / 4 / 4;
+    }
+
+    .journey-band-services .journey-band-head {
+      padding-inline-start: 2.375rem;
+    }
+
+    .journey-band-data {
+      grid-area: 1 / 5 / 4 / 6;
+    }
+
+    .journey-node,
+    .journey-band-client .journey-node-client,
+    .journey-band-edge .journey-node-gateway,
+    .journey-band-services .journey-node,
+    .journey-band-data .journey-node {
+      position: static;
+      inline-size: 100%;
+    }
+
+    .journey-group-platform,
+    .journey-group-domain {
+      display: flex;
+      flex-direction: column;
+      margin-inline: 1.9375rem 0.8125rem;
+      border-radius: 0.875rem;
+      background-color: var(--color-tint-services);
+    }
+
+    .journey-group-platform {
+      padding: 0.8125rem var(--space-12);
+      border: 1px dashed var(--color-border-services-soft);
+      gap: var(--space-10);
+    }
+
+    .journey-group-domain {
+      position: relative;
+      margin-block-start: var(--space-8);
+      padding: 0.8125rem var(--space-12) var(--space-20);
+      border: 1px solid var(--color-border-services-soft);
+      gap: 0.9375rem;
+    }
+
+    .journey-pair-arrow-tablet {
+      position: absolute;
+      inset-block-start: calc(0.8125rem + 3.25rem);
+      inset-inline-start: 50%;
+      display: flex;
+      transform: translateX(-50%);
+    }
+
+    .journey-platform-summary {
+      display: none;
+    }
+
+    .journey-band-data .journey-band-head {
+      margin-block-end: 0;
+    }
+
+    .journey-band-data .journey-node-inventory-database {
+      margin-block-start: auto;
+    }
+
+    .journey-band-data .journey-node + .journey-node {
+      margin-block-start: var(--space-10);
+    }
+
+    .journey-connectors-tablet {
+      position: absolute;
+      z-index: 1;
+      inset-block-start: 0;
+      inset-inline-start: 0;
+      display: block;
+      inline-size: 100%;
+      block-size: 33.3125rem;
+      object-fit: fill;
+      pointer-events: none;
+    }
+
+    .journey-connector-client-edge-tablet {
+      z-index: 1;
+      display: block;
+      grid-area: 1 / 2;
+      align-self: center;
+      inline-size: 100%;
+      block-size: 0.625rem;
+      object-fit: fill;
+      pointer-events: none;
+    }
+
+    .journey-connectors-desktop {
+      display: none;
+    }
+  }
+
+  @media (width >= 768px) {
+    .journey-node-unit-of-measure-service {
+      isolation: isolate;
+    }
+
+    .journey-node-unit-of-measure-service::before {
+      position: absolute;
+      z-index: -1;
+      inset: -4px;
+      border: 1.5px solid var(--color-border-services-focus);
+      border-radius: 16px;
+      background-color: var(--color-tint-services-strong);
+      box-shadow: 0 0 1.5rem var(--color-glow-services);
+      content: "";
+      pointer-events: none;
+    }
+  }
+
+  @media (width >= 768px) and (width < 1200px) {
+    .journey-band-services .journey-node-unit-of-measure-service {
+      position: relative;
+      inset: auto;
+    }
+  }
+
+  @media (width >= 1200px) {
+    .journey-node-unit-of-measure-service::before {
+      inset: -8px -6px;
+      border-radius: 20px;
+    }
+  }
+
+  @media (width <= 767.98px) {
+    .journey-topbar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.125rem;
+    }
+
+    .journey-stack {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      inline-size: 100%;
+      padding: 1px;
+      border-radius: var(--radius-lg);
+    }
+
+    .journey-stack-cell {
+      min-inline-size: 0;
+      padding: var(--space-8) var(--space-14);
+    }
+
+    .journey-stack-cell + .journey-stack-cell {
+      border-inline-start: 0;
+    }
+
+    .journey-stack-cell:nth-child(2n) {
+      border-inline-start: 1px solid var(--color-border-strong);
+    }
+
+    .journey-stack-cell:nth-child(n + 3) {
+      border-block-start: 1px solid var(--color-border-strong);
+    }
+
+    .journey-stack-label {
+      overflow-wrap: anywhere;
+    }
+
+    .journey-map {
+      display: flex;
+      flex-direction: column;
+      block-size: auto;
+      gap: 0;
+    }
+
+    .journey-band {
+      block-size: auto;
+      padding: var(--space-12);
+    }
+
+    .journey-band-head {
+      position: static;
+      padding-inline-start: var(--space-4);
+      margin-block-end: var(--space-10);
+    }
+
+    .journey-node,
+    .journey-band-client .journey-node-client,
+    .journey-band-edge .journey-node-gateway,
+    .journey-band-services .journey-node,
+    .journey-band-data .journey-node {
+      position: static;
+      inline-size: 100%;
+    }
+
+    .journey-link {
+      display: flex;
+      block-size: 1.5rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .journey-link-services-data {
+      position: relative;
+      justify-content: flex-start;
+    }
+
+    .journey-link-arrow {
+      position: absolute;
+      inset-block-start: 0.1875rem;
+      display: flex;
+    }
+
+    .journey-link-arrow-left {
+      inset-inline-start: 24.2%;
+    }
+
+    .journey-link-arrow-right {
+      inset-inline-start: 73.2%;
+    }
+
+    .journey-group-platform,
+    .journey-group-domain {
+      display: flex;
+      inline-size: 100%;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: none;
+    }
+
+    .journey-group-domain {
+      position: relative;
+      flex-direction: row;
+      align-items: stretch;
+      order: 1;
+      gap: var(--space-20);
+    }
+
+    .journey-group-domain .journey-node {
+      flex: 1;
+      inline-size: auto;
+      min-inline-size: 0;
+    }
+
+    .journey-group-platform {
+      order: 2;
+      margin-block-start: var(--space-12);
+    }
+
+    .journey-group-platform .journey-node {
+      display: none;
+    }
+
+    .journey-platform-summary {
+      display: block;
+      inline-size: 100%;
+    }
+
+    .journey-pair-arrow-mobile {
+      position: absolute;
+      inset-block-start: 50%;
+      inset-inline-start: 50%;
+      display: flex;
+      transform: translate(-50%, -50%);
+    }
+
+    .journey-band-data {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-12) var(--space-20);
+    }
+
+    .journey-band-data .journey-band-head {
+      grid-column: 1 / -1;
+      margin-block-end: 0;
+    }
+
+    .journey-node-inventory-database {
+      grid-area: 2 / 1;
+    }
+
+    .journey-node-unit-database {
+      grid-area: 2 / 2;
+    }
+
+    .journey-node-vault {
+      grid-area: 3 / 1 / 4 / 3;
+    }
+
+    .journey-node-inventory-database :global(.diagram-node),
+    .journey-node-unit-database :global(.diagram-node),
+    .journey-node-inventory-service :global(.diagram-node),
+    .journey-node-unit-of-measure-service :global(.diagram-node) {
+      block-size: 100%;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-8);
+      padding: var(--space-10);
+    }
+
+    .journey-node-inventory-database :global(.diagram-node-copy),
+    .journey-node-unit-database :global(.diagram-node-copy),
+    .journey-node-inventory-service :global(.diagram-node-copy),
+    .journey-node-unit-of-measure-service :global(.diagram-node-copy) {
+      inline-size: 100%;
+    }
+
+    .journey-node-inventory-database :global(.diagram-node-title),
+    .journey-node-unit-database :global(.diagram-node-title),
+    .journey-node-inventory-service :global(.diagram-node-title),
+    .journey-node-unit-of-measure-service :global(.diagram-node-title) {
+      font-size: 0.75rem;
+      line-height: 1.125rem;
+    }
+
+    .journey-node-inventory-database :global(.diagram-node-subtitle),
+    .journey-node-unit-database :global(.diagram-node-subtitle),
+    .journey-node-inventory-service :global(.diagram-node-subtitle),
+    .journey-node-unit-of-measure-service :global(.diagram-node-subtitle) {
+      font-size: 0.6875rem;
+      line-height: 1rem;
+    }
+
+    .journey-node-vault :global(.diagram-node) {
+      block-size: auto;
+      min-block-size: 3.4375rem;
+      padding-block: 0.5625rem;
+      border-color: var(--color-tier-security);
+      border-style: dashed;
+    }
+
+    .journey-connectors-tablet,
+    .journey-connectors-desktop {
+      display: none;
+    }
+  }
+</style>
