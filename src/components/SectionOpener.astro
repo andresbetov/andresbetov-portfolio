@@ -8,6 +8,9 @@ interface Props {
 }
 
 const { id, index, label, title, meta } = Astro.props;
+const titleParts = title.trim().split(/\s+/);
+const titleEnd = titleParts.pop() ?? title;
+const titleStart = titleParts.join(" ");
 ---
 
 <div class="section-opener">
@@ -18,7 +21,8 @@ const { id, index, label, title, meta } = Astro.props;
   </p>
 
   <h2 class="section-opener-title type-section" id={id}>
-    {title}
+    {titleStart ? `${titleStart} ` : ""}
+    <span class="section-opener-title-end">{titleEnd}</span>
   </h2>
 
   <div class="section-opener-rule">
@@ -122,5 +126,25 @@ const { id, index, label, title, meta } = Astro.props;
     color: var(--color-text-secondary);
     opacity: 0.85;
     white-space: nowrap;
+  }
+
+  @media (width <= 767.98px) {
+    .section-opener-title {
+      background-image: none;
+      color: var(--color-text-primary);
+    }
+
+    .section-opener-title-end {
+      background-image: linear-gradient(
+        90deg,
+        var(--color-text-primary) 0%,
+        var(--color-text-primary) 50%,
+        var(--color-name-end) 100%
+      );
+      background-clip: text;
+      color: transparent;
+      /* stylelint-disable-next-line property-no-vendor-prefix */
+      -webkit-background-clip: text;
+    }
   }
 </style>

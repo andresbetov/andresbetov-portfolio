@@ -105,7 +105,7 @@ const { node, iconSrc, dashed = false } = Astro.props;
 
   .diagram-node.is-focused {
     border: 1.5px solid var(--color-border-services-focus);
-    background-color: var(--color-tint-services-strong);
+    background-color: var(--color-surface-2);
     box-shadow: 0 0 0.75rem var(--color-glow-services);
   }
 
@@ -114,6 +114,14 @@ const { node, iconSrc, dashed = false } = Astro.props;
     min-block-size: 3.4375rem;
     padding-block: 0.5625rem;
     border-style: dashed;
+  }
+
+  .diagram-node.is-dashed.diagram-node-services {
+    border-color: var(--color-tier-services);
+  }
+
+  .diagram-node.is-dashed.diagram-node-security {
+    border-color: var(--color-tier-security);
   }
 
   @media (width >= 768px) and (width < 1200px), (width >= 1440px) {
@@ -125,17 +133,9 @@ const { node, iconSrc, dashed = false } = Astro.props;
 
   @media (width >= 768px) {
     .diagram-node.is-focused {
-      box-shadow:
-        0 0 0 4px var(--color-tint-services-strong),
-        0 0 1.5rem var(--color-glow-services);
-    }
-  }
-
-  @media (width >= 1200px) {
-    .diagram-node.is-focused {
-      box-shadow:
-        0 0 0 6px var(--color-tint-services-strong),
-        0 0 1.5rem var(--color-glow-services);
+      border-width: 1px;
+      border-color: var(--color-border-strong);
+      box-shadow: none;
     }
   }
 

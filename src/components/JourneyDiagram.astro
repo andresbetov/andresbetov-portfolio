@@ -68,7 +68,31 @@ const desktopConnectors = [
               `journey-legend-line-${item.variant}`,
             ]}
             aria-hidden="true"
-          />
+          >
+            <svg
+              class="journey-legend-line-mark"
+              width="28"
+              height="8"
+              viewBox="0 0 28 8"
+              fill="none"
+            >
+              {item.variant === "solid" ? (
+                <path
+                  d="M1 4H27"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              ) : (
+                <path
+                  d="M1 4H3.16667M27 4H24.8333M7.5 4H11.8333M16.1667 4H20.5"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              )}
+            </svg>
+          </span>
           <span class="journey-legend-label type-label-s">{item.label}</span>
         </li>
       ))}
@@ -170,7 +194,21 @@ const desktopConnectors = [
             />
           </div>
         ))}
-        <span class="journey-pair-arrow" aria-hidden="true">
+        <span
+          class="journey-pair-arrow journey-pair-arrow-tablet"
+          aria-hidden="true"
+        >
+          <img
+            src="/icons/elara/connectors/inventory-to-unit-tablet.svg"
+            width="12"
+            height="11"
+            alt=""
+          />
+        </span>
+        <span
+          class="journey-pair-arrow journey-pair-arrow-mobile"
+          aria-hidden="true"
+        >
           <FlowArrow tone="services" direction="right" />
         </span>
       </div>
@@ -217,6 +255,15 @@ const desktopConnectors = [
         />
       ))}
     </div>
+
+    <img
+      class="journey-connector-client-edge-tablet"
+      src="/icons/elara/connectors/client-to-gateway-tablet.svg"
+      width="24"
+      height="10"
+      alt=""
+      aria-hidden="true"
+    />
 
     <img
       class="journey-connectors-tablet"
@@ -297,17 +344,17 @@ const desktopConnectors = [
 
   .journey-dot-edge {
     background-color: var(--color-tier-edge);
-    box-shadow: 0 0 0.375rem var(--color-glow-name);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-edge);
   }
 
   .journey-dot-services {
     background-color: var(--color-tier-services);
-    box-shadow: 0 0 0.375rem var(--color-glow-services);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-services);
   }
 
   .journey-dot-data {
     background-color: var(--color-tier-data);
-    box-shadow: 0 0 0.375rem var(--color-glow-data);
+    box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-data);
   }
 
   .journey-legend {
@@ -325,22 +372,17 @@ const desktopConnectors = [
   }
 
   .journey-legend-line {
+    display: flex;
     inline-size: 1.75rem;
-    block-size: 1px;
+    block-size: 0.5rem;
     flex-shrink: 0;
+    color: var(--color-text-secondary);
   }
 
-  .journey-legend-line-solid {
-    background-color: var(--color-tier-edge);
-  }
-
-  .journey-legend-line-dashed {
-    background-image: linear-gradient(
-      90deg,
-      var(--color-tier-services) 50%,
-      transparent 50%
-    );
-    background-size: 0.375rem 1px;
+  .journey-legend-line-mark {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
   }
 
   .journey-legend-label {
@@ -506,6 +548,10 @@ const desktopConnectors = [
   }
 
   .journey-connectors-tablet {
+    display: none;
+  }
+
+  .journey-connector-client-edge-tablet {
     display: none;
   }
 
@@ -693,10 +739,19 @@ const desktopConnectors = [
     }
 
     .journey-group-domain {
+      position: relative;
       margin-block-start: var(--space-8);
       padding: 0.8125rem var(--space-12) var(--space-20);
       border: 1px solid var(--color-border-services-soft);
       gap: 0.9375rem;
+    }
+
+    .journey-pair-arrow-tablet {
+      position: absolute;
+      inset-block-start: calc(0.8125rem + 3.25rem);
+      inset-inline-start: 50%;
+      display: flex;
+      transform: translateX(-50%);
     }
 
     .journey-platform-summary {
@@ -727,8 +782,51 @@ const desktopConnectors = [
       pointer-events: none;
     }
 
+    .journey-connector-client-edge-tablet {
+      z-index: 1;
+      display: block;
+      grid-area: 1 / 2;
+      align-self: center;
+      inline-size: 100%;
+      block-size: 0.625rem;
+      object-fit: fill;
+      pointer-events: none;
+    }
+
     .journey-connectors-desktop {
       display: none;
+    }
+  }
+
+  @media (width >= 768px) {
+    .journey-node-unit-of-measure-service {
+      isolation: isolate;
+    }
+
+    .journey-node-unit-of-measure-service::before {
+      position: absolute;
+      z-index: -1;
+      inset: -4px;
+      border: 1.5px solid var(--color-border-services-focus);
+      border-radius: 16px;
+      background-color: var(--color-tint-services-strong);
+      box-shadow: 0 0 1.5rem var(--color-glow-services);
+      content: "";
+      pointer-events: none;
+    }
+  }
+
+  @media (width >= 768px) and (width < 1200px) {
+    .journey-band-services .journey-node-unit-of-measure-service {
+      position: relative;
+      inset: auto;
+    }
+  }
+
+  @media (width >= 1200px) {
+    .journey-node-unit-of-measure-service::before {
+      inset: -8px -6px;
+      border-radius: 20px;
     }
   }
 
@@ -859,7 +957,7 @@ const desktopConnectors = [
       inline-size: 100%;
     }
 
-    .journey-pair-arrow {
+    .journey-pair-arrow-mobile {
       position: absolute;
       inset-block-start: 50%;
       inset-inline-start: 50%;
@@ -928,6 +1026,7 @@ const desktopConnectors = [
       block-size: auto;
       min-block-size: 3.4375rem;
       padding-block: 0.5625rem;
+      border-color: var(--color-tier-security);
       border-style: dashed;
     }
 

@@ -1,7 +1,8 @@
 ---
-// Decorative atmosphere shared by the shell. Positions and blur come from the
-// Hero Glows frame (desktop 394:232, tablet 515:3, mobile 515:271): the 1440px
-// canvas stays centred and is clipped by the viewport at smaller widths.
+// Decorative atmosphere shared by the shell. Glow positions and blur come from
+// the Hero Glows frame (desktop 394:232, tablet 515:3, mobile 515:271). The
+// glows stay on the 1440px composition; the particle field is full-bleed and
+// continues into the Featured area so there is no fixed-canvas edge.
 ---
 
 <div class="page-atmosphere" aria-hidden="true">
@@ -10,24 +11,32 @@
     <span class="page-atmosphere-glow page-atmosphere-glow-name"></span>
     <span class="page-atmosphere-glow page-atmosphere-glow-orbit"></span>
     <span class="page-atmosphere-glow page-atmosphere-glow-bridge"></span>
-    <img
-      class="page-atmosphere-particles"
-      src="/images/hero-particles.svg"
-      width="1440"
-      height="900"
-      alt=""
-    />
   </div>
+  <div class="page-atmosphere-particles"></div>
 </div>
 
 <style>
   .page-atmosphere {
+    --atmosphere-fade-start: 53.75rem;
+    --atmosphere-fade-end: 75rem;
+    --atmosphere-particles-height: 75rem;
+
     position: absolute;
     z-index: var(--z-atmosphere);
     inset-block: 0;
     inset-inline: 0;
     overflow: hidden;
     pointer-events: none;
+
+    /* Fade the whole atmosphere near the Hero bottom and into the Featured
+       seam. The mask is on the full-width layer, not the 1440px canvas, so the
+       glows can still paint beyond the composition at wider viewports. */
+    mask-image: linear-gradient(
+      180deg,
+      var(--color-mask) 0%,
+      var(--color-mask) var(--atmosphere-fade-start),
+      transparent var(--atmosphere-fade-end)
+    );
   }
 
   .page-atmosphere-canvas {
@@ -37,37 +46,34 @@
     inline-size: 90rem;
     block-size: 56.25rem;
     transform: translateX(-50%);
+  }
 
-    /* End the Hero atmosphere at the Hero frame instead of letting the glow
-       and particles run under the Featured area. The Projects seam picks up
-       the continuation particles. */
-    mask-image: linear-gradient(
-      180deg,
-      var(--color-mask) 0%,
-      var(--color-mask) 48.75rem,
-      transparent 56.25rem
-    );
+  /* Full-bleed particle field. The 1440px image repeats on wider viewports,
+     so the field does not stop at the canvas edge. */
+  .page-atmosphere-particles {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    block-size: var(--atmosphere-particles-height);
+    background-image: url("/images/hero-particles.svg");
+    background-position: top center;
+    background-repeat: repeat;
+    background-size: 90rem 56.25rem;
   }
 
   @media (width >= 768px) and (width < 1200px) {
-    .page-atmosphere-canvas {
-      mask-image: linear-gradient(
-        180deg,
-        var(--color-mask) 0%,
-        var(--color-mask) 43.75rem,
-        transparent 50.8125rem
-      );
+    .page-atmosphere {
+      --atmosphere-fade-start: 48.3125rem;
+      --atmosphere-fade-end: 69.5625rem;
+      --atmosphere-particles-height: 69.5625rem;
     }
   }
 
   @media (width <= 767.98px) {
-    .page-atmosphere-canvas {
-      mask-image: linear-gradient(
-        180deg,
-        var(--color-mask) 0%,
-        var(--color-mask) 43.125rem,
-        transparent 50.3125rem
-      );
+    .page-atmosphere {
+      --atmosphere-fade-start: 47.8125rem;
+      --atmosphere-fade-end: 69.0625rem;
+      --atmosphere-particles-height: 69.0625rem;
     }
   }
 

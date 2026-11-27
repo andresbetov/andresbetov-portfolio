@@ -5,10 +5,8 @@ import { projectsSection } from "../data/projects";
 ---
 
 <section class="projects" id="projects" aria-labelledby="projects-title">
-  <span class="projects-glow projects-glow-security" aria-hidden="true"></span>
-  <span class="projects-glow projects-glow-edge" aria-hidden="true"></span>
+  <span class="projects-glow projects-glow-ambient" aria-hidden="true"></span>
   <div class="section-grid" aria-hidden="true"></div>
-  <span class="projects-seam" aria-hidden="true"></span>
   <span class="projects-particles" aria-hidden="true"></span>
 
   <div class="projects-content shell-container">
@@ -24,64 +22,48 @@ import { projectsSection } from "../data/projects";
     padding-block: 5rem 2.5rem;
   }
 
+  /*
+   * Figma Background "Glow – ambient". A blue light behind the masked grid at
+   * the right edge, below the grid lines, particles, and content.
+   */
   .projects-glow {
     position: absolute;
     z-index: 0;
-    border-radius: 50%;
-    filter: blur(140px);
     pointer-events: none;
   }
 
-  .projects-glow-security {
-    top: -11.25rem;
-    right: -7.5rem;
-    inline-size: 38.75rem;
+  .projects-glow-ambient {
+    inset-block-start: 29.375rem;
+    inset-inline-start: calc(50% + 8.75rem);
+    inline-size: 40rem;
     block-size: 28.75rem;
-    background-color: var(--color-glow-orbit);
-  }
-
-  .projects-glow-edge {
-    top: -10rem;
-    left: -7.5rem;
-    inline-size: 35rem;
-    block-size: 26.25rem;
-    background-color: var(--color-glow-name);
+    border-radius: 50%;
+    background-color: var(--color-glow-ambient);
+    filter: blur(6rem);
   }
 
   /*
-   * The Featured area continues the Hero's atmosphere. The seam fade is the
-   * Figma 237:217 gradient; the continuation particles are the Figma 683:495,
-   * 684:3531 and 684:3547 layers so the Hero field does not stop at the seam.
+   * The Featured area continues the Hero's full-bleed particle field with the
+   * Figma continuation layers. They fade in from the top so the Hero field and
+   * the section field cross over without a hard horizontal edge.
    */
-  .projects-seam {
-    position: absolute;
-    z-index: 1;
-    inset-block-start: 0;
-    inset-inline: 0;
-    block-size: 26.25rem;
-    background-image: linear-gradient(
-      180deg,
-      var(--color-bg-base) 0%,
-      var(--color-seam-fade-strong) 35%,
-      var(--color-seam-fade-mid) 70%,
-      var(--color-seam-fade-clear) 100%
-    );
-    pointer-events: none;
-  }
-
   .projects-particles {
     position: absolute;
     z-index: 2;
     inset-block-start: 0;
-    inset-inline-start: 50%;
-    inline-size: 90rem;
+    inset-inline: 0;
     block-size: 18.75rem;
     background-image: url("/images/projects-particles-1440.svg");
     background-position: top center;
-    background-repeat: no-repeat;
+    background-repeat: repeat-x;
     background-size: 90rem 18.75rem;
+    mask-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      var(--color-mask) 30%,
+      var(--color-mask) 100%
+    );
     pointer-events: none;
-    transform: translateX(-50%);
   }
 
   .projects-content {
@@ -90,8 +72,14 @@ import { projectsSection } from "../data/projects";
   }
 
   @media (width >= 768px) and (width < 1200px) {
+    .projects-glow-ambient {
+      inset-block-start: 25rem;
+      inset-inline-start: calc(100% - 27.5rem);
+      inline-size: 35rem;
+      block-size: 25rem;
+    }
+
     .projects-particles {
-      inline-size: 48rem;
       background-image: url("/images/projects-particles-768.svg");
       background-size: 48rem 18.75rem;
     }
@@ -108,24 +96,14 @@ import { projectsSection } from "../data/projects";
       padding-block-start: 2.5rem;
     }
 
-    .projects-glow-security {
-      top: -8rem;
-      right: -10rem;
-      inline-size: 26rem;
+    .projects-glow-ambient {
+      inset-block-start: 21.25rem;
+      inset-inline-start: calc(100% - 15.625rem);
+      inline-size: 26.25rem;
       block-size: 20rem;
-      filter: blur(100px);
-    }
-
-    .projects-glow-edge {
-      top: -8rem;
-      left: -10rem;
-      inline-size: 24rem;
-      block-size: 18rem;
-      filter: blur(100px);
     }
 
     .projects-particles {
-      inline-size: 24.375rem;
       background-image: url("/images/projects-particles-390.svg");
       background-size: 24.375rem 18.75rem;
     }
