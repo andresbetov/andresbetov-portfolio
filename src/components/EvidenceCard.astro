@@ -9,7 +9,7 @@ interface Props {
 }
 
 const { card, class: className } = Astro.props;
-const layout = card.panel === "sharpe" ? "feature" : "split";
+const { layout } = card;
 ---
 
 <Card class={className} labelledby={`${card.id}-title`}>
@@ -366,13 +366,14 @@ const layout = card.panel === "sharpe" ? "feature" : "split";
     .evidence-card {
       grid-template-columns: minmax(0, 264fr) minmax(0, 334fr);
       align-items: center;
-      gap: 2.125rem;
+      gap: 2rem;
     }
 
     .evidence-card[data-layout="feature"] {
       display: grid;
       grid-template-columns: minmax(0, 248fr) minmax(0, 350fr);
       align-items: center;
+      gap: 2rem;
     }
 
     .evidence-card-copy {
@@ -406,6 +407,7 @@ const layout = card.panel === "sharpe" ? "feature" : "split";
       gap: var(--space-12);
     }
 
+    /* The Figma mobile frame wraps this title after "to". */
     .evidence-card[data-card="portfolio-allocation"] .evidence-card-heading h4 {
       max-inline-size: 17.5rem;
     }

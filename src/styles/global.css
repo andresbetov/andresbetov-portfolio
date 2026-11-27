@@ -205,6 +205,7 @@ body.menu-open {
 .type-body-m,
 .type-body-compact,
 .type-body-fact,
+.type-body-note,
 .type-body-s {
   font-family: var(--font-body);
   font-weight: var(--weight-regular);
@@ -228,6 +229,11 @@ body.menu-open {
 .type-body-fact {
   font-size: var(--type-body-fact-size);
   line-height: var(--type-body-fact-line-height);
+}
+
+.type-body-note {
+  font-size: var(--type-body-note-size);
+  line-height: var(--type-body-note-line-height);
 }
 
 .type-body-s {

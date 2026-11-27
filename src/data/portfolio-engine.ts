@@ -18,6 +18,7 @@ export type EvidenceCard = {
   title: string;
   description: string;
   panel: EvidencePanelKind;
+  layout: "split" | "feature";
   facts: readonly EvidenceFact[];
 };
 
@@ -74,6 +75,7 @@ export const portfolioEngine = {
   ],
   subtitle:
     "Rather than ranking stocks in isolation, the engine groups assets by how their returns move together, then uses those relationships to build a constrained portfolio. Its allocations are evaluated against simpler strategies on later market data.",
+  exploreLabel: "Explore the project",
   cards: [
     {
       id: "asset-relationships",
@@ -84,6 +86,7 @@ export const portfolioEngine = {
       description:
         "Groups stocks by how closely their returns move together, revealing relationships that guide portfolio construction.",
       panel: "correlation",
+      layout: "split",
       facts: [
         { emphasis: "12 → 6", text: "stocks pass the screen", tone: "edge" },
         {
@@ -102,6 +105,7 @@ export const portfolioEngine = {
       description:
         "The resulting structure guides how capital is distributed, while revealing how much risk each holding contributes.",
       panel: "allocation",
+      layout: "split",
       facts: [
         {
           emphasis: "5–30%",
@@ -124,6 +128,7 @@ export const portfolioEngine = {
       description:
         "Each portfolio is tested on later market data and compared with simpler allocation strategies across multiple historical periods.",
       panel: "sharpe",
+      layout: "feature",
       facts: [],
     },
   ] satisfies readonly EvidenceCard[],
@@ -179,6 +184,8 @@ export const portfolioEngine = {
       { symbol: "JPM", weight: 15.3, risk: 15.7 },
       { symbol: "ABBV", weight: 12.2, risk: 13.3 },
     ] satisfies readonly AllocationHolding[],
+    summary:
+      "Allocation by asset. JNJ: Capital weight 21.8%, Risk contribution 18.9%. WMT: Capital weight 17.9%, Risk contribution 16.4%. CVX: Capital weight 17.1%, Risk contribution 17.7%. MRK: Capital weight 15.7%, Risk contribution 18.0%. JPM: Capital weight 15.3%, Risk contribution 15.7%. ABBV: Capital weight 12.2%, Risk contribution 13.3%.",
   },
   evaluation: {
     label: "MEDIAN OUT-OF-SAMPLE SHARPE",
@@ -188,6 +195,8 @@ export const portfolioEngine = {
       { name: "Inverse volatility", value: 0.521, tone: "services" },
     ] satisfies readonly EvaluationStrategy[],
     note: "16 folds · No transaction costs · Gap within noise",
+    summary:
+      "MEDIAN OUT-OF-SAMPLE SHARPE: HRP (this engine) 0.502, Equal weight 0.456, Inverse volatility 0.521. 16 folds · No transaction costs · Gap within noise.",
   },
   stack: [
     { label: "Python 3.11–3.13", tier: "edge" },

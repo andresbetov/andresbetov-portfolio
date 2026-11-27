@@ -6,7 +6,7 @@ interface Props {
   label: string;
   emphasis?: string;
   variant?: "default" | "fact";
-  tone?: Tier;
+  tone?: Extract<Tier, "edge" | "services">;
 }
 
 const {
@@ -88,21 +88,6 @@ const isFact = variant === "fact";
   .feature-row-dot-services {
     background-color: var(--color-tier-services);
     box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-services);
-  }
-
-  .feature-row-dot-data {
-    background-color: var(--color-tier-data);
-    box-shadow: 0 0 0.375rem 1px var(--color-glow-stack-data);
-  }
-
-  .feature-row-dot-security {
-    background-color: var(--color-tier-security);
-    box-shadow: 0 0 0.375rem 1px var(--color-glow-orbit);
-  }
-
-  .feature-row-dot-fault {
-    background-color: var(--color-tier-fault);
-    box-shadow: 0 0 0.375rem 1px var(--color-glow-coral);
   }
 
   .feature-row-label-fact {

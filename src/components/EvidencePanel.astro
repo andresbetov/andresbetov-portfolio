@@ -1,6 +1,8 @@
 ---
+import type { EvidencePanelKind } from "../data/portfolio-engine";
+
 interface Props {
-  variant: "correlation" | "allocation" | "sharpe";
+  variant: EvidencePanelKind;
 }
 
 const { variant } = Astro.props;
@@ -35,6 +37,14 @@ const { variant } = Astro.props;
   @media (width >= 768px) and (width < 1280px) {
     .evidence-panel-sharpe {
       block-size: 15.625rem;
+      aspect-ratio: auto;
+    }
+  }
+
+  @media (width <= 767.98px) {
+    /* Keep the 390px panel height so the six allocation rows retain bottom padding. */
+    .evidence-panel-allocation {
+      block-size: 14.5rem;
       aspect-ratio: auto;
     }
   }

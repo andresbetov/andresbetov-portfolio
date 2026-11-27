@@ -5,15 +5,14 @@ const { evaluation } = portfolioEngine;
 const maxValue = Math.max(
   ...evaluation.strategies.map((strategy) => strategy.value),
 );
-const barRatio = (value: number) => ((value / maxValue) * 0.92).toFixed(4);
-
-const summary = `${evaluation.label}: ${evaluation.strategies
-  .map((strategy) => `${strategy.name} ${strategy.value.toFixed(3)}`)
-  .join(", ")}. ${evaluation.note}.`;
+// Leave room for the value label above each bar.
+const BAR_HEADROOM = 0.92;
+const barRatio = (value: number) =>
+  ((value / maxValue) * BAR_HEADROOM).toFixed(4);
 ---
 
 <figure class="sharpe-panel">
-  <p class="visually-hidden">{summary}</p>
+  <p class="visually-hidden">{evaluation.summary}</p>
 
   <div class="sharpe-layout" aria-hidden="true">
     <p class="sharpe-label type-code-2xs">{evaluation.label}</p>
@@ -44,7 +43,7 @@ const summary = `${evaluation.label}: ${evaluation.strategies
       ))}
     </div>
 
-    <p class="sharpe-note type-body-fact">{evaluation.note}</p>
+    <p class="sharpe-note type-body-note">{evaluation.note}</p>
   </div>
 </figure>
 
@@ -147,8 +146,6 @@ const summary = `${evaluation.label}: ${evaluation.strategies
   .sharpe-note {
     margin-block-start: auto;
     color: var(--color-tier-data);
-    font-size: 0.6875rem;
-    line-height: 0.875rem;
   }
 
   @media (width >= 1280px) {
@@ -181,7 +178,8 @@ const summary = `${evaluation.label}: ${evaluation.strategies
     }
 
     .sharpe-name {
-      font-size: 0.6875rem;
+      font-size: var(--type-label-xs-size);
+      line-height: var(--type-label-xs-line-height);
     }
   }
 </style>

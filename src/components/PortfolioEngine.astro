@@ -9,8 +9,18 @@ import EvidencePanel from "./EvidencePanel.astro";
 import SharpePanel from "./SharpePanel.astro";
 import { portfolioEngine } from "../data/portfolio-engine";
 
-const { footnote, links, meta, stack, subtitle, titleLines } = portfolioEngine;
-const [relationships, allocationCard, evaluationCard] = portfolioEngine.cards;
+const { exploreLabel, footnote, links, meta, stack, subtitle, titleLines } =
+  portfolioEngine;
+const [assetRelationships, allocationCard, evaluationCard] =
+  portfolioEngine.cards;
+const panelComponents = {
+  correlation: CorrelationPanel,
+  allocation: AllocationPanel,
+  sharpe: SharpePanel,
+} as const;
+const AssetRelationshipsPanel = panelComponents[assetRelationships.panel];
+const AllocationCardPanel = panelComponents[allocationCard.panel];
+const EvaluationCardPanel = panelComponents[evaluationCard.panel];
 ---
 
 <article
@@ -22,6 +32,7 @@ const [relationships, allocationCard, evaluationCard] = portfolioEngine.cards;
   <span class="portfolio-engine-seam" aria-hidden="true"></span>
 
   <div class="portfolio-engine-content shell-container">
+    <!-- Mirrors the Elara project header; extraction waits for the third project in #11. -->
     <header class="portfolio-engine-header">
       <div class="portfolio-engine-meta">
         <div class="portfolio-engine-index type-label-caps">
@@ -72,25 +83,25 @@ const [relationships, allocationCard, evaluationCard] = portfolioEngine.cards;
     <div class="portfolio-engine-cards">
       <div class="portfolio-engine-bento">
         <div class="portfolio-engine-bento-cell portfolio-engine-bento-primary">
-          <EvidenceCard card={relationships}>
-            <EvidencePanel variant="correlation">
-              <CorrelationPanel />
+          <EvidenceCard card={assetRelationships}>
+            <EvidencePanel variant={assetRelationships.panel}>
+              <AssetRelationshipsPanel />
             </EvidencePanel>
           </EvidenceCard>
         </div>
 
         <div class="portfolio-engine-bento-cell portfolio-engine-bento-secondary">
           <EvidenceCard card={allocationCard}>
-            <EvidencePanel variant="allocation">
-              <AllocationPanel />
+            <EvidencePanel variant={allocationCard.panel}>
+              <AllocationCardPanel />
             </EvidencePanel>
           </EvidenceCard>
         </div>
 
         <div class="portfolio-engine-bento-cell portfolio-engine-bento-feature">
           <EvidenceCard card={evaluationCard}>
-            <EvidencePanel variant="sharpe">
-              <SharpePanel />
+            <EvidencePanel variant={evaluationCard.panel}>
+              <EvaluationCardPanel />
             </EvidencePanel>
           </EvidenceCard>
         </div>
@@ -99,7 +110,7 @@ const [relationships, allocationCard, evaluationCard] = portfolioEngine.cards;
       <div class="portfolio-engine-explore">
         <Card labelledby="portfolio-engine-explore-title">
           <h4 class="visually-hidden" id="portfolio-engine-explore-title">
-            Explore the project
+            {exploreLabel}
           </h4>
 
           <div class="portfolio-engine-explore-inner">

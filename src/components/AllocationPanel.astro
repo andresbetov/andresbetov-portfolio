@@ -5,20 +5,14 @@ const { allocation } = portfolioEngine;
 const maxWeight = Math.max(
   ...allocation.holdings.map((holding) => holding.weight),
 );
-const weightLabel = allocation.legend[0]?.label ?? "Capital weight";
-const riskLabel = allocation.legend[1]?.label ?? "Risk contribution";
-const barWidth = (value: number) => `${((value / maxWeight) * 65).toFixed(2)}%`;
-
-const summary = `Allocation by asset. ${allocation.holdings
-  .map(
-    (holding) =>
-      `${holding.symbol}: ${weightLabel} ${holding.weight.toFixed(1)}%, ${riskLabel} ${holding.risk.toFixed(1)}%.`,
-  )
-  .join(" ")}`;
+// The largest holding fills 65% of the metric track, leaving the value visible.
+const MAX_BAR_WIDTH = 65;
+const barWidth = (value: number) =>
+  `${((value / maxWeight) * MAX_BAR_WIDTH).toFixed(2)}%`;
 ---
 
 <figure class="allocation-panel">
-  <p class="visually-hidden">{summary}</p>
+  <p class="visually-hidden">{allocation.summary}</p>
 
   <div class="allocation-legend" aria-hidden="true">
     {allocation.legend.map((item) => (

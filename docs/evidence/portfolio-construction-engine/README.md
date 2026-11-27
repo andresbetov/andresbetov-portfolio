@@ -33,12 +33,14 @@ captures.
   1440, 768, 390, and 375. Every evidence panel reports `scrollWidth === clientWidth` and
   `scrollHeight === clientHeight`, including the correlation matrix, allocation bars, and the
   walk-forward chart.
-- **Frame heights:** the PCE article measures 1440×1244, 768×1668, and 390×2612, against the
-  Figma frames at 1440×1244, 768×1670, and 390×2617.8. The 375px stress width measures 375×2622
+- **Frame heights:** the PCE article measures 1440×1244, 768×1670, and 390×2614, against the
+  Figma frames at 1440×1244, 768×1670, and 390×2617.8. The 375px stress width measures 375×2635
   without overflow.
 - **No clipped content:** the Bento Evidence cards and walk-forward panels fit their cards at
   all four widths. The correlation tree stretches to the matrix row height instead of adding
-  intrinsic height, and the chart labels and note sit inside the panel at 375.
+  intrinsic height, and the chart labels and note sit inside the panel at 375. The allocation
+  panel keeps the 390px frame height on mobile; at 375 the last allocation row sits 2px above
+  the content-box edge with the 11px panel padding still below it.
 - **Console:** no browser console errors after the final reload. Earlier transient Vite
   hot-reload errors from editing are not present in the final capture.
 - **Focus:** both new external links show the shared 2px teal `:focus-visible` outline with a
@@ -46,10 +48,11 @@ captures.
 - **Nav focus:** at 390, opening MENU and choosing Projects closes the menu, sets
   `location.hash` to `#projects`, and focuses `h2#projects-title`. There is still exactly one
   `#projects` anchor; the PCE article has no id of its own.
-- **Earlier sections:** the Elara section was not edited. The before/after 1440 crops are
-  visually identical; the SSIM between the two WebP captures is 0.9905, with the difference
-  attributable to the WebP re-encode.
+- **Earlier sections:** the Elara section markup was not edited. The shared `FeatureRow` gained
+  a compact fact variant used only by the PCE; its default output is unchanged. The before/after
+  1440 crops are visually identical; the SSIM between the two WebP captures is 0.9905, with the
+  difference attributable to the WebP re-encode.
 - **Diagrams:** the correlation matrix, hierarchy, allocation bars, and Sharpe chart are
-  accessible HTML/CSS/SVG. The panels expose hidden summaries generated from the section data;
-  the visible chart labels and values remain selectable text.
+  accessible HTML/CSS/SVG. The panels expose hidden summaries stored in the section data; the
+  visible chart labels and values remain selectable text.
 - **Passing gate:** `npm run verify` passes on the working tree.

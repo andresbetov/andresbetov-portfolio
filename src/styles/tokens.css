@@ -136,6 +136,8 @@
   --type-body-compact-line-height: 1.25rem;
   --type-body-fact-size: 0.8125rem;
   --type-body-fact-line-height: 1.0625rem;
+  --type-body-note-size: 0.6875rem;
+  --type-body-note-line-height: 0.875rem;
   --type-body-s-size: 0.75rem;
   --type-body-s-line-height: 1rem;
 
@@ -147,6 +149,8 @@
   --type-label-caps-tracking: 0.08em;
   --type-label-s-size: 0.75rem;
   --type-label-s-line-height: 1rem;
+  --type-label-xs-size: 0.6875rem;
+  --type-label-xs-line-height: 0.875rem;
 
   /* Code */
   --type-code-m-size: 0.8125rem;
