@@ -1,0 +1,63 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  icon: string;
+  variant?: "primary" | "secondary";
+}
+
+const { href, label, icon, variant = "secondary" } = Astro.props;
+const arrow =
+  variant === "primary"
+    ? "/icons/hero/arrow-primary.svg"
+    : "/icons/hero/arrow-secondary.svg";
+---
+
+<a
+  class:list={["link-button", `link-button-${variant}`, "type-label-m"]}
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <img
+    class="link-button-icon"
+    src={`/icons/elara/${icon}.svg`}
+    width="16"
+    height="16"
+    alt=""
+  />
+  <span class="link-button-label">{label}</span>
+  <img class="link-button-arrow" src={arrow} width="14" height="14" alt="" />
+</a>
+
+<style>
+  .link-button {
+    display: flex;
+    inline-size: 100%;
+    block-size: 3rem;
+    align-items: center;
+    padding-inline: var(--space-16) var(--space-14);
+    border-radius: var(--radius-full);
+    gap: var(--space-10);
+  }
+
+  .link-button-primary {
+    background-color: var(--color-action-inverse);
+    color: var(--color-text-on-light);
+  }
+
+  .link-button-secondary {
+    border: 1px solid var(--color-border-strong);
+    color: var(--color-text-primary);
+  }
+
+  .link-button-label {
+    flex: 1;
+    text-align: start;
+  }
+
+  .link-button-icon,
+  .link-button-arrow {
+    flex-shrink: 0;
+  }
+</style>

@@ -1,0 +1,38 @@
+---
+interface Props {
+  class?: string;
+  labelledby?: string;
+}
+
+const { class: className, labelledby } = Astro.props;
+---
+
+<article class:list={["card", className]} aria-labelledby={labelledby}>
+  <slot />
+</article>
+
+<style>
+  .card {
+    position: relative;
+    block-size: 100%;
+    overflow: clip;
+    padding: var(--space-24);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface-1);
+  }
+
+  @media (width >= 768px) and (width < 1280px) {
+    .card {
+      padding: var(--space-28);
+      border-radius: var(--radius-lg);
+    }
+  }
+
+  @media (width <= 767.98px) {
+    .card {
+      padding: var(--space-20);
+      border-radius: var(--radius-lg);
+    }
+  }
+</style>

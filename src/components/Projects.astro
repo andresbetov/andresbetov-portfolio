@@ -1,0 +1,81 @@
+---
+import Elara from "./Elara.astro";
+import SectionOpener from "./SectionOpener.astro";
+import { projectsSection } from "../data/projects";
+---
+
+<section class="projects" id="projects" aria-labelledby="projects-title">
+  <span class="projects-glow projects-glow-security" aria-hidden="true"></span>
+  <span class="projects-glow projects-glow-edge" aria-hidden="true"></span>
+  <div class="section-grid" aria-hidden="true"></div>
+
+  <div class="projects-content shell-container">
+    <SectionOpener id="projects-title" {...projectsSection} />
+    <Elara />
+  </div>
+</section>
+
+<style>
+  .projects {
+    position: relative;
+    overflow: clip;
+    padding-block: 5rem 2.5rem;
+  }
+
+  .projects-glow {
+    position: absolute;
+    z-index: 0;
+    border-radius: 50%;
+    filter: blur(140px);
+    pointer-events: none;
+  }
+
+  .projects-glow-security {
+    top: -11.25rem;
+    right: -7.5rem;
+    inline-size: 38.75rem;
+    block-size: 28.75rem;
+    background-color: var(--color-glow-orbit);
+  }
+
+  .projects-glow-edge {
+    top: -10rem;
+    left: -7.5rem;
+    inline-size: 35rem;
+    block-size: 26.25rem;
+    background-color: var(--color-glow-name);
+  }
+
+  .projects-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (width >= 768px) and (width < 1280px) {
+    .projects {
+      padding-block-start: 3.5rem;
+    }
+  }
+
+  @media (width <= 767.98px) {
+    .projects {
+      padding-block-start: 2.5rem;
+    }
+
+    .projects-glow-security {
+      top: -8rem;
+      right: -10rem;
+      inline-size: 26rem;
+      block-size: 20rem;
+      filter: blur(100px);
+    }
+
+    .projects-glow-edge {
+      top: -8rem;
+      left: -10rem;
+      inline-size: 24rem;
+      block-size: 18rem;
+      filter: blur(100px);
+    }
+  }
+</style>

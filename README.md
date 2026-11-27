@@ -1,8 +1,8 @@
 # andresbetov portfolio
 
 Static single-page portfolio built with Astro, with a static quality toolchain and CI/CD
-configured for Cloudflare Workers. The shell and Hero are implemented; the remaining
-Figma sections and footer are in progress.
+configured for Cloudflare Workers. The shell, Hero, and Elara Featured project are
+implemented; the remaining Figma sections and footer are in progress.
 
 Production promotion is intentionally deferred until the Figma-derived content is
 implemented; `portfolio-production` currently runs the Cloudflare placeholder.
@@ -115,8 +115,9 @@ A code change is ready for review when:
    screenshots.
 5. A fresh reviewer has checked it against the brief, or the change is trivial.
 
-Link and anchor checks are deferred until the remaining sections exist; the shell and Hero
-currently expose the final anchor targets without their destinations.
+Link and anchor checks are deferred until the remaining sections exist; `#projects`
+resolves to the Featured projects opener, while Experience, Education, and Contact remain
+unresolved.
 
 ## Package compatibility notes
 

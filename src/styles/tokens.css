@@ -51,6 +51,10 @@
   --color-line-ink-end: rgb(170 184 220 / 14%);
   --color-orbit-label: rgb(170 184 220 / 90%);
   --color-mask: #000;
+  --color-grid-dot: rgb(170 184 220 / 16%);
+  --color-glow-coral: rgb(255 123 142 / 14%);
+  --color-glow-services: rgb(63 214 192 / 28%);
+  --color-glow-data: rgb(255 184 77 / 28%);
 
   /* Tier (layer) colors */
   --color-tier-edge: var(--color-blue-400);
