@@ -1,15 +1,15 @@
 ---
 interface Props {
-  icon: string;
+  iconSrc: string;
   label: string;
 }
 
-const { icon, label } = Astro.props;
+const { iconSrc, label } = Astro.props;
 ---
 
 <li class="feature-row">
   <span class="feature-row-tile" aria-hidden="true">
-    <img src={`/icons/elara/${icon}.svg`} width="16" height="16" alt="" />
+    <img src={iconSrc} width="16" height="16" alt="" />
   </span>
   <span class="feature-row-label type-body-m">{label}</span>
 </li>

@@ -5,6 +5,44 @@ import { elara } from "../data/elara";
 
 const { journey } = elara;
 const { client, edge, services, data } = journey.bands;
+
+const desktopConnectors = [
+  { id: "client-gateway", file: "client-to-gateway", width: 34.8, height: 8.6 },
+  { id: "gateway-config", file: "gateway-to-config", width: 36.8, height: 106 },
+  {
+    id: "gateway-discovery",
+    file: "gateway-to-discovery",
+    width: 36.8,
+    height: 44,
+  },
+  {
+    id: "gateway-inventory",
+    file: "gateway-to-inventory",
+    width: 36.8,
+    height: 28.1,
+  },
+  { id: "gateway-unit", file: "gateway-to-unit", width: 36.8, height: 90.1 },
+  {
+    id: "inventory-postgres",
+    file: "inventory-to-postgres",
+    width: 40.8,
+    height: 40.1,
+  },
+  {
+    id: "inventory-vault",
+    file: "inventory-to-vault",
+    width: 40.8,
+    height: 20,
+  },
+  { id: "unit-vault", file: "unit-to-vault", width: 40.8, height: 28 },
+  {
+    id: "unit-postgres",
+    file: "unit-to-postgres",
+    width: 40.8,
+    height: 32.1,
+  },
+  { id: "inventory-unit", file: "inventory-to-unit", width: 12, height: 18 },
+] as const;
 ---
 
 <figure class="journey" aria-labelledby="journey-title">
@@ -42,7 +80,7 @@ const { client, edge, services, data } = journey.bands;
       <div class="journey-band-head">
         <p class="journey-band-label type-label-s">
           <span
-            class="journey-band-dot journey-band-dot-edge"
+            class:list={["journey-band-dot", `journey-band-dot-${client.tier}`]}
             aria-hidden="true"
           ></span>
           {client.label}
@@ -51,10 +89,8 @@ const { client, edge, services, data } = journey.bands;
       </div>
       <div class="journey-node journey-node-client">
         <DiagramNode
-          tier={client.nodes[0].tier}
-          title={client.nodes[0].title}
-          subtitle={client.nodes[0].subtitle}
-          icon={client.nodes[0].icon}
+          node={client.nodes[0]}
+          iconSrc={`/icons/elara/${client.nodes[0].icon}.svg`}
         />
       </div>
     </div>
@@ -67,7 +103,7 @@ const { client, edge, services, data } = journey.bands;
       <div class="journey-band-head">
         <p class="journey-band-label type-label-s">
           <span
-            class="journey-band-dot journey-band-dot-edge"
+            class:list={["journey-band-dot", `journey-band-dot-${edge.tier}`]}
             aria-hidden="true"
           ></span>
           {edge.label}
@@ -76,10 +112,8 @@ const { client, edge, services, data } = journey.bands;
       </div>
       <div class="journey-node journey-node-gateway">
         <DiagramNode
-          tier={edge.nodes[0].tier}
-          title={edge.nodes[0].title}
-          subtitle={edge.nodes[0].subtitle}
-          icon={edge.nodes[0].icon}
+          node={edge.nodes[0]}
+          iconSrc={`/icons/elara/${edge.nodes[0].icon}.svg`}
         />
       </div>
     </div>
@@ -92,7 +126,10 @@ const { client, edge, services, data } = journey.bands;
       <div class="journey-band-head">
         <p class="journey-band-label type-label-s">
           <span
-            class="journey-band-dot journey-band-dot-services"
+            class:list={[
+              "journey-band-dot",
+              `journey-band-dot-${services.tier}`,
+            ]}
             aria-hidden="true"
           ></span>
           {services.label}
@@ -106,19 +143,19 @@ const { client, edge, services, data } = journey.bands;
         {services.platform.map((node) => (
           <div class:list={["journey-node", `journey-node-${node.id}`]}>
             <DiagramNode
-              tier={node.tier}
-              title={node.title}
-              subtitle={node.subtitle}
-              icon={node.icon}
+              node={node}
+              iconSrc={`/icons/elara/${node.icon}.svg`}
             />
           </div>
         ))}
         <div class="journey-platform-summary">
           <DiagramNode
-            tier="services"
-            title={services.mobilePlatform.title}
-            subtitle={services.mobilePlatform.subtitle}
-            icon={services.mobilePlatform.icon}
+            node={{
+              tier: "services",
+              title: services.mobilePlatform.title,
+              subtitle: services.mobilePlatform.subtitle,
+            }}
+            iconSrc={`/icons/elara/${services.mobilePlatform.icon}.svg`}
             dashed
           />
         </div>
@@ -128,11 +165,8 @@ const { client, edge, services, data } = journey.bands;
         {services.domain.map((node) => (
           <div class:list={["journey-node", `journey-node-${node.id}`]}>
             <DiagramNode
-              tier={node.tier}
-              title={node.title}
-              subtitle={node.subtitle}
-              icon={node.icon}
-              focus={node.id === "unit-of-measure-service"}
+              node={node}
+              iconSrc={`/icons/elara/${node.icon}.svg`}
             />
           </div>
         ))}
@@ -155,7 +189,7 @@ const { client, edge, services, data } = journey.bands;
       <div class="journey-band-head">
         <p class="journey-band-label type-label-s">
           <span
-            class="journey-band-dot journey-band-dot-data"
+            class:list={["journey-band-dot", `journey-band-dot-${data.tier}`]}
             aria-hidden="true"
           ></span>
           {data.label}
@@ -164,88 +198,24 @@ const { client, edge, services, data } = journey.bands;
       </div>
       {data.nodes.map((node) => (
         <div class:list={["journey-node", `journey-node-${node.id}`]}>
-          <DiagramNode
-            tier={node.tier}
-            title={node.title}
-            subtitle={node.subtitle}
-            mobileSubtitle={node.mobileSubtitle}
-            icon={node.icon}
-          />
+          <DiagramNode node={node} iconSrc={`/icons/elara/${node.icon}.svg`} />
         </div>
       ))}
     </div>
 
     <div class="journey-connectors-desktop" aria-hidden="true">
-      <img
-        class="journey-connector journey-connector-client-gateway"
-        src="/icons/elara/connectors/client-to-gateway.svg"
-        width="34.8"
-        height="8.6"
-        alt=""
-      />
-      <img
-        class="journey-connector journey-connector-gateway-config"
-        src="/icons/elara/connectors/gateway-to-config.svg"
-        width="36.8"
-        height="106"
-        alt=""
-      />
-      <img
-        class="journey-connector journey-connector-gateway-discovery"
-        src="/icons/elara/connectors/gateway-to-discovery.svg"
-        width="36.8"
-        height="44"
-        alt=""
-      />
-      <img
-        class="journey-connector journey-connector-gateway-inventory"
-        src="/icons/elara/connectors/gateway-to-inventory.svg"
-        width="36.8"
-        height="28.1"
-        alt=""
-      />
-      <img
-        class="journey-connector journey-connector-gateway-unit"
-        src="/icons/elara/connectors/gateway-to-unit.svg"
-        width="36.8"
-        height="90.1"
-        alt=""
-      />
-      <img
-        class="journey-connector journey-connector-inventory-postgres"
-        src="/icons/elara/connectors/inventory-to-postgres.svg"
-        width="40.8"
-        height="40.1"
-        alt=""
-      />
-      <img
-        class="journey-connector journey-connector-inventory-vault"
-        src="/icons/elara/connectors/inventory-to-vault.svg"
-        width="40.8"
-        height="20"
-        alt=""
-      />
-      <img
-        class="journey-connector journey-connector-unit-vault"
-        src="/icons/elara/connectors/unit-to-vault.svg"
-        width="40.8"
-        height="28"
-        alt=""
-      />
-      <img
-        class="journey-connector journey-connector-unit-postgres"
-        src="/icons/elara/connectors/unit-to-postgres.svg"
-        width="40.8"
-        height="32.1"
-        alt=""
-      />
-      <img
-        class="journey-connector journey-connector-inventory-unit"
-        src="/icons/elara/connectors/inventory-to-unit.svg"
-        width="12"
-        height="18"
-        alt=""
-      />
+      {desktopConnectors.map((connector) => (
+        <img
+          class:list={[
+            "journey-connector",
+            `journey-connector-${connector.id}`,
+          ]}
+          src={`/icons/elara/connectors/${connector.file}.svg`}
+          width={connector.width}
+          height={connector.height}
+          alt=""
+        />
+      ))}
     </div>
 
     <img
@@ -631,6 +601,7 @@ const { client, edge, services, data } = journey.bands;
   .journey-caption-title {
     display: flex;
     align-items: center;
+    margin: 0;
     color: var(--color-tier-edge);
     letter-spacing: 0.1em;
     gap: var(--space-8);

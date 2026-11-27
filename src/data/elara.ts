@@ -1,4 +1,4 @@
-export type Tier = "edge" | "services" | "data" | "security";
+import type { Tier } from "./tiers";
 
 export type JourneyNode = {
   id: string;
@@ -7,6 +7,7 @@ export type JourneyNode = {
   subtitle: string;
   mobileSubtitle?: string;
   icon: string;
+  focus?: boolean;
 };
 
 export type JourneyBand = {
@@ -27,20 +28,18 @@ export type LegendItem = {
 };
 
 export type ServiceStation = {
-  id: string;
   tier: Tier;
   title: string;
   description: string;
-  main?: boolean;
 };
 
 export type CodePart = {
-  text: string;
+  text?: string;
   tone?: "primary" | "edge" | "services";
+  wbr?: boolean;
 };
 
 export type CodeCommand = {
-  id: string;
   parts: readonly CodePart[];
 };
 
@@ -97,6 +96,7 @@ const unitOfMeasureService: JourneyNode = {
   title: "unit-of-measure-service",
   subtitle: "reference data",
   icon: "ruler",
+  focus: true,
 };
 
 const inventoryDatabase: JourneyNode = {
@@ -218,30 +218,26 @@ export const elara = {
   },
   service: {
     label: "INSIDE EVERY SERVICE",
-    stations: [
+    main: [
       {
-        id: "controller",
         tier: "edge",
         title: "Controller",
         description: "Request and response DTOs",
-        main: true,
       },
       {
-        id: "service",
         tier: "services",
         title: "Service",
         description: "Interface and implementation",
-        main: true,
       },
+    ] satisfies readonly ServiceStation[],
+    paths: [
       {
-        id: "repository",
         tier: "data",
         title: "Repository",
         description: "Entity and mapper",
       },
       {
-        id: "exceptions",
-        tier: "security",
+        tier: "fault",
         title: "Exceptions",
         description: "Custom exceptions and one global handler",
       },
@@ -255,20 +251,17 @@ export const elara = {
     copyLabel: "Copy",
     commands: [
       {
-        id: "export",
         parts: [
           { text: "export", tone: "primary" },
-          { text: "\u00a0" },
+          { text: " " },
           { text: "ELARA", tone: "edge" },
           { text: "=" },
-          {
-            text: '"oci://ghcr.io/elara-app/elara-demo:1.3.1"',
-            tone: "services",
-          },
+          { text: '"oci://ghcr.io/', tone: "services" },
+          { wbr: true },
+          { text: 'elara-app/elara-demo:1.3.1"', tone: "services" },
         ],
       },
       {
-        id: "up",
         parts: [
           { text: "sudo docker compose", tone: "primary" },
           { text: " -f " },
@@ -277,7 +270,6 @@ export const elara = {
         ],
       },
       {
-        id: "curl",
         parts: [
           { text: "curl", tone: "primary" },
           { text: " -fsS " },
@@ -288,7 +280,6 @@ export const elara = {
         ],
       },
       {
-        id: "logs",
         parts: [
           { text: "sudo docker compose", tone: "primary" },
           { text: " -f " },

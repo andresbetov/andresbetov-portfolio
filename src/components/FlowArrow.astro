@@ -1,20 +1,16 @@
 ---
+import type { Tier } from "../data/tiers";
+
 interface Props {
-  tone: "edge" | "services" | "data" | "fault";
+  tone: Tier;
   direction?: "down" | "right";
-  class?: string;
 }
 
-const { tone, direction = "down", class: className } = Astro.props;
+const { tone, direction = "down" } = Astro.props;
 ---
 
 <svg
-  class:list={[
-    "flow-arrow",
-    `flow-arrow-${tone}`,
-    `flow-arrow-${direction}`,
-    className,
-  ]}
+  class:list={["flow-arrow", `flow-arrow-${tone}`, `flow-arrow-${direction}`]}
   width={direction === "down" ? 8 : 18}
   height={direction === "down" ? 18 : 8}
   viewBox={direction === "down" ? "0 0 8 18" : "0 0 18 8"}
@@ -65,5 +61,9 @@ const { tone, direction = "down", class: className } = Astro.props;
 
   .flow-arrow-fault {
     color: var(--color-tier-fault);
+  }
+
+  .flow-arrow-security {
+    color: var(--color-tier-security);
   }
 </style>

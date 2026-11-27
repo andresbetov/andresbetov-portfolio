@@ -8,6 +8,7 @@ import JourneyDiagram from "./JourneyDiagram.astro";
 import { elara } from "../data/elara";
 
 const { decisions, demo, meta, service, subtitle, titleLines } = elara;
+const [controller, serviceStation] = service.main;
 ---
 
 <section class="elara" aria-labelledby="elara-meta-name elara-title">
@@ -25,7 +26,10 @@ const { decisions, demo, meta, service, subtitle, titleLines } = elara;
         >
           {Array.from({ length: meta.projectCount }, (_, index) => (
             <span
-              class:list={["elara-bar", index === 0 && "elara-bar-current"]}
+              class:list={[
+                "elara-bar",
+                index + 1 === meta.projectIndex && "elara-bar-current",
+              ]}
               aria-hidden="true"
             />
           ))}
@@ -58,7 +62,7 @@ const { decisions, demo, meta, service, subtitle, titleLines } = elara;
       </div>
 
       <div class="elara-card">
-        <Card class="decisions-card" labelledby="decisions-title">
+        <Card labelledby="decisions-title">
           <span class="decisions-glow" aria-hidden="true"></span>
           <div class="decisions-layout">
             <div class="decisions-visual-column">
@@ -93,7 +97,10 @@ const { decisions, demo, meta, service, subtitle, titleLines } = elara;
 
               <ul class="decisions-list">
                 {decisions.items.map((item) => (
-                  <FeatureRow icon={item.icon} label={item.label} />
+                  <FeatureRow
+                    iconSrc={`/icons/elara/${item.icon}.svg`}
+                    label={item.label}
+                  />
                 ))}
               </ul>
             </div>
@@ -121,15 +128,18 @@ const { decisions, demo, meta, service, subtitle, titleLines } = elara;
               <div class="service-station service-station-main">
                 <div class="service-station-head">
                   <span
-                    class="station-dot station-dot-edge"
+                    class:list={[
+                      "station-dot",
+                      `station-dot-${controller.tier}`,
+                    ]}
                     aria-hidden="true"
                   ></span>
                   <span class="service-station-title type-label-m">
-                    {service.stations[0].title}
+                    {controller.title}
                   </span>
                 </div>
                 <p class="service-station-detail type-body-s">
-                  {service.stations[0].description}
+                  {controller.description}
                 </p>
               </div>
 
@@ -140,15 +150,18 @@ const { decisions, demo, meta, service, subtitle, titleLines } = elara;
               <div class="service-station service-station-main">
                 <div class="service-station-head">
                   <span
-                    class="station-dot station-dot-services"
+                    class:list={[
+                      "station-dot",
+                      `station-dot-${serviceStation.tier}`,
+                    ]}
                     aria-hidden="true"
                   ></span>
                   <span class="service-station-title type-label-m">
-                    {service.stations[1].title}
+                    {serviceStation.title}
                   </span>
                 </div>
                 <p class="service-station-detail type-body-s">
-                  {service.stations[1].description}
+                  {serviceStation.description}
                 </p>
               </div>
 
@@ -162,7 +175,7 @@ const { decisions, demo, meta, service, subtitle, titleLines } = elara;
               </div>
 
               <div class="service-paths">
-                {service.stations.slice(2).map((station) => (
+                {service.paths.map((station) => (
                   <div class="service-station">
                     <div class="service-station-head">
                       <span
@@ -223,16 +236,20 @@ const { decisions, demo, meta, service, subtitle, titleLines } = elara;
                     $
                   </span>
                   <code>
-                    {command.parts.map((part) => (
-                      <span
-                        class:list={[
-                          "code-part",
-                          part.tone && `code-part-${part.tone}`,
-                        ]}
-                      >
-                        {part.text}
-                      </span>
-                    ))}
+                    {command.parts.map((part) =>
+                      part.wbr ? (
+                        <wbr />
+                      ) : (
+                        <span
+                          class:list={[
+                            "code-part",
+                            part.tone && `code-part-${part.tone}`,
+                          ]}
+                        >
+                          {part.text}
+                        </span>
+                      ),
+                    )}
                   </code>
                 </p>
               ))}
@@ -254,7 +271,7 @@ const { decisions, demo, meta, service, subtitle, titleLines } = elara;
                   <Button
                     href={link.href}
                     label={link.label}
-                    icon={link.icon}
+                    iconSrc={`/icons/elara/${link.icon}.svg`}
                     variant={link.variant}
                   />
                 </li>
@@ -336,7 +353,7 @@ const { decisions, demo, meta, service, subtitle, titleLines } = elara;
     display: none;
   }
 
-  @media (width >= 1200px) {
+  @media (width >= 1280px) {
     .elara-title-break {
       display: initial;
     }
@@ -446,6 +463,7 @@ const { decisions, demo, meta, service, subtitle, titleLines } = elara;
   }
 
   .decisions-caption h4 {
+    margin: 0;
     color: var(--color-text-primary);
   }
 
@@ -510,6 +528,7 @@ const { decisions, demo, meta, service, subtitle, titleLines } = elara;
   .card-label {
     display: flex;
     align-items: center;
+    margin: 0;
     color: var(--color-tier-edge);
     gap: var(--space-8);
   }
@@ -579,7 +598,7 @@ const { decisions, demo, meta, service, subtitle, titleLines } = elara;
     box-shadow: 0 0 0.375rem var(--color-glow-data);
   }
 
-  .station-dot-security {
+  .station-dot-fault {
     background-color: var(--color-tier-fault);
     box-shadow: 0 0 0.375rem var(--color-glow-coral);
   }
@@ -719,7 +738,7 @@ const { decisions, demo, meta, service, subtitle, titleLines } = elara;
     min-inline-size: 0;
   }
 
-  @media (width >= 768px) and (width < 1200px) {
+  @media (width >= 768px) and (width < 1280px) {
     .elara {
       margin-block-start: 2.5rem;
     }
@@ -786,21 +805,9 @@ const { decisions, demo, meta, service, subtitle, titleLines } = elara;
       margin-inline-start: var(--space-16);
       text-align: end;
     }
-
-    .demo-link:nth-child(1) {
-      flex: 1.08;
-    }
-
-    .demo-link:nth-child(2) {
-      flex: 1.04;
-    }
-
-    .demo-link:nth-child(3) {
-      flex: 0.88;
-    }
   }
 
-  @media (width >= 1200px) and (width < 1440px) {
+  @media (width >= 768px) and (width < 1440px) {
     .demo-link:nth-child(1) {
       flex: 1.08;
     }

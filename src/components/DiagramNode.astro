@@ -1,48 +1,43 @@
 ---
-import type { Tier } from "../data/elara";
+import type { Tier } from "../data/tiers";
 
-interface Props {
+interface DiagramNodeData {
   tier: Tier;
   title: string;
   subtitle: string;
   mobileSubtitle?: string;
-  icon: string;
   focus?: boolean;
-  dashed?: boolean;
-  class?: string;
 }
 
-const {
-  tier,
-  title,
-  subtitle,
-  mobileSubtitle,
-  icon,
-  focus = false,
-  dashed = false,
-  class: className,
-} = Astro.props;
+interface Props {
+  node: DiagramNodeData;
+  iconSrc: string;
+  dashed?: boolean;
+}
+
+const { node, iconSrc, dashed = false } = Astro.props;
 ---
 
 <div
   class:list={[
     "diagram-node",
-    `diagram-node-${tier}`,
-    { "is-focused": focus, "is-dashed": dashed },
-    className,
+    `diagram-node-${node.tier}`,
+    { "is-focused": node.focus, "is-dashed": dashed },
   ]}
 >
   <span class="diagram-node-tile" aria-hidden="true">
-    <img src={`/icons/elara/${icon}.svg`} width="16" height="16" alt="" />
+    <img src={iconSrc} width="16" height="16" alt="" />
   </span>
   <span class="diagram-node-copy">
-    <span class="diagram-node-title type-code-m">{title}</span>
+    <span class="diagram-node-title type-code-m">{node.title}</span>
     <span class="diagram-node-subtitle type-label-s">
-      <span class:list={{ "diagram-node-subtitle-default": mobileSubtitle }}>
-        {subtitle}
+      <span
+        class:list={{ "diagram-node-subtitle-default": node.mobileSubtitle }}
+      >
+        {node.subtitle}
       </span>
-      {mobileSubtitle && (
-        <span class="diagram-node-subtitle-mobile">{mobileSubtitle}</span>
+      {node.mobileSubtitle && (
+        <span class="diagram-node-subtitle-mobile">{node.mobileSubtitle}</span>
       )}
     </span>
   </span>

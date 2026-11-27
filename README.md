@@ -45,8 +45,8 @@ npm run dev
 
 ```text
 src/
-  components/           Shell, Hero, orbit, and action components
-  data/                 Site metadata, navigation, and Hero content
+  components/           Shell, Hero, Section, and reusable UI components
+  data/                 Site metadata, navigation, section, and Featured project content
   layouts/              Page layouts
   pages/                Static routes
   styles/               Design tokens, self-hosted fonts, and global styles
