@@ -28,6 +28,18 @@ _Avoid_: badge color, palette
 A long-form section for one selected project, combining narrative, evidence, and diagrams.
 _Avoid_: case study, project card
 
+**Evidence card**:
+A numbered card inside a Featured project that pairs a claim with a diagram or chart.
+_Avoid_: bento tile, proof card
+
+**Evidence panel**:
+The fixed-proportion chart or diagram inside an evidence card.
+_Avoid_: chart box, visual panel
+
+**Fact**:
+A short emphasized statement in an evidence card, with a tier-colored dot.
+_Avoid_: bullet, stat
+
 **Shell**:
 The shared layout and visual foundation used by every section: background, grid, navigation, tokens, and typography.
 _Avoid_: layout wrapper, chrome

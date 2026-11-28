@@ -1,0 +1,159 @@
+---
+import { portfolioEngine } from "../data/portfolio-engine";
+
+const { allocation } = portfolioEngine;
+const maxWeight = Math.max(
+  ...allocation.holdings.map((holding) => holding.weight),
+);
+// The largest holding fills 65% of the metric track, leaving the value visible.
+const MAX_BAR_WIDTH = 65;
+const barWidth = (value: number) =>
+  `${((value / maxWeight) * MAX_BAR_WIDTH).toFixed(2)}%`;
+---
+
+<figure class="allocation-panel">
+  <p class="visually-hidden">{allocation.summary}</p>
+
+  <div class="allocation-legend" aria-hidden="true">
+    {allocation.legend.map((item) => (
+      <span class="allocation-legend-item type-body-s">
+        <span
+          class:list={["allocation-swatch", `allocation-swatch-${item.tone}`]}
+        />
+        {item.label}
+      </span>
+    ))}
+  </div>
+
+  <ul class="allocation-list" aria-hidden="true">
+    {allocation.holdings.map((holding) => (
+      <li class="allocation-row">
+        <span class="allocation-symbol type-code-2xs">{holding.symbol}</span>
+        <span class="allocation-metrics">
+          <span class="allocation-metric">
+            <span
+              class="allocation-bar allocation-bar-weight"
+              style={`--bar-width: ${barWidth(holding.weight)}`}
+            />
+            <span class="allocation-value allocation-value-weight type-code-2xs">
+              {holding.weight.toFixed(1)}%
+            </span>
+          </span>
+          <span class="allocation-metric">
+            <span
+              class="allocation-bar allocation-bar-risk"
+              style={`--bar-width: ${barWidth(holding.risk)}`}
+            />
+            <span class="allocation-value allocation-value-risk type-code-2xs">
+              {holding.risk.toFixed(1)}%
+            </span>
+          </span>
+        </span>
+      </li>
+    ))}
+  </ul>
+</figure>
+
+<style>
+  .allocation-panel {
+    display: flex;
+    block-size: 100%;
+    flex-direction: column;
+    padding: 0.6875rem 0.9375rem;
+    margin: 0;
+  }
+
+  .allocation-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-20);
+  }
+
+  .allocation-legend-item {
+    display: flex;
+    align-items: center;
+    color: var(--color-text-secondary);
+    gap: var(--space-8);
+  }
+
+  .allocation-swatch {
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    flex-shrink: 0;
+    border-radius: 2px;
+  }
+
+  .allocation-swatch-edge {
+    background-color: var(--color-tier-edge);
+  }
+
+  .allocation-swatch-services {
+    background-color: var(--color-tier-services);
+  }
+
+  .allocation-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0.875rem 0 0;
+    gap: var(--space-4);
+    list-style: none;
+  }
+
+  .allocation-row {
+    display: grid;
+    grid-template-columns: 2.875rem minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .allocation-symbol {
+    color: var(--color-text-primary);
+  }
+
+  .allocation-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .allocation-metric {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .allocation-bar {
+    flex-shrink: 0;
+    inline-size: var(--bar-width);
+    block-size: 0.5625rem;
+    border-radius: 4.5px;
+  }
+
+  .allocation-bar-weight {
+    background-image: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-tier-edge) 45%, transparent),
+      var(--color-tier-edge)
+    );
+  }
+
+  .allocation-bar-risk {
+    background-image: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-tier-services) 45%, transparent),
+      var(--color-tier-services)
+    );
+  }
+
+  .allocation-value {
+    flex-shrink: 0;
+  }
+
+  .allocation-value-weight {
+    color: var(--color-tier-edge);
+  }
+
+  .allocation-value-risk {
+    color: var(--color-tier-services);
+  }
+</style>

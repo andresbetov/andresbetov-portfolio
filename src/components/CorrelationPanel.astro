@@ -1,0 +1,272 @@
+---
+import { portfolioEngine } from "../data/portfolio-engine";
+
+const { correlation } = portfolioEngine;
+---
+
+<figure class="correlation-panel">
+  <p class="visually-hidden">{correlation.summary}</p>
+
+  <div class="correlation-layout" aria-hidden="true">
+    <div class="correlation-head">
+      <span class="correlation-head-matrix type-code-2xs">
+        {correlation.matrixLabel}
+      </span>
+      <span class="correlation-head-tree type-code-2xs">
+        {correlation.hierarchyLabel}
+      </span>
+    </div>
+
+    <div class="correlation-body">
+      <ul class="correlation-symbols">
+        {correlation.rows.map((row) => (
+          <li
+            class:list={[
+              "correlation-symbol",
+              `correlation-symbol-${row.tier}`,
+              "type-code-2xs",
+            ]}
+          >
+            {row.symbol}
+          </li>
+        ))}
+      </ul>
+
+      <div class="correlation-matrix">
+        {correlation.rows.map((row) =>
+          row.cells.map((level, columnIndex) => {
+            const columnTier = correlation.rows[columnIndex]?.tier ?? row.tier;
+            const tone = row.tier === columnTier ? row.tier : "security";
+
+            return (
+              <span
+                class:list={[
+                  "correlation-cell",
+                  `correlation-cell-${tone}`,
+                  `correlation-cell-${level}`,
+                ]}
+              />
+            );
+          }),
+        )}
+      </div>
+
+      <div class="correlation-tree-frame">
+        <svg
+          class="correlation-tree"
+          viewBox="0 0 80 166"
+          preserveAspectRatio="none"
+          fill="none"
+        >
+          <g class="correlation-tree-edge">
+            <path
+              d="M2 11.5H22M2 39.5H22M22 11.5V39.5M22 25.5H40M2 67.5H40M40 25.5V67.5"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </g>
+          <g class="correlation-tree-services">
+            <path
+              d="M2 95.5H26M2 123.5H26M26 95.5V123.5M26 109.5H48M2 151.5H48M48 109.5V151.5"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </g>
+          <g class="correlation-tree-merge">
+            <path
+              d="M40 46.5H78M48 130.5H78M78 46.5V130.5"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </g>
+
+          <circle class="correlation-leaf-edge" cx="2" cy="11.5" r="2.5" />
+          <circle class="correlation-leaf-edge" cx="2" cy="39.5" r="2.5" />
+          <circle class="correlation-leaf-edge" cx="2" cy="67.5" r="2.5" />
+          <circle class="correlation-leaf-services" cx="2" cy="95.5" r="2.5" />
+          <circle class="correlation-leaf-services" cx="2" cy="123.5" r="2.5" />
+          <circle class="correlation-leaf-services" cx="2" cy="151.5" r="2.5" />
+
+          <circle class="correlation-node-edge" cx="40" cy="46.5" r="3.5" />
+          <circle
+            class="correlation-node-services"
+            cx="48"
+            cy="130.5"
+            r="3.5"
+          />
+          <circle class="correlation-node-merge" cx="78" cy="88.5" r="3.5" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <figcaption class="correlation-note type-body-fact">
+    {correlation.note}
+  </figcaption>
+</figure>
+
+<style>
+  .correlation-panel {
+    display: flex;
+    block-size: 100%;
+    flex-direction: column;
+    padding: 0.75rem 0.9375rem;
+    margin: 0;
+  }
+
+  .correlation-head,
+  .correlation-body {
+    display: grid;
+    grid-template-columns: 2.4375rem minmax(0, 1fr) 5.375rem;
+    column-gap: 2px;
+  }
+
+  .correlation-head-matrix {
+    grid-column: 2;
+  }
+
+  .correlation-head-tree {
+    grid-column: 3;
+  }
+
+  .correlation-head span {
+    color: var(--color-text-tertiary);
+    letter-spacing: var(--type-code-caps-s-tracking);
+  }
+
+  .correlation-body {
+    align-items: stretch;
+    margin-block-start: 0.875rem;
+  }
+
+  .correlation-symbols {
+    display: grid;
+    grid-template-rows: repeat(6, minmax(0, 1fr));
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .correlation-symbol {
+    display: flex;
+    align-items: center;
+    color: var(--color-tier-edge);
+  }
+
+  .correlation-symbol-services {
+    color: var(--color-tier-services);
+  }
+
+  .correlation-matrix {
+    display: grid;
+    inline-size: 100%;
+    aspect-ratio: 1;
+    align-self: start;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-rows: repeat(6, minmax(0, 1fr));
+    gap: 2px;
+  }
+
+  .correlation-cell {
+    border-radius: 5px;
+  }
+
+  .correlation-cell-edge.correlation-cell-strong {
+    background-color: color-mix(
+      in srgb,
+      var(--color-tier-edge) 82%,
+      transparent
+    );
+  }
+
+  .correlation-cell-edge.correlation-cell-medium {
+    background-color: color-mix(
+      in srgb,
+      var(--color-tier-edge) 62%,
+      transparent
+    );
+  }
+
+  .correlation-cell-edge.correlation-cell-soft {
+    background-color: color-mix(
+      in srgb,
+      var(--color-tier-edge) 53%,
+      transparent
+    );
+  }
+
+  .correlation-cell-services.correlation-cell-strong {
+    background-color: color-mix(
+      in srgb,
+      var(--color-tier-services) 82%,
+      transparent
+    );
+  }
+
+  .correlation-cell-services.correlation-cell-medium {
+    background-color: color-mix(
+      in srgb,
+      var(--color-tier-services) 62%,
+      transparent
+    );
+  }
+
+  .correlation-cell-services.correlation-cell-soft {
+    background-color: color-mix(
+      in srgb,
+      var(--color-tier-services) 53%,
+      transparent
+    );
+  }
+
+  .correlation-cell-security {
+    background-color: color-mix(
+      in srgb,
+      var(--color-tier-security) 27%,
+      transparent
+    );
+  }
+
+  .correlation-tree-frame {
+    position: relative;
+    min-block-size: 0;
+  }
+
+  .correlation-tree {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .correlation-tree-edge {
+    stroke: var(--color-tier-edge);
+  }
+
+  .correlation-tree-services {
+    stroke: var(--color-tier-services);
+  }
+
+  .correlation-tree-merge {
+    stroke: var(--color-tier-security);
+  }
+
+  .correlation-leaf-edge,
+  .correlation-node-edge {
+    fill: var(--color-tier-edge);
+  }
+
+  .correlation-leaf-services,
+  .correlation-node-services {
+    fill: var(--color-tier-services);
+  }
+
+  .correlation-node-merge {
+    fill: var(--color-tier-security);
+  }
+
+  .correlation-note {
+    margin-block-start: auto;
+    color: var(--color-text-tertiary);
+  }
+</style>

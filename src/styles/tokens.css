@@ -120,6 +120,9 @@
   --type-display-m-size: 2.125rem;
   --type-display-m-line-height: 2.375rem;
   --type-display-m-tracking: -0.025em;
+  --type-heading-l-size: 1.5rem;
+  --type-heading-l-line-height: 1.75rem;
+  --type-heading-l-tracking: -0.02em;
   --type-heading-m-size: 1.25rem;
   --type-heading-m-line-height: 1.625rem;
   --type-heading-m-tracking: -0.005em;
@@ -129,6 +132,12 @@
   --type-body-l-line-height: 1.75rem;
   --type-body-m-size: 0.9375rem;
   --type-body-m-line-height: 1.375rem;
+  --type-body-compact-size: 0.875rem;
+  --type-body-compact-line-height: 1.25rem;
+  --type-body-fact-size: 0.8125rem;
+  --type-body-fact-line-height: 1.0625rem;
+  --type-body-note-size: 0.6875rem;
+  --type-body-note-line-height: 0.875rem;
   --type-body-s-size: 0.75rem;
   --type-body-s-line-height: 1rem;
 
@@ -140,12 +149,18 @@
   --type-label-caps-tracking: 0.08em;
   --type-label-s-size: 0.75rem;
   --type-label-s-line-height: 1rem;
+  --type-label-xs-size: 0.6875rem;
+  --type-label-xs-line-height: 0.875rem;
 
   /* Code */
   --type-code-m-size: 0.8125rem;
   --type-code-m-line-height: 1.125rem;
   --type-code-xs-size: 0.6875rem;
   --type-code-xs-line-height: 0.875rem;
+  --type-code-2xs-size: 0.625rem;
+  --type-code-2xs-line-height: 0.75rem;
+  --type-code-s-size: 0.75rem;
+  --type-code-s-line-height: 1rem;
   --type-code-caps-m-size: 0.75rem;
   --type-code-caps-m-line-height: 1rem;
   --type-code-caps-m-tracking: 0.12em;

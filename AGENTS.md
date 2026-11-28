@@ -1,6 +1,6 @@
 # Agent instructions
 
-This is a static Astro portfolio. The shell, Hero, and Elara Featured project are implemented; the remaining Figma sections and footer are next. Production promotion is deferred until the full Figma-derived content is implemented and reviewed.
+This is a static Astro portfolio. The shell, Hero, Elara, and Portfolio Construction Engine Featured projects are implemented; the remaining Figma sections and footer are next. Production promotion is deferred until the full Figma-derived content is implemented and reviewed.
 
 ## Commands
 
